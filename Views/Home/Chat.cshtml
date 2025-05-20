@@ -1,0 +1,140 @@
+﻿@using System.Text.Json;
+@using Microsoft.AspNetCore.Http;
+@model MyPhamSoul.Models.Account;
+
+@{
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+    
+    }
+
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f2f5;
+        margin: 0;
+        padding: 0;
+    }
+
+    .chat-container {
+        max-width: 600px;
+        margin: 20px auto;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .chat-header {
+        padding: 10px 15px;
+        border-bottom: 1px solid #dddfe2;
+        display: flex;
+        align-items: center;
+    }
+
+        .chat-header input[type="text"] {
+            flex: 1;
+            padding: 8px;
+            border-radius: 20px;
+            border: 1px solid #dddfe2;
+            margin-right: 10px;
+        }
+
+        .chat-header button {
+            padding: 8px 15px;
+            border: none;
+            background-color: #0084ff;
+            color: #fff;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .chat-header label {
+            font-size: 18px;
+            font-weight: bold;
+            margin-right: 10px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+            .chat-header label::before {
+                content: url('~/img/customers/1.png'); /* Thay đổi user_icon.png bằng đường dẫn đến biểu tượng người dùng của bạn */
+                margin-right: 5px;
+            }
+
+    .chat-messages {
+        padding: 15px;
+        min-height: 200px;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    .chat-message {
+        background-color: #e0e0e0;
+        color: #333;
+        padding: 8px 12px;
+        border-radius: 8px;
+        margin-bottom: 8px;
+        display: inline-block;
+        max-width: 50px; /* Giới hạn chiều rộng của tin nhắn */
+        word-wrap: break-word; /* Tự động xuống hàng khi tin nhắn dài */
+    }
+
+    .chat-input {
+        padding: 10px 15px;
+        display: flex;
+        align-items: center;
+        border-top: 1px solid #dddfe2;
+    }
+
+        .chat-input input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #dddfe2;
+            border-radius: 20px;
+            outline: none; /* Loại bỏ viền xanh khi được focus */
+        }
+
+        .chat-input input[type="button"] {
+            padding: 10px 15px;
+            border: none;
+            background-color: #0084ff;
+            color: #fff;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-left: 10px;
+            outline: none; /* Loại bỏ viền xanh khi được focus */
+        }
+
+    .sender {
+        text-align: left;
+    }
+
+
+    .receiver {
+        text-align: right;
+    }
+</style>
+
+
+
+
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <input type="hidden" id="userInput" value="@ViewBag.UserName" />
+            <label>Mỹ phẩm Soul</label>
+
+        </div>
+        <div class="chat-messages">
+            <ul id="messagesList">
+                <li class="chat-message"></li>
+            </ul>
+
+
+        </div>
+        <div class="chat-input">
+            <input style="width: 500px;" type="text" id="messageInput" placeholder="Nhập tin nhắn..." />
+            <input style="width: 100px"  type="button" id="sendButton" value="Gửi" />
+        </div>
+    </div>
+</body>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/clientHub.js"></script>

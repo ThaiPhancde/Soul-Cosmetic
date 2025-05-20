@@ -1,0 +1,130 @@
+﻿@model MyPhamSoul.Models.LoHang
+
+@{
+    ViewData["Title"] = "Thông tin lô hàng" + Model.MaLoHang;
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    List<LoHang> chitiet = ViewBag.ChiTiet;
+}
+<style>
+    table thead th {
+        background-color: #e6e6e6; /* Màu nền của đầu mục */
+        color: #000; /* Màu chữ của đầu mục */
+    }
+
+    .larger-text {
+        font-size: 20px; /* Thay đổi kích thước chữ theo nhu cầu */
+    }
+</style>
+<!-- Page Container START -->
+<div class="page-container">
+
+
+    <!-- Content Wrapper START -->
+    <div class="main-content">
+        <div class="page-header">
+            <div class="header-sub-title">
+                <nav class="breadcrumb breadcrumb-dash">
+                    <a asp-area="Admin" asp-asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
+                    <a class="breadcrumb-item" asp-area="Admin" asp-controller="ChiTietLoHangs" asp-action="Index">Danh sách lô hàng</a>
+                    <span class="breadcrumb-item active">Thông tin chi tiết</span>
+                </nav>
+            </div>
+        </div>
+        <div class="container">
+            <div class="card">
+                <div class="card-body">
+                    <div id="invoice" class="p-h-30">
+                        <div class="row m-t-20 lh-2">
+                            <div class="col-sm-8">
+                                <h3 class="p-l-10 m-t-10">THÔNG TIN CHI TIẾT:</h3>
+                                <address class="p-l-10 m-t-10">
+                                    <abbr class="text-dark">Nhà phân phối:</abbr>
+                                    <span class="font-weight-semibold text-dark">@Model.MaNhaPpNavigation.TenNhaPp</span><br>
+                                    <abbr class="text-dark">Địa chỉ:</abbr>
+                                    <span>@Model.MaNhaPpNavigation.DiaChi </span><br>
+                                    <abbr class="text-dark" title="Phone">Số điện thoại:</abbr>
+                                    <span>@Model.MaNhaPpNavigation.Sdt</span>
+                                </address>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="m-t-80">
+                                    <div class="text-dark text-uppercase d-inline-block">
+                                        <span class="font-weight-semibold text-dark">Thông tin lô hàng :</span>
+                                    </div>
+                                    <div class="float-right">@Model.MaLoHang</div>
+                                </div>
+                                <div class="text-dark text-uppercase d-inline-block">
+                                    <span class="font-weight-semibold text-dark">Ngày nhận hàng:</span>
+                                </div>
+                                <div class="float-right">@Model.NgayNhan</div>
+
+                            </div>
+                        </div>
+                        <div class="m-t-20">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr class="text-center">
+
+                                            <th>Sản phẩm</th>
+
+                                            <th>Ảnh</th>
+                                            <th>Số lượng</th>
+                                            <th>Đơn giá</th>
+                                            <th>Đã bán</th>
+                                            @*    <th>Tổng tiền</th>*@
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (chitiet != null)
+                                        {
+                                            int i = 1;
+                                            @foreach (var item in @Model.ChiTietLoHangs)
+                                            {
+                                                <tr>
+                                                    @*    <td class="align-middle text-center">@i</td>*@
+                                                    <td class="align-middle">@item.MaSanPhamNavigation.TenSanPham</td>
+
+                                                    <td class="align-middle text-center" style="width: 15%;">
+                                                        <img src="@Url.Content("~/images/sanPhams/" + item.MaSanPhamNavigation.Anh)" alt="Ảnh sản phẩm" class="img-thumbnail" style="max-width: 200px; max-height: 100px;" />
+                                                    </td>
+
+                                                    <td class="align-middle text-center">@item.SoLuong</td>
+                                                    <td class="align-middle text-center">@item.MaSanPhamNavigation.GiaNhap.Value.ToString("#,##0") VNĐ</td>
+                                                    <td class="align-middle text-center">@item.DaBan</td>
+                                                    @* <td class="align-middle text-center">@item.MaLoHangNavigation.GiaLo.Value.ToString("#,##0")) VNĐ</td>*@
+                                                </tr>
+                                                i++;
+                                            }
+
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row m-t-30 lh-1-8">
+                                <div class="col-sm-4">
+                                    <div>
+                                        <button class="btn btn-secondary">
+                                            <a asp-area="Admin" asp-controller="LoHangs1" asp-action="Index" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-id="@Model.MaLoHang" asp-route-page="@ViewBag.CurrentPage" asp-route-Search="@ViewBag.CurrentSearch" asp-route-MinPrice="@ViewBag.CurrentMinPrice" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice" style="color: white" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice">Trở lại</a>
+                                        </button>
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-8">
+
+                                    <div class="float-right text-right">
+                                        <h3><span class="font-weight-semibold text-dark">Tổng tiền: </span>@Model.GiaLo.Value.ToString("#,##0") VNĐ</h3>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Content Wrapper END -->
+</div>
+<!-- Page Container END -->

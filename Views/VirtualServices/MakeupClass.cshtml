@@ -1,0 +1,384 @@
+@{
+    ViewData["Title"] = "Lớp học trang điểm trực tuyến";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+    var classes = ViewBag.Classes as List<object>;
+}
+
+<!-- Start Breadcrumb Area -->
+<div class="breadcrumb-area breadcrumb-bg-1 pt-50 pb-70 mb-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="breadcrumb-title">Lớp học trang điểm trực tuyến</h1>
+                <ul class="breadcrumb-list">
+                    <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a href="/VirtualServices">Virtual Services</a></li>
+                    <li class="breadcrumb-item active">Lớp học trang điểm</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Breadcrumb Area -->
+
+<!-- Start Classes Hero Section -->
+<div class="classes-hero-section section-space-y-axis-100">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <div class="classes-hero-content">
+                    <h2 class="display-5 fw-bold mb-4">Nâng cao kỹ năng trang điểm của bạn với chuyên gia</h2>
+                    <p class="lead mb-4">Tham gia các lớp học trực tuyến do các chuyên gia trang điểm hàng đầu của chúng tôi hướng dẫn. Học những kỹ thuật và bí quyết chuyên nghiệp để tạo nên vẻ đẹp hoàn hảo.</p>
+                    <div class="d-flex align-items-center mb-5">
+                        <div class="me-4">
+                            <img src="/images/blog/blog-grid-home-1-img-2.jpg" alt="Phương Linh" class="rounded-circle" width="60" height="60">
+                        </div>
+                        <div>
+                            <h5 class="mb-0">Phương Linh</h5>
+                            <p class="mb-0 text-muted">Chuyên gia trang điểm</p>
+                        </div>
+                    </div>
+                    <a href="#classes-section" class="btn btn-lg btn-primary">Xem lớp học</a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="classes-hero-image">
+                    <img src="/images/blog/blog-grid-home-1-img-3.jpg" alt="Lớp học trang điểm" class="img-fluid rounded shadow-lg">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Classes Hero Section -->
+
+<!-- Start Classes List Section -->
+<div id="classes-section" class="classes-list-section section-space-y-axis-100 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="section-heading mb-3">CÁC LỚP HỌC SẮP DIỄN RA</h2>
+                <div class="section-separator mx-auto mb-3"></div>
+                <p class="section-description">Đăng ký ngay hôm nay để đảm bảo chỗ trong các lớp học</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            @foreach (var classItem in classes)
+            {
+                <div class="col-lg-4">
+                    <div class="class-card bg-white rounded shadow-sm h-100 overflow-hidden">
+                        <div class="class-image position-relative">
+                            <img src="@classItem.GetType().GetProperty("ImageUrl").GetValue(classItem, null)" alt="@classItem.GetType().GetProperty("Title").GetValue(classItem, null)" class="img-fluid w-100" style="height: 200px; object-fit: cover;">
+                            <div class="class-price position-absolute bottom-0 end-0 bg-primary text-white py-2 px-3 m-3 rounded">
+                                @classItem.GetType().GetProperty("Price").GetValue(classItem, null)
+                            </div>
+                        </div>
+                        <div class="class-content p-4">
+                            <h3 class="class-title mb-3">@classItem.GetType().GetProperty("Title").GetValue(classItem, null)</h3>
+                            <p class="class-description mb-4">@classItem.GetType().GetProperty("Description").GetValue(classItem, null)</p>
+                            
+                            <div class="class-details mb-4">
+                                <div class="row g-3">
+                                    <div class="col-6">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fa fa-user-circle me-2 text-primary"></i>
+                                            <span>@classItem.GetType().GetProperty("Instructor").GetValue(classItem, null)</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fa fa-clock-o me-2 text-primary"></i>
+                                            <span>@classItem.GetType().GetProperty("Duration").GetValue(classItem, null)</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fa fa-calendar me-2 text-primary"></i>
+                                            <span>@classItem.GetType().GetProperty("Date").GetValue(classItem, null)</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fa fa-clock me-2 text-primary"></i>
+                                            <span>@classItem.GetType().GetProperty("Time").GetValue(classItem, null)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <a href="#" class="btn btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#registerModal" data-class-id="@classItem.GetType().GetProperty("Id").GetValue(classItem, null)" data-class-title="@classItem.GetType().GetProperty("Title").GetValue(classItem, null)">Đăng ký ngay</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<!-- End Classes List Section -->
+
+<!-- Start Benefits Section -->
+<div class="benefits-section section-space-y-axis-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="section-heading mb-3">LỢI ÍCH CỦA LỚP HỌC TRỰC TUYẾN</h2>
+                <div class="section-separator mx-auto mb-3"></div>
+                <p class="section-description">Những giá trị bạn sẽ nhận được khi tham gia lớp học của chúng tôi</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="benefit-card text-center p-4 bg-white rounded shadow-sm h-100">
+                    <div class="benefit-icon mb-3">
+                        <i class="fa fa-laptop fa-3x text-primary"></i>
+                    </div>
+                    <h4 class="benefit-title mb-3">Học từ bất kỳ đâu</h4>
+                    <p class="benefit-description mb-0">Tham gia lớp học từ sự thoải mái của ngôi nhà bạn, tiết kiệm thời gian và chi phí di chuyển.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="benefit-card text-center p-4 bg-white rounded shadow-sm h-100">
+                    <div class="benefit-icon mb-3">
+                        <i class="fa fa-comments fa-3x text-primary"></i>
+                    </div>
+                    <h4 class="benefit-title mb-3">Tương tác trực tiếp</h4>
+                    <p class="benefit-description mb-0">Đặt câu hỏi và nhận phản hồi ngay lập tức từ giảng viên trong suốt buổi học.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="benefit-card text-center p-4 bg-white rounded shadow-sm h-100">
+                    <div class="benefit-icon mb-3">
+                        <i class="fa fa-video-camera fa-3x text-primary"></i>
+                    </div>
+                    <h4 class="benefit-title mb-3">Xem lại bất kỳ lúc nào</h4>
+                    <p class="benefit-description mb-0">Bạn sẽ được truy cập vào bản ghi của buổi học trong 30 ngày sau khi lớp kết thúc.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Benefits Section -->
+
+<!-- Start What You'll Learn Section -->
+<div class="what-you-learn-section section-space-y-axis-100 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <div class="what-you-learn-image">
+                    <img src="/images/blog/blog-grid-home-1-img-1.jpg" alt="Kỹ năng trang điểm" class="img-fluid rounded shadow">
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="what-you-learn-content">
+                    <h2 class="mb-4">Những gì bạn sẽ học được</h2>
+                    <p class="lead mb-4">Tại các lớp học trang điểm trực tuyến của chúng tôi, bạn sẽ được học từ cơ bản đến nâng cao với sự hướng dẫn chi tiết từng bước.</p>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                <i class="fa fa-check-circle text-success me-2"></i>
+                                <span>Kỹ thuật trang điểm cơ bản</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                <i class="fa fa-check-circle text-success me-2"></i>
+                                <span>Trang điểm theo hình dáng khuôn mặt</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                <i class="fa fa-check-circle text-success me-2"></i>
+                                <span>Kỹ thuật tạo khối và highlight</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                <i class="fa fa-check-circle text-success me-2"></i>
+                                <span>Trang điểm mắt chuyên nghiệp</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                <i class="fa fa-check-circle text-success me-2"></i>
+                                <span>Tạo lớp nền hoàn hảo</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                <i class="fa fa-check-circle text-success me-2"></i>
+                                <span>Kỹ thuật trang điểm bền màu</span>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#classes-section" class="btn btn-primary">Đăng ký học ngay</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End What You'll Learn Section -->
+
+<!-- Start Testimonials Section -->
+<div class="testimonials-section section-space-y-axis-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="section-heading mb-3">HỌC VIÊN NÓI GÌ</h2>
+                <div class="section-separator mx-auto mb-3"></div>
+                <p class="section-description">Phản hồi từ những học viên đã tham gia khóa học</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="testimonial-card p-4 bg-white rounded shadow-sm h-100">
+                    <div class="testimonial-content mb-4">
+                        <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                        <p class="mb-0">"Khóa học trang điểm cơ bản đã giúp tôi tự tin hơn rất nhiều. Giờ đây tôi có thể tự trang điểm đẹp mỗi ngày mà không cần nhờ đến các tiệm làm đẹp."</p>
+                    </div>
+                    <div class="testimonial-author d-flex align-items-center">
+                        <div class="author-image me-3">
+                            <img src="/images/blog/blog-grid-home-1-img-6.jpg" alt="Minh Tâm" class="rounded-circle" width="50" height="50">
+                        </div>
+                        <div class="author-info">
+                            <h5 class="author-name mb-0">Minh Tâm</h5>
+                            <p class="author-title mb-0 text-muted">Học viên khóa cơ bản</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial-card p-4 bg-white rounded shadow-sm h-100">
+                    <div class="testimonial-content mb-4">
+                        <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                        <p class="mb-0">"Tôi đã tham gia khóa học trang điểm mắt khói và thật sự ấn tượng với cách giảng viên hướng dẫn chi tiết từng bước. Giờ đây tôi có thể tạo được đôi mắt khói quyến rũ chỉ trong 10 phút."</p>
+                    </div>
+                    <div class="testimonial-author d-flex align-items-center">
+                        <div class="author-image me-3">
+                            <img src="/images/blog/blog-grid-home-1-img-5.jpg" alt="Thu Hà" class="rounded-circle" width="50" height="50">
+                        </div>
+                        <div class="author-info">
+                            <h5 class="author-name mb-0">Thu Hà</h5>
+                            <p class="author-title mb-0 text-muted">Học viên khóa nâng cao</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial-card p-4 bg-white rounded shadow-sm h-100">
+                    <div class="testimonial-content mb-4">
+                        <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                        <p class="mb-0">"Khóa học trang điểm bền màu mùa hè đã cứu vớt làn da dầu của tôi. Những mẹo và sản phẩm được giới thiệu đã giúp lớp trang điểm của tôi bền đẹp cả ngày dài, ngay cả trong thời tiết nóng bức."</p>
+                    </div>
+                    <div class="testimonial-author d-flex align-items-center">
+                        <div class="author-image me-3">
+                            <img src="/images/blog/blog-grid-home-1-img-4.jpg" alt="Thanh Vân" class="rounded-circle" width="50" height="50">
+                        </div>
+                        <div class="author-info">
+                            <h5 class="author-name mb-0">Thanh Vân</h5>
+                            <p class="author-title mb-0 text-muted">Học viên khóa chuyên đề</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Testimonials Section -->
+
+<!-- Start CTA Section -->
+<div class="cta-section section-space-y-axis-100 bg-primary text-white">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h2 class="cta-title mb-4">Sẵn sàng nâng cao kỹ năng trang điểm của bạn?</h2>
+                <p class="cta-description mb-4">Đăng ký ngay hôm nay để đảm bảo chỗ trong các lớp học sắp tới. Số lượng học viên mỗi lớp có hạn để đảm bảo chất lượng giảng dạy và tương tác.</p>
+                <a href="#classes-section" class="btn btn-lg btn-outline-light">Xem lịch học</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End CTA Section -->
+
+<!-- Registration Modal -->
+<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registerModalLabel">Đăng ký lớp học</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="registration-form">
+                    <input type="hidden" id="class-id" name="classId">
+                    <div class="mb-3">
+                        <label for="class-title" class="form-label">Lớp học</label>
+                        <input type="text" class="form-control" id="class-title" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Họ và tên</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Số điện thoại</label>
+                        <input type="tel" class="form-control" id="phone" name="phone" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="experience" class="form-label">Kinh nghiệm trang điểm của bạn</label>
+                        <select class="form-select" id="experience" name="experience" required>
+                            <option value="">-- Chọn mức độ kinh nghiệm --</option>
+                            <option value="beginner">Người mới bắt đầu</option>
+                            <option value="intermediate">Trung cấp</option>
+                            <option value="advanced">Nâng cao</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="questions" class="form-label">Câu hỏi hoặc yêu cầu đặc biệt</label>
+                        <textarea class="form-control" id="questions" name="questions" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" id="submit-registration">Đăng ký</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Xử lý mở modal đăng ký
+            const registerModal = document.getElementById('registerModal');
+            if (registerModal) {
+                registerModal.addEventListener('show.bs.modal', function(event) {
+                    const button = event.relatedTarget;
+                    const classId = button.getAttribute('data-class-id');
+                    const classTitle = button.getAttribute('data-class-title');
+                    
+                    document.getElementById('class-id').value = classId;
+                    document.getElementById('class-title').value = classTitle;
+                });
+            }
+            
+            // Xử lý đăng ký
+            const submitButton = document.getElementById('submit-registration');
+            if (submitButton) {
+                submitButton.addEventListener('click', function() {
+                    const form = document.getElementById('registration-form');
+                    if (form.checkValidity()) {
+                        // Giả lập gửi đăng ký
+                        alert('Đăng ký thành công! Chúng tôi sẽ gửi email xác nhận cho bạn trong thời gian sớm nhất.');
+                        const modal = bootstrap.Modal.getInstance(registerModal);
+                        modal.hide();
+                    } else {
+                        form.reportValidity();
+                    }
+                });
+            }
+        });
+    </script>
+} 

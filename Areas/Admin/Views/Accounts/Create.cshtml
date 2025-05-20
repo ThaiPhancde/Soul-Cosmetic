@@ -1,0 +1,116 @@
+﻿@model MyPhamSoul.Models.Account
+
+@{
+
+    ViewData["Title"] = "Thêm mới tài khoản";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section Styles{
+    <link href="~/Adminassets/summernote/summernote-bs4.css" rel="stylesheet" />
+    <link href="~/Adminassets/summernote/summernote.css" rel="stylesheet" />
+}
+<form asp-controller="Accounts" asp-action="Create" asp-route-page="@ViewBag.CurrentPage" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <section>
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="~/Home">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Accounts" asp-action="Index" asp-route-page="@ViewBag.CurrentPage">Danh sách tài khoản</a></li>
+                        <li class="breadcrumb-item active">Tạo mới tài khoản</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+    <div class="page-header no-gutters has-tab">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#product-edit-basic">Thông tin</a>
+            </li>
+        </ul>
+    </div>
+    <div class="tab-content m-t-15">
+        <div class="tab-pane fade show active" id="product-edit-basic">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productName">Địa chỉ Email</label>
+                        <input type="email" class="form-control" asp-for="AccountEmail" />
+                    </div>
+                    @*  <div class="form-group">
+                    <label class="font-weight-semibold" for="productName">Mô tả ngắn</label>
+                    <input type="text" class="form-control" asp-for="MoTa" />
+                    </div>*@
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productName">Họ và tên</label>
+                        <input type="text" class="form-control" asp-for="FullName" />
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productName">Số điện thoại</label>
+                        <input type="text" class="form-control" asp-for="Phone" />
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label class="font-weight-semibold" for="productPrice">Ngày sinh</label>
+                            <input type="date" class="form-control" asp-for="NgaySinh" step="0.01">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label class="font-weight-semibold" for="productCategory">Giới tính</label>
+                            <select class="custom-select" asp-for="GioiTinh" style="min-width: 50px" asp-items="ViewBag.lsGioiTinh">
+                                <option value="" disabled selected>Chọn giới tính</option>>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label class="font-weight-semibold" for="productCategory">Quyền truy cập</label>
+                            <select class="custom-select" asp-for="RoleId" style="min-width: 50px" asp-items="ViewBag.QuyenTruyCap">
+                                <option value="" disabled selected>Chọn quyền truy cập</option>
+                            </select>
+                        </div>
+                    </div>
+                
+                  
+                    <td class="row">
+                        <button class="btn btn-primary">
+                            <i class="anticon anticon-save"></i>
+                            <span>Thêm tài khoản</span>
+                        </button>
+                        <button class="btn btn-secondary">
+                            <a asp-area="Admin" asp-controller="Accounts" asp-action="Index"  asp-route-Page="@ViewBag.CurrentPage" asp-route-Ten="@ViewBag.CurrentTen" asp-route-Email="@ViewBag.CurrentEmail" asp-route-SDT="@ViewBag.CurrentSDT" asp-route-Quyen="@ViewBag.CurrentRole" asp-route-TrangThai="@ViewBag.CurrentStatus" style="color:white">Trở lại</a>
+                        </button>
+                    </td>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+@section Scripts {
+    <script>
+        // Đảm bảo rằng trang đã tải hoàn toàn trước khi thực thi mã JavaScript
+        $(document).ready(function () {
+            // Gán giá trị mặc định cho cột Mã sản phẩm
+            $("#maSanPhamInput").val("DM");
+
+            // Sử dụng sự kiện 'input' để theo dõi thay đổi trong cột Mã sản phẩm
+            $("#maSanPhamInput").on('input', function () {
+                var inputValue = $(this).val();
+                // Kiểm tra nếu độ dài của giá trị nhập vào là 0 (trống) hoặc lớn hơn 6 ký tự, thì không thay đổi giá trị
+                if (inputValue.length === 0) {
+                    $(this).val("DM");
+                } else if (inputValue.length > 6) {
+                    // Giới hạn độ dài tối đa là 6 ký tự
+                    $(this).val(inputValue.slice(0, 6));
+                }
+            });
+            CKEDITOR.replace('txtDetail', {
+                customConfig: '/Content/ckeditor/config.js',
+                extraAllowedContent: 'span',
+            });
+        });
+
+    </script>
+}

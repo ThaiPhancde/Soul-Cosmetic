@@ -1,0 +1,56 @@
+﻿@model MyPhamSoul.Models.Role
+@{
+    ViewData["Title"] = "Xóa quyền truy cập";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<section>
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-md-6">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="~/Home">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Roles" asp-action="Index" asp-route-page="@ViewBag.CurrentPage">Danh sách quyền truy cập</a></li>
+                    <li class="breadcrumb-item active">Xóa quyền truy cập</li>
+                </ol>
+            </div>
+            <div class="col-md-6 text-right">
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<div class="card-body">
+    <h3>Bạn có chắc chắn là muốn xóa quyền truy cập này?</h3>
+    <div class="card">
+        <div class="table">
+            <table class="">
+                <tbody>
+                    <tr>
+                        <td>ID:</td>
+                        <td class="text-dark font-weight-semibold">@Model.RoleId</td>
+                    </tr>
+                    <tr>
+                        <td>Tên người dùng:</td>
+                        <td class="text-dark font-weight-semibold">@Model.RoleName</td>
+                    </tr>
+                    <tr>
+                        <td>Mô tả:</td>
+                        <td>@Model.Description</td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <form asp-action="Delete" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-page="@ViewBag.CurrentPage" asp-route-Search="@ViewBag.CurrentSearch" asp-route-MoTa="@ViewBag.CurrentMoTa">
+                                <input type="hidden" asp-for="RoleId" />
+                                <input type="submit" value="Xóa" class="btn btn-danger" /> |
+                                <a asp-action="Index" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-page="@ViewBag.CurrentPage" asp-route-Search="@ViewBag.CurrentSearch" asp-route-MoTa="@ViewBag.CurrentMoTa">Trở lại</a>
+                            </form>
+                        </td>
+                        <td></td>
+
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

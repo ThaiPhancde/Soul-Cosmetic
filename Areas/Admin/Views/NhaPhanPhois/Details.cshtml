@@ -1,0 +1,72 @@
+﻿@model MyPhamSoul.Models.NhaPhanPhoi
+
+@{
+
+    ViewData["Title"] = "Chi tiết sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="~/Home">Trang chủ</a></li>
+                <a class="breadcrumb-item" asp-area="Admin" asp-controller="SanPhams" asp-action="Index">Danh sách nhà phân phối</a>
+                <li class="breadcrumb-item active">Chi tiết nhà phân phối</li>
+            </ol>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<div class="card-body">
+    <h3>Thông tin chi tiết của nhà phân phối:</h3>
+    <div class="card">
+        <div class="table">
+            <table class="">
+                <tbody>
+                    <tr>
+                        <td>Mã nhà phân phối:</td>
+                        <td class="text-dark font-weight-semibold">@Model.MaNhaPp</td>
+                    </tr>
+                    <tr>
+                        <td>Tên nhà phân phối:</td>
+                        <td class="text-dark font-weight-semibold">@Model.TenNhaPp</td>
+                    </tr>
+             
+                    <tr>
+                        <td>Email:</td>
+                        <td>@Model.Email</td>
+                    </tr>
+                    <tr>
+                        <td>Số điện thoại:</td>
+                        <td>@Model.Sdt</td>
+                    </tr>
+                    <tr>
+                        <td>Địa chir:</td>
+                        <td>@Model.DiaChi</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+
+                            <form asp-action="Index" asp-for="MaDanhMuc" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-page="@ViewBag.CurrentPage" asp-route-MaDM="@ViewBag.CurrentMaDM" asp-route-Search="@ViewBag.CurrentSearch" asp-route-MinPrice="@ViewBag.CurrentMinPrice" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice">
+                                <a asp-action="Edit" class="btn btn-success" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-id="@Model.MaNhaPp" asp-route-page="@ViewBag.CurrentPage" asp-route-MaDM="@ViewBag.CurrentMaDM" asp-route-Search="@ViewBag.CurrentSearch" asp-route-MinPrice="@ViewBag.CurrentMinPrice" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice">Sửa thông tin</a> |
+                                <input type="submit" class="btn btn-secondary" id="backToList" value="Trở lại" />
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        // Đảm bảo rằng trang đã tải hoàn toàn trước khi thực thi mã JavaScript
+        $(document).ready(function () {
+            CKEDITOR.replace('txtDetail', {
+                customConfig: '/Content/ckeditor/config.js',
+                extraAllowedContent: 'span',
+            });
+        });
+
+    </script>
+}

@@ -1,0 +1,54 @@
+﻿@model MyPhamSoul.ModelViews.LoginViewModel
+
+@{
+    ViewData["Title"] = "Đăng nhập";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+}
+<div class="card-body custom-card-body">
+    <div class="container">
+        <div class="col-lg-6 col-md-6 mx-auto">
+            <div class="account_form aos-init aos-animate" data-aos="fade-up" data-aos-delay="0">
+                <h3 class="text-center"> Đăng nhập</h3>
+                <form asp-action="Login" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="default-form-box">
+                        <label>Địa chỉ Email*</label>
+                        <input type="text" asp-for="UserName" placeholder="Email">
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                    <div class="default-form-box">
+                        <label>Mật khẩu*</label>
+                        <input type="password" asp-for="Password" placeholder="Mật khẩu">
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="login_submit">
+                        <label class="checkbox-default mb-4" for="offer">
+                            <input type="checkbox" id="offer">
+                            <span>Ghi nhớ mật khẩu</span>
+                        </label>
+                        <button class="btn btn-md btn-black-default-hover mb-4" type="submit">Đăng nhập</button>
+                    </div>
+                    
+                    <div>
+                        <a asp-controller="Accounts" asp-action="DangKyTaiKhoan">Đăng ký</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .custom-card-body {
+        padding: 60px; /* Điều chỉnh kích thước padding theo mong muốn */
+    }
+
+    .account_form {
+        margin: 10px; /* Điều chỉnh khoảng cách giữa các yếu tố bên trong */
+    }
+
+    h3 {
+        font-weight: bold;
+    }
+
+</style>

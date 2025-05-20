@@ -1,0 +1,16 @@
+﻿@model IEnumerable<MyPhamSoul.Models.Ctloai>
+
+<div class="list-container">
+    <ul>
+        @foreach (var item in Model)
+        {
+            <li>
+                <label class="checkbox-default" for="@item.MaCtloai">
+                    <input type="checkbox" id="ctloai_@item.MaCtloai" name="selectedCtLoais" value="@item.MaCtloai">
+                    <span>@item.TenCtloai</span>
+                </label>
+            </li>
+        }
+    </ul>
+</div>
+

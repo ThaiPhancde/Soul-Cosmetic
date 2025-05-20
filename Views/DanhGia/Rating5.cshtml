@@ -1,0 +1,676 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IPagedList<DanhGia>
+
+@{
+    ViewBag.Title = "Đánh giá";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+    var maMonFromUrl = Context.Request.Query["maMon"].ToString();
+}
+
+
+
+<style>
+
+    .pagination {
+        --bs-pagination-padding-x: 0.75rem;
+        --bs-pagination-padding-y: 0.375rem;
+        --bs-pagination-font-size: 1rem;
+        --bs-pagination-color: var(--bs-link-color);
+        --bs-pagination-bg: var(--bs-body-bg);
+        --bs-pagination-border-width: var(--bs-border-width);
+        --bs-pagination-border-color: var(--bs-border-color);
+        --bs-pagination-border-radius: var(--bs-border-radius);
+        --bs-pagination-hover-color: var(--bs-link-hover-color);
+        --bs-pagination-hover-bg: var(--bs-tertiary-bg);
+        --bs-pagination-hover-border-color: var(--bs-border-color);
+        --bs-pagination-focus-color: var(--bs-link-hover-color);
+        --bs-pagination-focus-bg: var(--bs-secondary-bg);
+        --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        --bs-pagination-active-color: #fff;
+        --bs-pagination-active-bg: #0d6efd;
+        --bs-pagination-active-border-color: #0d6efd;
+        --bs-pagination-disabled-color: var(--bs-secondary-color);
+        --bs-pagination-disabled-bg: var(--bs-secondary-bg);
+        --bs-pagination-disabled-border-color: var(--bs-border-color);
+        display: flex;
+        padding-left: 0;
+        list-style: none;
+    }
+
+    .order-action2 {
+        text-align: center;
+        font-weight: bold;
+        border: solid 3px #fff;
+        height: 32px;
+        width: 90px;
+        background-color: #b20000;
+        margin-top: 30px;
+    }
+
+    .form-control1 {
+        height: 28px;
+        font-size: 18px;
+        border-radius: 0px;
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+        background-color: #f9ffd7;
+        border: 2px solid #222323;
+    }
+
+    .form-control2 {
+        height: 28px;
+        width: 150px;
+        font-size: 18px;
+        border-radius: 0px;
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+        background-color: #f9ffd7;
+        border: 2px solid #222323;
+    }
+
+    .order-history {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .order-item {
+        width: 80%;
+        border: 2px solid #ccc; /* Màu viền */
+        background-color: #ecf0f1; /* Màu nền */
+        margin: 10px 0;
+        padding: 15px;
+        display: flex;
+        justify-content: space-between;
+        transition: background-color 0.3s ease; /* Hiệu ứng chuyển đổi màu nền */
+    }
+
+        .order-item:hover {
+            background-color: #c3c6c7; /* Màu nền khi di chuột qua */
+        }
+
+    .order-info {
+        flex-grow: 1;
+        margin-left: 10px;
+    }
+
+    .order-label {
+        font-weight: bold;
+        margin-right: 5px;
+        color: #2c3e50; /* Màu chữ */
+        font-size: 18px;
+    }
+
+    .order-value {
+        color: #e74c3c; /* Màu chữ cho giá trị */
+        font-weight: bold;
+    }
+
+    .order-action {
+        text-align: center;
+        font-weight: bold;
+        border: solid 3px #fff;
+        height: 32px;
+        width: 90px;
+        background-color: #2f9393;
+    }
+
+    .order-action1 {
+        text-align: center;
+        font-weight: bold;
+        border: solid 3px #fff;
+        height: 32px;
+        width: 90px;
+        background-color: #d08c00;
+        margin-top: 30px;
+    }
+
+    .customer-image {
+        width: 50px;
+        height: 50px;
+        margin-right: 10px;
+        border-radius: 50%;
+    }
+
+    .separator-line {
+        height: 100%;
+        border-right: 2px solid #3498db; /* Màu đường phân cách */
+        margin-right: 10px;
+    }
+
+
+
+
+    .pagination li.active a {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        border: 1px solid #ccc;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+        .dropdown-content label {
+            display: block;
+            padding: 10px;
+        }
+
+    .quantity {
+        display: none;
+    }
+
+    #data-table-5 {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Độ bóng */
+        border: 1px solid #ddd; /* Viền */
+        border-collapse: collapse; /* Gộp viền của các ô */
+    }
+
+        #data-table-5 tbody tr:nth-child(even) {
+            background-color: #aadaaa; /* Màu nền cho hàng chẵn */
+            text-align: center;
+        }
+
+        #data-table-5 tbody tr:nth-child(odd) {
+            background-color: #d9eeb8; /* Màu nền cho hàng lẻ */
+            text-align: center;
+        }
+
+        #data-table-5 td {
+            padding: 10px; /* Khoảng cách trong ô */
+            border: 1px solid #ddd; /* Viền cho ô */
+        }
+
+        #data-table-5 td {
+            font-size: 15px; /* Kích thước chữ */
+            color: #333; /* Màu chữ */
+        }
+
+        #data-table-5 tbody tr:hover {
+            background-color: #ffc107; /* Màu nền khi di chuột vào */
+            color: #333; /* Màu chữ khi di chuột vào */
+            transform: scale(1.02); /* Thu nhỏ dòng khi di chuột vào */
+            transition: background-color 0.3s, color 0.3s, transform 0.3s; /* Hiệu ứng màu và thu nhỏ trong 0.3 giây */
+            cursor: pointer; /* Con trỏ biến thành bàn tay khi di chuột vào */
+        }
+
+        #data-table-5 th {
+            background-color: #7dca42;
+            color: #fff;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+            border: 2px solid #f7f0f0;
+        }
+
+    .btn-secondary {
+        color: #fff;
+        background-color: #df0a0a;
+        border-color: #252728;
+    }
+
+    .status-block > div {
+        flex-grow: 1;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .status-block::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+
+
+    .search-button {
+        margin: 0 20px 0 50px;
+        width: 100px;
+        background-color: #4CAF50; /* Màu nền */
+        color: white; /* Màu chữ */
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s; /* Hiệu ứng chuyển đổi màu nền */
+    }
+
+        .search-button:hover {
+            background-color: #45a049; /* Màu nền khi di chuột qua */
+        }
+
+    /* Ô tìm đơn */
+    .search-input {
+        margin: 0 20px;
+    }
+
+    /* Ô chọn ngày */
+    .date-picker {
+        margin: 0 20px 0 50px;
+        width: 200px;
+    }
+
+        .date-picker label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .date-picker input {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc; /* Viền */
+            border-radius: 3px;
+            transition: border-color 0.3s; /* Hiệu ứng chuyển đổi màu viền */
+        }
+
+            .date-picker input:focus {
+                border-color: #4CAF50; /* Màu viền khi ô được focus */
+            }
+
+    .custom-row {
+        margin: 100px -50px 0 0;
+        background-color: #f5f5f5; /* Màu nền */
+        padding: 20px; /* Khoảng cách nội dung và viền */
+        border-radius: 10px; /* Góc bo tròn */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+        transition: background-color 0.3s; /* Hiệu ứng chuyển đổi màu nền */
+    }
+
+        .custom-row:hover {
+            background-color: #e0e0e0; /* Màu nền khi di chuột qua */
+        }
+
+    /* Nút tìm */
+    .search-button {
+        margin: 0 20px 0 50px;
+        width: 100px;
+        background-color: #4CAF50; /* Màu nền */
+        color: white; /* Màu chữ */
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s; /* Hiệu ứng chuyển đổi màu nền */
+    }
+
+        .search-button:hover {
+            background-color: #45a049; /* Màu nền khi di chuột qua */
+        }
+
+    /* Ô tìm đơn */
+    .search-input {
+        margin: 0 20px;
+    }
+
+    /* Ô chọn ngày */
+    .date-picker {
+        margin: 0 20px 0 50px;
+        width: 200px;
+    }
+
+        .date-picker label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .date-picker input {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc; /* Viền */
+            border-radius: 3px;
+            transition: border-color 0.3s; /* Hiệu ứng chuyển đổi màu viền */
+        }
+
+            .date-picker input:focus {
+                border-color: #4CAF50; /* Màu viền khi ô được focus */
+            }
+
+    .form-control {
+        height: 35px !important;
+        font-size: 18px;
+        border-radius: 0px;
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+        background-color: #f9ffd7;
+        border: 2px solid #222323;
+    }
+
+
+    .status-block {
+        display: flex;
+        justify-content: space-between;
+    }
+
+        .status-block a {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+            .status-block a.active {
+                background: #D10024;
+                color: white;
+                font-weight: bold;
+            }
+
+    .fullscreen-img {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+        .fullscreen-img img {
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+    .details {
+        display: inline-block;
+        max-width: 100%;
+        margin: 45px 20px;
+        font-weight: 700;
+        color: #aaa8a8;
+    }
+
+        .details:hover {
+            color: black;
+        }
+</style>
+
+<div class="row" style="margin: 0 auto 50px; ">
+    <div class="col-sm-12 ">
+        <!-- Khối trạng thái -->
+        <div class="status-block">
+            <a href="/DanhGia/Index?maMon=@maMonFromUrl">Tất cả</a>
+            <a href="/DanhGia/Video?maMon=@maMonFromUrl">Có kèm ảnh & video</a>
+            <a class="active" href="/DanhGia/Rating5?maMon=@maMonFromUrl">
+                <div class="review-rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                </div>
+            </a>
+            <a href="/DanhGia/Rating4?maMon=@maMonFromUrl">
+                <div class="review-rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+
+                </div>
+            </a>
+            <a href="/DanhGia/Rating3?maMon=@maMonFromUrl">
+                <div class="review-rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+
+                </div>
+            </a>
+            <a href="/DanhGia/Rating2?maMon=@maMonFromUrl">
+                <div class="review-rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+
+                </div>
+            </a>
+            <a href="/DanhGia/Rating1?maMon=@maMonFromUrl">
+                <div class="review-rating">
+                    <i class="fa fa-star"></i>
+
+                </div>
+            </a>
+        </div>
+    </div>
+    <!-- Các khối khác -->
+</div>
+
+<ul class="reviews" style="margin: 50px 250px;">
+    @foreach (var menuItem in Model)
+    {
+        <li style="margin: 20px 0">
+            <div class="review-heading">
+                <h5 class="name">@menuItem.HoTen</h5>
+                <p class="date">@menuItem.NgayDG</p>
+                @if (menuItem.Diem == 1)
+                {
+                    <div class="review-rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star-o empty"></i>
+                        <i class="fa fa-star-o empty"></i>
+                        <i class="fa fa-star-o empty"></i>
+                        <i class="fa fa-star-o empty"></i>
+                    </div>
+                }
+                @if (menuItem.Diem == 2)
+                {
+                    <div class="review-rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star-o empty"></i>
+                        <i class="fa fa-star-o empty"></i>
+                        <i class="fa fa-star-o empty"></i>
+                    </div>
+                }
+                @if (menuItem.Diem == 3)
+                {
+                    <div class="review-rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star-o empty"></i>
+                        <i class="fa fa-star-o empty"></i>
+                    </div>
+                }
+                @if (menuItem.Diem == 4)
+                {
+                    <div class="review-rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star-o empty"></i>
+                    </div>
+                }
+                @if (menuItem.Diem == 5)
+                {
+                    <div class="review-rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                    </div>
+                }
+            </div>
+            <div class="review-body">
+                <p>@menuItem.NoiDung</p>
+            </div>
+            <div style="display:flex; ">
+                <div class="review-images" style="display:flex;">
+
+
+                    @if (!string.IsNullOrEmpty(menuItem.Video))
+                    {
+                        <div class="video-container">
+                            <video controls style="width:100px; height: 80px;">
+                                <source src="~/uploads/@menuItem.Video" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                    }
+                    <div class="review-images" style="display:flex;">
+                        @for (int i = 1; i <= 1; i++)
+                        {
+                            var imagePath = menuItem.GetType().GetProperty($"HinhAnh{i}").GetValue(menuItem, null)?.ToString();
+                            if (!string.IsNullOrEmpty(imagePath))
+                            {
+                                <img class="thumbnail-img" style="width:100px; height: 100px; " src="~/uploads/@imagePath" alt="HinhAnh @(i)">
+                            }
+                        }
+                    </div>
+
+                    <!-- Phần hiển thị hình ảnh full màn hình -->
+                    <div class="fullscreen-img" id="fullscreen-img">
+                        <img style="margin: 150px 500px;" id="fullscreen-img-src" src="" alt="Fullscreen Image">
+                        <!-- Mũi tên điều hướng trái -->
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(menuItem.HinhAnh2))
+                    {
+                        <label class="details" onclick="redirectToDetails(@menuItem.MaDanhGia)">Xem chi tiết...</label>
+                    }
+
+
+                </div>
+
+                <!-- Phần hiển thị hình ảnh full màn hình -->
+                <div class="fullscreen-img" id="fullscreen-img">
+                    <img id="fullscreen-img-src" src="" alt="Fullscreen Image">
+                    <!-- Mũi tên điều hướng trái -->
+                </div>
+            </div>
+
+
+
+            <script>
+                // Function to display image in fullscreen
+                function displayFullscreenImage(imageSrc) {
+                    var fullscreenImg = document.getElementById("fullscreen-img");
+                    var fullscreenImgSrc = document.getElementById("fullscreen-img-src");
+
+                    fullscreenImgSrc.src = imageSrc;
+                    fullscreenImg.style.display = "block";
+
+                    // Click anywhere on fullscreen image to close it
+                    fullscreenImg.onclick = function () {
+                        fullscreenImg.style.display = "none";
+                    };
+                }
+
+                // Add click event listener to thumbnail images
+                var thumbnailImages = document.querySelectorAll(".thumbnail-img");
+                thumbnailImages.forEach(function (img) {
+                    img.addEventListener("click", function () {
+                        var imagePath = img.getAttribute("src");
+                        displayFullscreenImage(imagePath);
+                    });
+                });
+
+                function redirectToDetails(id) {
+                    // Chuyển hướng đến trang chi tiết với id của món ăn
+                    window.location.href = "/Home/DetailsReview/" + id;
+                }
+            </script>
+
+
+        </li>
+    }
+
+
+</ul>
+
+@if (ViewBag.TotalItems > 0)
+{
+    <!-- Hiển thị thông tin phân trang -->
+    <div class="paging-info" style="font-size: 13px; color: red; text-align: center;">
+        Hiển thị từ đơn hàng thứ @ViewBag.StartItem đến @ViewBag.EndItem trên tổng số @ViewBag.TotalItems đánh giá
+    </div>
+}
+<nav class="navigation paging-navigation clearfix d-flex justify-content-center" style=" white-space: nowrap;">
+
+    <div class="col-sm-12 col-md-7 d-flex justify-content-center">
+        <div class="dataTables_paginate paging_simple_numbers" id="data-table-5_paginate">
+            <div class="text-center">
+                @if (ViewBag.TotalItems > ViewBag.PageSize)
+                {
+                    <ul class="pagination">
+                        @if (ViewBag.PageNumber > 1)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="@Url.Action("Rating5", new { page=1, pageSize=ViewBag.PageSize, maMon = ViewBag.MaMon})"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                            </li>
+                        }
+
+                        @if (ViewBag.PageNumber > 3)
+                        {
+                            <li class="page-item">
+                                <input type="number" id="customPageInput" min="1" max="@ViewBag.TotalPages" class="page-link" style="width: 45px; padding: 8px;" onkeydown="if (event.key === 'Enter') { goToCustomPage(); }">
+                            </li>
+
+                        }
+
+                        @for (int i = Math.Max(1, ViewBag.PageNumber - 2); i <= Math.Min(ViewBag.TotalPages, ViewBag.PageNumber + 2); i++)
+                        {
+                            <li class="page-item @(i == ViewBag.PageNumber ? " active" : "" )">
+                                <a class="page-link" href="@Url.Action("Rating5", new { page=i, pageSize=ViewBag.PageSize, maMon = ViewBag.MaMon })">@i</a>
+                            </li>
+                        }
+
+                        @if (ViewBag.PageNumber < ViewBag.TotalPages - 2)
+                        {
+                            <li class="page-item">
+                                <input type="number" id="customPageInput" min="1" max="@ViewBag.TotalPages" class="page-link" style="width: 45px; padding: 8px;" onkeydown="if (event.key === 'Enter') { goToCustomPage(); }">
+                            </li>
+
+                        }
+
+                        @if (ViewBag.PageNumber < ViewBag.TotalPages)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="@Url.Action("Rating5", new { page=ViewBag.TotalPages, pageSize=ViewBag.PageSize, maMon = ViewBag.MaMon})"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                            </li>
+                        }
+                    </ul>
+                }
+                <script>
+                    function goToCustomPage() {
+                        var customPageInput = document.getElementById("customPageInput");
+                        var customPage = customPageInput.value;
+                        if (customPage >= 1 && customPage <= @ViewBag.TotalPages) {
+                            var url = "/DanhGia/Rating5?page=" + customPage + "&pageSize=" + @ViewBag.PageSize + "&maMon=" + @ViewBag.MaMon;
+                            window.location.href = url;
+                        }
+                    }
+
+                    document.getElementById("customPageInput").addEventListener("keyup", function (event) {
+                        if (event.key === "Enter") {
+                            goToCustomPage();
+                        }
+                    });
+                </script>
+
+            </div>
+        </div>
+    </div>
+</nav><!-- .navigation -->
+@if (ViewBag.TotalItems > 0)
+{
+    <!-- Hiển thị thông tin phân trang -->
+    <div class="paging-info" style="font-size: 13px; color: red; text-align: center;">
+        Trang @ViewBag.PageNumber/@ViewBag.TotalPages
+    </div>
+}

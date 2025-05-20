@@ -1,0 +1,217 @@
+﻿@{
+    int? roleId = ViewBag.RoleId as int?; // Hoặc ViewBag.RoleId nếu bạn truyền qua ViewBag
+}
+
+
+
+
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="~/Admin" class="brand-link">
+            <img src="~/adminassets/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+            <span class="brand-text font-weight-light">Admin Soul</span>
+        </a>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Sidebar user panel (optional) -->
+
+            <!-- SidebarSearch Form -->
+
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <!-- Add icons to the links using the .nav-icon class
+                    with font-awesome or any other icon font library -->
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                Thống kê
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="~/Admin/TK" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Thống kê doanh thu</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="~/Admin/TKDH" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Thống kê đơn hàng</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="~/Admin/TKDG" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Thống kê đánh giá</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="~/Admin/TKSP" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Thống kê sản phẩm bán chạy</p>
+                                </a>
+                            </li>                     
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="~/Admin/DonHangs" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                Quản lí đơn hàng
+
+                            </p>
+                        </a>
+
+                    </li>
+                    <li class="nav-item">
+                        <a href="~/Admin/Shipments" class="nav-link">
+                            <i class="nav-icon fas fa-shipping-fast"></i>
+                            <p>
+                                Quản lý vận đơn GHN
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="~/Admin/Chat" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                Tư vấn khách hàng
+                            </p>
+                        </a>
+
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                Quản lí sản phẩm
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="~/Admin/DanhMucSanPhams" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Danh mục sản phẩm</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="~/Admin/SanPhams" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Danh sách sản phẩm</p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="~/Admin/Loais" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Loại sản phẩm</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="~/Admin/Hangs" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Hãng sản phẩm</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="~/Admin/KhachHang" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                Quản lí khách hàng
+                            </p>
+                        </a>
+
+                    </li>
+                    <li class="nav-item">
+                        <a href="~/Admin/DanhGia" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                Quản lí đánh giá
+                            </p>
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                Quản lý lô hàng
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="~/Admin/LoHangs" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Tất cả lô hàng</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="~/Admin/LoHangs1" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Lô hàng hết hạn</p>
+                                </a>
+                            </li>                      
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                Quản lý hệ thống
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="~/Admin/Accounts" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Quản lí tài khoản</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="~/Admin/Roles" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Quản lí quyền truy cập</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="~/Admin/Accounts/ChangePasswor" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Thay đổi mật khẩu</p>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li class="nav-item ">
+                        <a href="/dang-xuat.html" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                Đăng xuất
+                            </p>
+                        </a>
+
+                    </li>
+                </ul>
+            </nav>
+            <!-- /.sidebar-menu -->
+
+
+
+
+
+        </div>
+        <!-- /.sidebar -->
+    </aside>

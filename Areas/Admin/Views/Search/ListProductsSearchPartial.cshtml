@@ -1,0 +1,47 @@
+﻿@model List<SanPham>
+@if (Model != null)
+{
+    
+    foreach (var item in Model)
+    {
+        <tr>
+            
+            <td>@item.MaSanPham</td>
+            <td>
+                <div class="d-flex align-items-center">
+                    <h6 class="m-b-0 m-l-10">@item.TenSanPham</h6>
+                </div>
+            </td>
+            <td>
+                <a href="javascript:void(0);" class="image-link" data-image-url="@Url.Content("~/images/sanPhams/" + item.Anh)">@item.Anh</a>
+            </td>
+
+            <td>@item.Gia.Value.ToString("#,##0") VNĐ</td>
+            <td>@item.Slkho</td>
+            <td>
+                @if (item.Slkho.Value > 0)
+                {
+                    <div class="d-flex align-items-center">
+                        <div class="badge badge-success badge-dot m-r-10">
+                            <div>Còn hàng</div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="d-flex align-items-center">
+                        <div class="badge badge-success badge-dot m-r-10">
+                            <div>Hết hàng</div>
+                        </div>
+                    </div>
+                }
+            </td>
+            <td>
+                <a class="btn btn-primary btn-tone m-r-5" asp-controller="SanPhams" asp-action="Details" asp-route-id="@item.MaSanPham" asp-route-page="1">Chi tiết</a>
+                <a class="btn btn-success btn-tone m-r-5" asp-controller="SanPhams"  asp-action="Edit" asp-route-id="@item.MaSanPham" asp-route-page="@ViewBag.CurrentPage">Sửa</a>
+                <a class="btn btn-danger btn-tone m-r-5" asp-controller="SanPhams"  asp-action="Delete" asp-route-id="@item.MaSanPham" asp-route-page="@ViewBag.CurrentPage">Xóa</a>
+                <h1>@ViewBag.CurrentPage</h1>
+            </td>
+        </tr>
+    }
+}

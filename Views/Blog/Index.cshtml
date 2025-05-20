@@ -1,0 +1,103 @@
+@model List<object>
+@{
+    ViewData["Title"] = "Blog";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+    var categories = (List<string>)ViewBag.Categories;
+    var currentCategory = ViewBag.CurrentCategory;
+}
+
+<!-- Start Breadcrumb Area -->
+<div class="breadcrumb-area breadcrumb-bg-1 pt-50 pb-70 mb-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="breadcrumb-title">Blog</h1>
+                <ul class="breadcrumb-list">
+                    <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">Blog</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Breadcrumb Area -->
+
+<!-- Start Blog Grid Area -->
+<div class="blog-grid-area section-space-y-bottom-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 order-lg-1 order-2">
+                <!-- Start Sidebar Area -->
+                <div class="sidebar-area">
+                    <!-- Start Single Sidebar Widget -->
+                    <div class="sidebar-widget-search">
+                        <form class="sidebar-widget-search-form" action="#">
+                            <input type="text" class="sidebar-widget-search-form-input" placeholder="Tìm kiếm...">
+                            <button class="sidebar-widget-search-form-button"><i class="fa fa-search"></i></button>
+                        </form>
+                    </div>
+                    <!-- End Single Sidebar Widget -->
+
+                    <!-- Start Single Sidebar Widget -->
+                    <div class="sidebar-widget">
+                        <h2 class="sidebar-widget-title">Danh mục</h2>
+                        <ul class="sidebar-widget-list">
+                            @foreach (var category in categories)
+                            {
+                                <li>
+                                    <a href="@(category == "Tất cả" ? "/Blog" : $"/Blog/Category/{category}")" 
+                                       class="@(currentCategory == category ? "active" : "")">
+                                        @category
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <!-- End Single Sidebar Widget -->
+
+                    
+
+                 
+                    <!-- End Single Sidebar Widget -->
+                </div>
+                <!-- End Sidebar Area -->
+            </div>
+            <div class="col-lg-9 order-lg-2 order-1">
+                <div class="row">
+                    @foreach (var post in Model)
+                    {
+                        <div class="col-md-6">
+                            <!-- Start Blog List Single Item -->
+                            <div class="blog-list-single-item mb-50">
+                                <a href="/Blog/Detail/@post.GetType().GetProperty("Id").GetValue(post, null)" class="blog-list-img-link">
+                                    <img class="img-fluid" src="@post.GetType().GetProperty("ImageUrl").GetValue(post, null)" alt="">
+                                </a>
+                                <div class="blog-list-content">
+                                    <div class="blog-list-post-meta">
+                                        <span>Bởi <a href="#" rel="author">@post.GetType().GetProperty("Author").GetValue(post, null)</a></span>
+                                        <span>@post.GetType().GetProperty("Date").GetValue(post, null)</span>
+                                    </div>
+                                    <h3 class="blog-list-title"><a href="/Blog/Detail/@post.GetType().GetProperty("Id").GetValue(post, null)">@post.GetType().GetProperty("Title").GetValue(post, null)</a></h3>
+                                    <p class="blog-list-excerpt">@post.GetType().GetProperty("Summary").GetValue(post, null)</p>
+                                    <a href="/Blog/Detail/@post.GetType().GetProperty("Id").GetValue(post, null)" class="blog-list-read-more">Xem thêm</a>
+                                </div>
+                            </div>
+                            <!-- End Blog List Single Item -->
+                        </div>
+                    }
+                </div>
+
+                <!-- Start Pagination -->
+                <div class="d-flex justify-content-center">
+                    <ul class="page-pagination">
+                        <li><a class="active" href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                    </ul>
+                </div>
+                <!-- End Pagination -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Blog Grid Area --> 

@@ -1,0 +1,245 @@
+﻿@using PagedList.Core.Mvc
+@model PagedList.Core.IPagedList<MyPhamSoul.Models.DanhGia>
+@{
+    ViewData["Title"] = "Quản lý đánh giá";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    table thead th {
+        background-color: #e6e6e6; /* Màu nền của đầu mục */
+        color: #000; /* Màu chữ của đầu mục */
+    }
+</style>
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Danh sách đánh giá</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                    <li class="breadcrumb-item active">DataTables</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="row card-body">
+                        <div class="col-lg-12">
+                            <div class="d-md-flex">
+                        
+                                <div class="col-lg-1">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Mã DM" id="searchDM" value="@ViewBag.CurrentMaID" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="input-group">
+                                        <label style="margin-top: 5px;">Từ ngày</label>
+                                        <input style="margin-left: 5px;" type="date" class="form-control" placeholder="Từ ngày" id="searchstartDate" value="@ViewBag.CurrentstartDate?.ToString("yyyy-MM-dd")" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="input-group">
+                                        <label style="margin-top: 5px;">Đến ngày</label>
+                                       <input style="margin-left: 5px;" type="date" class="form-control" placeholder="Đến ngày" id="searchendDate" value="@ViewBag.CurrentendDate?.ToString("yyyy-MM-dd")" />
+                                       </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Nội dung" id="search" value="@ViewBag.CurrentSearch" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-1">
+                                    <select class="custom-select" id="searchDiem" name="searchDiem" style="min-width: 50px" asp-items="ViewBag.lsDiem">
+                                        <option value="0" disabled selected>Điểm</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-2" style="margin-left: 10px;">
+
+                                    <button class="btn btn-outline-secondary" type="button" id="searchButton"><b>Tìm kiếm</b></button>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table id="example2" class="table table-bordered table-hover">
+                        <thead>
+                            <tr class="text-center">
+                                <th>Mã đánh giá</th>
+                                <th>Mã danh mục</th>
+                                <th>Tên khách hàng</th>
+                                <th>Điểm</th>
+                                <th>Nội dung</th>  
+                                <th>Ngày đánh giá</th>
+                                <th>Chức năng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                var i = 1;
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td class="align-middle text-center">@item.MaDanhGia</td>
+
+                                        <td class="align-middle text-center">
+
+                                            @item.MaDanhMuc
+
+                                        </td>
+                                        <td class="align-middle text-center">@item.HoTen</td>
+                                        <td class="align-middle text-center">@item.Diem sao</td>
+                                        <td class="align-middle text-center">@item.NoiDung</td>
+                                        <td class="align-middle text-center">@item.NgayDG.Date</td>
+                                        <td class="align-middle text-center" style="display:flex;">
+                                            <label style="margin-left: 60px;" class="btn btn-info btn-tone m-r-5" onclick="redirectToDetails(@item.MaDanhGia)" >Chi tiết</label>
+                                            
+                                        </td>
+                                    </tr>
+                                    i++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    <div class="card-body">
+                        <div aria-label="Page navigation example" class="d-flex justify-content-center">
+                            <ul class="pagination">
+                                <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                    <a class="page-link" asp-action="Index" asp-route-page="1" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-startDate="@ViewBag.CurrentstartDate" asp-route-endDate="@ViewBag.CurrentendDate" asp-route-diem="@ViewBag.CurrentDiem" aMaIDsp-route-Search="@ViewBag.CurrentSearch"><<</a>
+                                </li>
+                                <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                    <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageNumber - 1)" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-startDate="@ViewBag.CurrentstartDate" asp-route-endDate="@ViewBag.CurrentendDate" asp-route-diem="@ViewBag.CurrentDiem" aMaIDsp-route-Search="@ViewBag.CurrentSearch"><</a>
+                                </li>
+                                @if (Model.PageCount <= 3)
+                                {
+                                    for (int page = 1; page <= Model.PageCount; page++)
+                                    {
+                                        <li class="page-item @(page == Model.PageNumber ? "active" : "")">
+                                            <a class="page-link" asp-action="Index" asp-route-page="@(page)" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-startDate="@ViewBag.CurrentstartDate" asp-route-endDate="@ViewBag.CurrentendDate" asp-route-diem="@ViewBag.CurrentDiem" aMaIDsp-route-Search="@ViewBag.CurrentSearch">@(page)</a>
+                                        </li>
+                                    }
+                                }
+                                else
+                                {
+                                    var startPage = Math.Max(1, Model.PageNumber - 1);
+                                    var endPage = Math.Min(Model.PageCount, startPage + 2);
+
+                                    if (startPage == 2)
+                                    {
+                                        <li class="page-item">
+                                            <a class="page-link" asp-action="Index" asp-route-page="1" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-startDate="@ViewBag.CurrentstartDate" asp-route-endDate="@ViewBag.CurrentendDate" asp-route-diem="@ViewBag.CurrentDiem" aMaIDsp-route-Search="@ViewBag.CurrentSearch">1</a>
+                                        </li>
+                                    }
+                                    else if (startPage > 2)
+                                    {
+                                        <li class="page-item">
+                                            <a class="page-link" asp-action="Index" asp-route-page="1" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-startDate="@ViewBag.CurrentstartDate" asp-route-endDate="@ViewBag.CurrentendDate" asp-route-diem="@ViewBag.CurrentDiem" aMaIDsp-route-Search="@ViewBag.CurrentSearch">1</a>
+                                        </li>
+                                        <li class="page-item disabled">
+                                            <span class="page-link">...</span>
+                                        </li>
+                                    }
+
+                                    for (int page = startPage; page <= endPage; page++)
+                                    {
+                                        <li class="page-item @(page == Model.PageNumber ? "active" : "")">
+                                            <a class="page-link" asp-action="Index" asp-route-page="@(page)" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-startDate="@ViewBag.CurrentstartDate" asp-route-endDate="@ViewBag.CurrentendDate" asp-route-diem="@ViewBag.CurrentDiem" aMaIDsp-route-Search="@ViewBag.CurrentSearch">@(page)</a>
+                                        </li>
+                                    }
+
+                                    if (endPage == Model.PageCount - 1)
+                                    {
+
+                                        <li class="page-item">
+                                            <a class="page-link" asp-action="Index" asp-route-page="@Model.PageCount" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-startDate="@ViewBag.CurrentstartDate" asp-route-endDate="@ViewBag.CurrentendDate" asp-route-diem="@ViewBag.CurrentDiem" aMaIDsp-route-Search="@ViewBag.CurrentSearch">@Model.PageCount</a>
+                                        </li>
+                                    }
+                                    else if (endPage < Model.PageCount - 1)
+                                    {
+                                        <li class="page-item disabled">
+                                            <span class="page-link">...</span>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" asp-action="Index" asp-route-page="@Model.PageCount" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-startDate="@ViewBag.CurrentstartDate" asp-route-endDate="@ViewBag.CurrentendDate" asp-route-diem="@ViewBag.CurrentDiem" aMaIDsp-route-Search="@ViewBag.CurrentSearch">@Model.PageCount</a>
+                                        </li>
+                                    }
+                                }
+
+                                <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                    <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageNumber + 1)" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-startDate="@ViewBag.CurrentstartDate" asp-route-endDate="@ViewBag.CurrentendDate" asp-route-diem="@ViewBag.CurrentDiem" aMaIDsp-route-Search="@ViewBag.CurrentSearch">></a>
+                                </li>
+                                <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                    <a class="page-link" asp-action="Index" asp-route-page="@Model.PageCount" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-startDate="@ViewBag.CurrentstartDate" asp-route-endDate="@ViewBag.CurrentendDate" asp-route-diem="@ViewBag.CurrentDiem" aMaIDsp-route-Search="@ViewBag.CurrentSearch">>></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Xử lý sự kiện khi nút Tìm kiếm được nhấn
+            $('#searchButton').click(function () {
+                var MaID = $('#searchDM').val();
+                var startDate = $('#searchstartDate').val();
+                var endDate = $('#searchendDate').val();
+                var diem = $('#searchDiem').val();
+                var search = $('#search').val();
+
+                
+                $.ajax({
+                    url: '/Admin/DanhGia/Filtter',
+                    datatype: 'json',
+                    type: 'GET',
+                    data: {
+                        MaID: MaID,
+                        startDate: startDate,
+                        endDate: endDate,
+                        diem: diem,
+                        search: search
+                    },
+                    async: true,
+                    success: function (results) {
+                        if (results.status == 'success') {
+                            window.location.href = results.redirectUrl;
+                        }
+                    },
+                    error: function (xhr) {
+                        alert('error');
+                    }
+                });
+            });
+
+        });
+
+        function redirectToDetails(id) {
+            // Chuyển hướng đến trang chi tiết với id của món ăn
+            window.location.href = "/Home/DetailsReview/" + id;
+        }
+    </script>
+}

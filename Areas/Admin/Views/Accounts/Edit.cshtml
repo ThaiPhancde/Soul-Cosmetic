@@ -1,0 +1,206 @@
+﻿
+                @model MyPhamSoul.Models.Account
+
+@{
+
+    string CurrentSearch = ViewBag.CurrentSearch;    
+    double? CurrentMinPrice = ViewBag.CurrentMinPrice;
+    double? CurrentMaxPrice = ViewBag.CurrentMaxPrice;
+    ViewData["Title"] = "Chỉnh sửa thông tin tài khoản: " + Model.AccountEmail;
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<form asp-controller="Accounts" asp-action="Edit" asp-route-id="@Model.AccountId" asp-route-Page="@ViewBag.CurrentPage" asp-route-Ten="@ViewBag.CurrentTen" asp-route-Email="@ViewBag.CurrentEmail" asp-route-SDT="@ViewBag.CurrentSDT" asp-route-Quyen="@ViewBag.CurrentRole" asp-route-TrangThai="@ViewBag.CurrentStatus" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input type="hidden" asp-for="AccountId" />
+    <input type="hidden" asp-for="AccountPassword" />
+    <input type="hidden" asp-for="Salt" />
+    <input type="hidden" asp-for="CreateDate" />
+
+
+    <section>
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="~/Home">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="KhachHang" asp-action="Index">Danh sách tài khoản</a></li>
+                        <li class="breadcrumb-item active">Sửa thông tin tài khoản</li>
+                    </ol>
+                </div>
+                <div class="col-md-6 text-right">
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <div class="page-header no-gutters has-tab">
+
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#product-edit-basic">Thông tin</a>
+            </li>
+            @*            <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#product-edit-option">Thông tin tùy chọn</a>
+            </li>*@
+            @*<li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#product-edit-description">Mô tả</a>
+            </li>*@
+        </ul>
+    </div>
+    <div class="tab-content m-t-15">
+        <div class="tab-pane fade show active" id="product-edit-basic">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productName">Họ và tên</label>
+                        <input type="text" class="form-control" asp-for="FullName" />
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productName">Tên đăng nhập</label>
+                        <input type="text" class="form-control" asp-for="AccountEmail" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productName">Mật khẩu</label>
+                        <input type="text" class="form-control" asp-for="AccountPassword" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productName">Salt</label>
+                        <input type="text" class="form-control" asp-for="Salt" readonly />
+                    </div>
+                    @*  <div class="form-group">
+                    <label class="font-weight-semibold" for="productName">Mô tả ngắn</label>
+                    <input type="text" class="form-control" asp-for="MoTa" />
+                    </div>*@
+                   
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productName">Số điện thoại</label>
+                        <input type="text" class="form-control" asp-for="Phone" />
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label class="font-weight-semibold" for="productPrice">Ngày sinh</label>
+                            <input type="date" class="form-control" asp-for="NgaySinh" step="0.01">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label class="font-weight-semibold" for="productCategory">Giới tính</label>
+                            <select class="custom-select" asp-for="GioiTinh" style="min-width: 50px" asp-items="ViewBag.lsGioiTinh">
+                               
+                            </select>
+                         </div>
+                        <div class="form-group col-md-3">
+                            <label class="font-weight-semibold" for="productCategory">Quyền truy cập</label>
+                            <select class="custom-select" asp-for="RoleId" style="min-width: 50px" asp-items="ViewBag.QuyenTruyCap">
+                                <option value="" disabled selected>Chọn quyền truy cập</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            
+                            <input type="hidden" class="form-control" asp-for="LastLogin" step="0.01">
+                        </div>
+                      
+                    </div>
+                    <label class="font-weight-semibold" for="productCategory">Trạng thái</label>
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                        </label>
+                    </div>
+                  
+                        @*<div class="">
+                        <button class="btn btn-primary">
+                        <i class="anticon anticon-save"></i>
+                        <span>Lưu thay đổi</span>
+                        </button>
+                        </div>*@
+                        <td class="row">
+                            <button class="btn btn-primary">
+                                <i class="anticon anticon-save"></i>
+                                <span>Lưu thay đổi</span>
+                            </button>
+                            <button class="btn btn-secondary">
+                            <a asp-area="Admin" asp-controller="Accounts" asp-action="Index" asp-route-Page="@ViewBag.CurrentPage" asp-route-Ten="@ViewBag.CurrentTen" asp-route-Email="@ViewBag.CurrentEmail" asp-route-SDT="@ViewBag.CurrentSDT" asp-route-Quyen="@ViewBag.CurrentRole" asp-route-TrangThai="@ViewBag.CurrentStatus" style="color: white" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice">Trở lại</a>
+                            </button>
+                        </td>
+                        @*<div class="row">
+                        <div class="m-t-25">
+                        <div class="form-group d-flex align-items-center">
+                        <div class="switch m-r-10">
+                        <input type="checkbox" asp-for="Active">
+                        <label for="Active"></label>
+                        </div>
+                        <label>Trạng thái</label>
+                        </div>
+                        <div class="form-group d-flex align-items-center">
+                        <div class="switch m-r-10">
+                        <input type="checkbox" asp-for="HomeFlag">
+                        <label for="HomeFlag"></label>
+                        </div>
+                        <label>HomeFlag</label>
+                        </div>
+                        <div class="form-group d-flex align-items-center">
+                        <div class="switch m-r-10">
+                        <input type="checkbox" asp-for="BestSellers" >
+                        <label for="BestSellers"></label>
+                        </div>
+                        <label>Yêu thích</label>
+                        </div>
+                        </div>
+                        </div>*@
+                    </div>
+                </div>
+            </div>
+            @*<div class="tab-pane fade" id="product-edit-option">
+            <div class="card">
+            <div class="card-body">
+            <div class="form-group">
+            <label class="font-weight-semibold" for="productSize">Size</label>
+
+            </div>
+            <div class="form-group">
+            <label class="font-weight-semibold" for="productColors">Colors</label>
+            <div class="select2-container select2-container-multi select2" id="s2id_productColors"><ul class="select2-choices">  <li class="select2-search-choice">    <div>Dark Blue</div>    <a href="#" class="select2-search-choice-close" tabindex="-1"></a></li><li class="select2-search-choice">    <div>Gray</div>    <a href="#" class="select2-search-choice-close" tabindex="-1"></a></li><li class="select2-search-choice">    <div>Gray Blue</div>    <a href="#" class="select2-search-choice-close" tabindex="-1"></a></li><li class="select2-search-field">    <label for="s2id_autogen2" class="select2-offscreen">Colors</label>    <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="select2-input" id="s2id_autogen2" placeholder="" style="width: 20px;">  </li></ul></div><select class="select2" id="productColors" multiple="multiple" tabindex="-1" style="display: none;">
+            <option value="db" selected="">Dark Blue</option>
+            <option value="g" selected="">Gray</option>
+            <option value="gb" selected="">Gray Blue</option>
+            </select>
+            </div>
+            <div class="form-group">
+            <label class="font-weight-semibold" for="productFit">Fit</label>
+
+            </div>
+            <div class="form-group">
+            <label class="font-weight-semibold" for="productMaterial">Material</label>
+
+            </div>
+            <div class="form-group">
+            <label class="font-weight-semibold" for="productShip">Ship From</label>
+
+            </div>
+            </div>
+            </div>
+            </div>*@
+            @*<div class="tab-pane fade" id="product-edit-description">
+            <div class="card">
+            <div class="card-body">
+            <div class="form-group">
+            <label for="inputDescription"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Mô tả sản phẩm</font></font></label>
+            <textarea id="inputDescription" class="form-control" rows="4" style="height: 119px;"></textarea>
+            </div>
+            </div>
+            </div>
+            </div>*@
+        </div>
+</form>
+</div>
+@section Scripts {
+    <script>
+        // Đảm bảo rằng trang đã tải hoàn toàn trước khi thực thi mã JavaScript
+        $(document).ready(function () {
+            CKEDITOR.replace('txtDetail', {
+                customConfig: '/Content/ckeditor/config.js',
+                extraAllowedContent: 'span',
+            });
+        });
+
+    </script>
+}

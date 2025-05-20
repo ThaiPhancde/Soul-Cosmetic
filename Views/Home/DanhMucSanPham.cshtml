@@ -1,0 +1,469 @@
+﻿@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<DanhMucSanPham>
+
+@{
+    ViewData["Title"] = "Tat Ca San Pham";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+}
+
+@{
+    var selectedMaCTLoais = ViewBag.SelectedMaCTLoais as List<string>;
+    var listCTLoais = ViewBag.ListCTLoais as List<MyPhamSoul.Models.Ctloai>;
+}
+
+
+
+
+
+<!-- ...:::: Start Breadcrumb Section:::... -->
+<div class="breadcrumb-section breadcrumb-bg-color--golden">
+    <div class="breadcrumb-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="breadcrumb-title">Shop - All</h3>
+                    <div class="breadcrumb-nav breadcrumb-nav-color--black breadcrumb-nav-hover-color--golden">
+                        <nav aria-label="breadcrumb">
+                            <ul>
+                                <li><a href="index.html">Home</a></li>
+                                <li><a href="shop-grid-sidebar-left.html">Shop</a></li>
+                                <li class="active" aria-current="page">Tất cả sản phẩm</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!-- ...:::: End Breadcrumb Section:::... -->
+<!-- ...:::: Start Shop Section:::... -->
+
+<div class="shop-section">
+    <div class="container">
+        <div class="row flex-column-reverse flex-lg-row">
+            @* <form method="get" action="/Home/DanhMucSanPham">
+            <div class="form-group">
+            <label for="MaHang">Hãng:</label>
+            <input type="text" name="MaHang" class="form-control" value="@ViewBag.CurrentMaHang" />
+            </div>
+            <div class="form-group">
+            <label for="MaCTLoai">Chi tiết loại:</label>
+            <input type="text" name="MaCTLoai" class="form-control" value="@ViewBag.CurrentMaCTLoai" />
+            </div>
+            <div class="form-group">
+            <label for="search">Tìm kiếm:</label>
+            <input type="text" name="search" class="form-control" value="@ViewBag.CurrentSearch" />
+            </div>
+            <div class="form-group">
+            <label for="minPrice">Giá tối thiểu:</label>
+            <input type="number" name="minPrice" class="form-control" value="@ViewBag.CurrentMinPrice" />
+            </div>
+            <div class="form-group">
+            <label for="maxPrice">Giá tối đa:</label>
+            <input type="number" name="maxPrice" class="form-control" value="@ViewBag.CurrentMaxPrice" />
+            </div>
+            <div class="form-group">
+            <label for="sortBy">Sắp xếp:</label>
+            <select name="sortBy" class="form-control">
+            <option value="">-- Chọn --</option>
+            <option value="price_asc" selected="@((string)ViewBag.CurrentSortBy == "price_asc" ? "selected" : "")">Giá tăng dần</option>
+            <option value="price_desc" selected="@((string)ViewBag.CurrentSortBy == "price_desc" ? "selected" : "")">Giá giảm dần</option>
+            <option value="name_asc" selected="@((string)ViewBag.CurrentSortBy == "name_asc" ? "selected" : "")">Tên A-Z</option>
+            <option value="name_desc" selected="@((string)ViewBag.CurrentSortBy == "name_desc" ? "selected" : "")">Tên Z-A</option>
+            </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+            </form> *@
+
+            <div class="col-lg-3">
+                <form method="get" action="/Home/DanhMucSanPham">
+                    <!-- Start Sidebar Area -->
+                    <div class="siderbar-section" data-aos="fade-up" data-aos-delay="0">
+
+                        <div class="sidebar-single-widget">
+                            <h6 class="sidebar-title">SẮP XẾP</h6>
+                            <div class="sidebar-content">
+                              
+                                <div class="filter-type-price">
+                                    
+                                    <select name="sortBy" class="form-control">
+                                        <option value="">-- Chọn --</option>
+                                        <option value="price_asc" selected="@((string)ViewBag.CurrentSortBy == "price_asc" ? "selected" : "")">Giá tăng dần</option>
+                                        <option value="price_desc" selected="@((string)ViewBag.CurrentSortBy == "price_desc" ? "selected" : "")">Giá giảm dần</option>
+                                        <option value="name_asc" selected="@((string)ViewBag.CurrentSortBy == "name_asc" ? "selected" : "")">Tên A-Z</option>
+                                        <option value="name_desc" selected="@((string)ViewBag.CurrentSortBy == "name_desc" ? "selected" : "")">Tên Z-A</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sidebar-single-widget">
+                            <h6 class="sidebar-title">LỌC THEO TÊN</h6>
+                            <div class="sidebar-content">
+                                <div class="form-group">
+                                    <label for="search">Tìm kiếm:</label>
+                                    <input type="text" name="search" class="form-control" value="@ViewBag.CurrentSearch" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sidebar-single-widget">
+                            <h6 class="sidebar-title">LỌC THEO GIÁ</h6>
+                            <div class="sidebar-content">
+                                <div class="form-group">
+                                    <label for="minPrice">Giá tối thiểu:</label>
+                                    <input type="number" name="minPrice" class="form-control" value="@ViewBag.CurrentMinPrice" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="maxPrice">Giá tối đa:</label>
+                                    <input type="number" name="maxPrice" class="form-control" value="@ViewBag.CurrentMaxPrice" />
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="sidebar-single-widget">
+                            <h6 class="sidebar-title">HÃNG</h6>
+                            <div class="sidebar-content">
+                                <div class="filter-type-select">
+                                    <ul>
+                                        <li>
+                                            <label class="checkbox-default" for="brakeParts">
+                                                <input type="checkbox" name="selectedMaHangs" value="H1" @(ViewBag.SelectedMaHangs != null && ViewBag.SelectedMaHangs.Contains("H1") ? "checked" : "") />
+
+                                                <span>Rom&nd</span>
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label class="checkbox-default" for="accessories">
+                                                <input type="checkbox" name="selectedMaHangs" value="H2" @(ViewBag.SelectedMaHangs != null && ViewBag.SelectedMaHangs.Contains("H2") ? "checked" : "") />
+                                                <span> Merzy </span>
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label class="checkbox-default" for="EngineParts">
+                                                <input type="checkbox" name="selectedMaHangs" value="H3" @(ViewBag.SelectedMaHangs != null && ViewBag.SelectedMaHangs.Contains("H3") ? "checked" : "") /> 
+                                                <span>Toofaced</span>
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label class="checkbox-default" for="hermes">
+                                                <input type="checkbox" name="selectedMaHangs" value="H4" @(ViewBag.SelectedMaHangs != null && ViewBag.SelectedMaHangs.Contains("H4") ? "checked" : "") /> 
+                                               
+
+                                                <span>Lemonade</span>
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label class="checkbox-default" for="tommyHilfiger">
+                                                <input type="checkbox" name="selectedMaHangs" value="H5" @(ViewBag.SelectedMaHangs != null && ViewBag.SelectedMaHangs.Contains("H5") ? "checked" : "") /> 
+
+                                                <span>Maybeline</span>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sidebar-single-widget">
+                            <h6 class="sidebar-title">LOẠI</h6>
+                            <div class="sidebar-content">
+                                <div class="filter-type-select">
+                                    <ul>
+                                        <li>
+                                            <label class="checkbox-default" for="brakeParts">
+                                                <input type="checkbox" name="selectedMaCTLoais" value="CTL001" @(ViewBag.selectedMaCTLoais != null && ViewBag.selectedMaCTLoais.Contains("CTL001") ? "checked" : "") />
+                                                <span>Kem lót</span>
+                                            </label>
+                                        </li>
+                                        
+                                    
+                                
+                                        <li>
+                                            <label class="checkbox-default" for="brakeParts">
+                                                <input type="checkbox" name="selectedMaCTLoais" value="CTL002" @(ViewBag.selectedMaCTLoais != null && ViewBag.selectedMaCTLoais.Contains("CTL002") ? "checked" : "") />
+                                                <span>Kem nền</span>
+                                            </label>
+                                        </li>
+
+                                        <li>
+                                            <label class="checkbox-default" for="brakeParts">
+                                                <input type="checkbox" name="selectedMaCTLoais" value="CTL006" @(ViewBag.selectedMaCTLoais != null && ViewBag.selectedMaCTLoais.Contains("CTL006") ? "checked" : "") />
+                                                <span>Che khuyết điểm</span>
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label class="checkbox-default" for="brakeParts">
+                                                <input type="checkbox" name="selectedMaCTLoais" value="CTL003" @(ViewBag.selectedMaCTLoais != null && ViewBag.selectedMaCTLoais.Contains("CTL003") ? "checked" : "") />
+                                                <span>Phấn nền</span>
+                                            </label>
+                                        </li>
+                                        
+                                    
+                                        <li>
+                                            <label class="checkbox-default" for="brakeParts">
+                                                <input type="checkbox" name="selectedMaCTLoais" value="CTL011" @(ViewBag.selectedMaCTLoais != null && ViewBag.selectedMaCTLoais.Contains("CTL011") ? "checked" : "") />
+                                                <span>Kẻ mắt</span>
+                                            </label>
+                                        </li>
+                                        
+                                    
+                                        <li>
+                                            <label class="checkbox-default" for="brakeParts">
+                                                <input type="checkbox" name="selectedMaCTLoais" value="CTL012" @(ViewBag.selectedMaCTLoais != null && ViewBag.selectedMaCTLoais.Contains("CTL012") ? "checked" : "") />
+                                                <span>Kẻ mày</span>
+                                            </label>
+                                        </li>
+                                        
+                                    
+                                        <li>
+                                            <label class="checkbox-default" for="brakeParts">
+                                                <input type="checkbox" name="selectedMaCTLoais" value="CTL013" @(ViewBag.selectedMaCTLoais != null && ViewBag.selectedMaCTLoais.Contains("CTL013") ? "checked" : "") />
+                                                <span>Phấn mắt</span>
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label class="checkbox-default" for="brakeParts">
+                                                <input type="checkbox" name="selectedMaCTLoais" value="CTL014" @(ViewBag.selectedMaCTLoais != null && ViewBag.selectedMaCTLoais.Contains("CTL014") ? "checked" : "") />
+                                                <span>Mascara</span>
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label class="checkbox-default" for="brakeParts">
+                                                <input type="checkbox" name="selectedMaCTLoais" value="CTL015" @(ViewBag.selectedMaCTLoais != null && ViewBag.selectedMaCTLoais.Contains("CTL015") ? "checked" : "") />
+                                                <span>
+                                                    Son dưỡng
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label class="checkbox-default" for="brakeParts">
+                                                <input type="checkbox" name="selectedMaCTLoais" value="CTL016" @(ViewBag.selectedMaCTLoais != null && ViewBag.selectedMaCTLoais.Contains("CTL016") ? "checked" : "") />
+                                                <span>
+                                                    Son kem
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label class="checkbox-default" for="brakeParts">
+                                                <input type="checkbox" name="selectedMaCTLoais" value="CTL018" @(ViewBag.selectedMaCTLoais != null && ViewBag.selectedMaCTLoais.Contains("CTL018") ? "checked" : "") />
+                                                <span>
+                                                    Son bóng
+                                                
+                                                </span>
+                                            </label>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-lg btn-golden">Lọc</button>
+                        
+                     
+
+                        @* <div class="sidebar-single-widget">
+                        <h6 class="sidebar-title">LỌC THEO GIÁ</h6>
+                        <div class="sidebar-content">
+                        <div id="slider-range" class="ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content">
+                        <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
+                        <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                        <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                        </div>
+                        <div class="filter-type-price">
+                        <label for="amount">Khoảng:</label>
+                        <input type="text" id="amount" readonly>
+                        </div>
+                        </div>
+                        </div>
+
+                        <div class="sidebar-single-widget">
+                        <h6 class="sidebar-title">Thẻ tên</h6>
+                        <div class="sidebar-content">
+                        <div class="tag-link">
+                        <a href="#" data-tag="CUSHION" class="tag-filter">CUSHION</a>
+                        <a href="#" data-tag="ROMAND" class="tag-filter">ROMAND</a>
+                        <a href="#" data-tag="EYE" class="tag-filter">EYE</a>
+                        <a href="#" data-tag="VELVET" class="tag-filter">VELVET</a>
+                        <a href="#" data-tag="TINT" class="tag-filter">TINT</a>
+                        <a href="#" data-tag="MERZY" class="tag-filter">MERZY</a>
+                        <a href="#" data-tag="LEMONADE" class="tag-filter">LEMONADE</a>
+
+                        </div>
+                        </div>
+                        </div>
+                        *@
+
+
+                        @* <!-- Start Single Sidebar Widget -->
+                        <div class="sidebar-single-widget" for="ctloai-filter">
+                        <h6 class="sidebar-title">TRANG ĐIỂM</h6>
+                        <div class="sidebar-content">
+                        <form class="filter-type-select" id="ctloai-filter-hang">
+                        <label class="checkbox-default">
+                        <input type="checkbox" name="selectedCtLoais" value="all">
+                        <span>Tất cả</span>
+                        </label>
+                        <a href="#" class="mega-menu-item-title">Trang điểm mặt</a>
+                        @await Component.InvokeAsync("CTLoaiMenu", new { maLoai = "L2", viewName = "CheckBoxCTLoai" })
+                        <a href="#" class="mega-menu-item-title">Trang điểm mắt</a>
+                        @await Component.InvokeAsync("CTLoaiMenu", new { maLoai = "L1", viewName = "CheckBoxCTLoai"  })
+                        <a href="#" class="mega-menu-item-title">Trang điểm môi</a>
+                        @await Component.InvokeAsync("CTLoaiMenu", new { maLoai = "L3", viewName = "CheckBoxCTLoai"  })
+                        <a href="#" class="mega-menu-item-title">Khác</a>
+                        @await Component.InvokeAsync("CTLoaiMenu", new { maLoai = "L4", viewName = "CheckBoxCTLoai"  })
+                        </form>
+                        </div>
+                        </div> <!-- End Single Sidebar Widget --> *@
+
+                    </div> <!-- End Sidebar Area -->
+
+                </form>
+            </div>
+
+
+            <div class="col-lg-9">
+                <!-- Start Shop Product Sorting Section -->
+                <div class="shop-sort-section">
+                    <div class="container">
+                        <div class="row">
+                            <!-- Start Sort Select Option -->
+                            <div class="col-md-12 text-md-right">
+                                <div class="sort-select-list d-flex align-items-center">
+                                  
+                                </div> <!-- End Sort Select Option -->
+                                <div class="mb-4"></div>
+                            </div>
+                        </div>
+
+                        <!-- Start Product Grid View -->
+                        <div class="col-md-12" id="product-list">
+                            <div class="product-grid-view row" id="productGrid">
+                                @foreach (var product in Model)
+                                {
+                                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                                        <!-- Start Product Default Single Item -->
+                                        <div class="product-default-single-item product-color--golden">
+                                            <div class="image-box">
+                                                <a asp-controller="Home" asp-action="SanPhamTheoDanhMuc" asp-route-maDanhMuc="@product.MaDanhMuc" class="image-link">
+                                                    <img src="/images/DanhMucSanPham/@product.HinhAnh" alt="@product.TenDanhMuc">
+                                                </a>
+                                                <div class="action-link">
+                                                    
+                                                    <div class="action-link-right">
+
+
+                                                       
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="content">
+                                                <div class="content-left">
+                                                    <h6 class="title"><a asp-controller="Home" asp-action="SanPhamTheoDanhMuc" asp-route-maDanhMuc="@product.MaDanhMuc" class="image-link"> @product.TenDanhMuc</a></h6>
+                                                    <ul class="review-star">
+                                                        @for (int i = 0; i < product.DanhGia; i++)
+                                                        {
+                                                            <li class="fill"><i class="ion-android-star"></i></li>
+                                                        }
+                                                        @for (double? i = product.DanhGia; i < 5; i++)
+                                                        {
+                                                            <li class="empty"><i class="ion-android-star"></i></li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                                <div class="content-right">
+                                                    <span class="price">@string.Format("{0:#,##0} VNĐ", product.Gia)</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- End Product Default Single Item -->
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <!-- End Product Grid View -->
+
+                        <div aria-label="Page navigation example">
+                            <div class="page-pagination text-center">
+                                <ul class="pagination" data-aos="fade-up" data-aos-delay="0">
+                                    <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                        <a class="btn btn-lg btn-golden" asp-action="DanhMucSanPham" asp-route-page="1" asp-route-MaHang="@ViewBag.CurrentMaHang" asp-route-MaCTLoai="@ViewBag.CurrentMaCTLoai" asp-route-search="@ViewBag.CurrentSearch" asp-route-minPrice="@ViewBag.CurrentMinPrice" asp-route-maxPrice="@ViewBag.CurrentMaxPrice" asp-route-sortBy="@ViewBag.CurrentSortBy">Đầu</a>
+                                    </li>
+                                    <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                        <a class="btn btn-lg btn-golden" asp-action="DanhMucSanPham" asp-route-page="@(Model.PageNumber - 1)" asp-route-MaHang="@ViewBag.CurrentMaHang" asp-route-MaCTLoai="@ViewBag.CurrentMaCTLoai" asp-route-search="@ViewBag.CurrentSearch" asp-route-minPrice="@ViewBag.CurrentMinPrice" asp-route-maxPrice="@ViewBag.CurrentMaxPrice" asp-route-sortBy="@ViewBag.CurrentSortBy">Trước</a>
+                                    </li>
+                                    @if (Model.PageCount <= 3)
+                                    {
+                                        for (int page = 1; page <= Model.PageCount; page++)
+                                        {
+                                            <li class="page-item @(page == Model.PageNumber ? "active" : "")">
+                                                <a class="btn btn-lg btn-golden" asp-action="DanhMucSanPham" asp-route-page="@(page)" asp-route-MaHang="@ViewBag.CurrentMaHang" asp-route-MaCTLoai="@ViewBag.CurrentMaCTLoai" asp-route-search="@ViewBag.CurrentSearch" asp-route-minPrice="@ViewBag.CurrentMinPrice" asp-route-maxPrice="@ViewBag.CurrentMaxPrice" asp-route-sortBy="@ViewBag.CurrentSortBy">@(page)</a>
+                                            </li>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var startPage = Math.Max(1, Model.PageNumber - 1);
+                                        var endPage = Math.Min(Model.PageCount, startPage + 2);
+
+                                        if (startPage == 2)
+                                        {
+                                            <li class="page-item">
+                                                <a class="btn btn-lg btn-golden" asp-action="DanhMucSanPham" asp-route-page="1" asp-route-MaHang="@ViewBag.CurrentMaHang" asp-route-MaCTLoai="@ViewBag.CurrentMaCTLoai" asp-route-search="@ViewBag.CurrentSearch" asp-route-minPrice="@ViewBag.CurrentMinPrice" asp-route-maxPrice="@ViewBag.CurrentMaxPrice" asp-route-sortBy="@ViewBag.CurrentSortBy">1</a>
+                                            </li>
+                                        }
+                                        else if (startPage > 2)
+                                        {
+                                            <li class="page-item">
+                                                <a class="btn btn-lg btn-golden" asp-action="DanhMucSanPham" asp-route-page="1" asp-route-MaHang="@ViewBag.CurrentMaHang" asp-route-MaCTLoai="@ViewBag.CurrentMaCTLoai" asp-route-search="@ViewBag.CurrentSearch" asp-route-minPrice="@ViewBag.CurrentMinPrice" asp-route-maxPrice="@ViewBag.CurrentMaxPrice" asp-route-sortBy="@ViewBag.CurrentSortBy">1</a>
+                                            </li>
+                                            <li class="page-item disabled">
+                                                <span class="btn btn-lg btn-golden">...</span>
+                                            </li>
+                                        }
+
+                                        for (int page = startPage; page <= endPage; page++)
+                                        {
+                                            <li class="page-item @(page == Model.PageNumber ? "active" : "")">
+                                                <a class="btn btn-lg btn-golden" asp-action="DanhMucSanPham" asp-route-page="@(page)" asp-route-MaHang="@ViewBag.CurrentMaHang" asp-route-MaCTLoai="@ViewBag.CurrentMaCTLoai" asp-route-search="@ViewBag.CurrentSearch" asp-route-minPrice="@ViewBag.CurrentMinPrice" asp-route-maxPrice="@ViewBag.CurrentMaxPrice" asp-route-sortBy="@ViewBag.CurrentSortBy">@(page)</a>
+                                            </li>
+                                        }
+
+                                        if (endPage == Model.PageCount - 1)
+                                        {
+                                            <li class="page-item">
+                                                <a class="btn btn-lg btn-golden" asp-action="DanhMucSanPham" asp-route-page="@Model.PageCount" asp-route-MaHang="@ViewBag.CurrentMaHang" asp-route-MaCTLoai="@ViewBag.CurrentMaCTLoai" asp-route-search="@ViewBag.CurrentSearch" asp-route-minPrice="@ViewBag.CurrentMinPrice" asp-route-maxPrice="@ViewBag.CurrentMaxPrice" asp-route-sortBy="@ViewBag.CurrentSortBy">@Model.PageCount</a>
+                                            </li>
+                                        }
+                                        else if (endPage < Model.PageCount - 1)
+                                        {
+                                            <li class="page-item disabled">
+                                                <span>...</span>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="btn btn-lg btn-golden" asp-action="DanhMucSanPham" asp-route-page="@Model.PageCount" asp-route-MaHang="@ViewBag.CurrentMaHang" asp-route-MaCTLoai="@ViewBag.CurrentMaCTLoai" asp-route-search="@ViewBag.CurrentSearch" asp-route-minPrice="@ViewBag.CurrentMinPrice" asp-route-maxPrice="@ViewBag.CurrentMaxPrice" asp-route-sortBy="@ViewBag.CurrentSortBy">@Model.PageCount</a>
+                                            </li>
+                                        }
+                                    }
+                                    <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                        <a class="btn btn-lg btn-golden" asp-action="DanhMucSanPham" asp-route-page="@(Model.PageNumber + 1)" asp-route-MaHang="@ViewBag.CurrentMaHang" asp-route-MaCTLoai="@ViewBag.CurrentMaCTLoai" asp-route-search="@ViewBag.CurrentSearch" asp-route-minPrice="@ViewBag.CurrentMinPrice" asp-route-maxPrice="@ViewBag.CurrentMaxPrice" asp-route-sortBy="@ViewBag.CurrentSortBy">Tiếp</a>
+                                    </li>
+                                    <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                        <a class="btn btn-lg btn-golden" asp-action="DanhMucSanPham" asp-route-page="@Model.PageCount" asp-route-MaHang="@ViewBag.CurrentMaHang" asp-route-MaCTLoai="@ViewBag.CurrentMaCTLoai" asp-route-search="@ViewBag.CurrentSearch" asp-route-minPrice="@ViewBag.CurrentMinPrice" asp-route-maxPrice="@ViewBag.CurrentMaxPrice" asp-route-sortBy="@ViewBag.CurrentSortBy">Cuối</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <!-- End Shop Product Sorting Section -->
+    </div>
+
+</div>
+
+
+

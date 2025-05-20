@@ -1,0 +1,184 @@
+﻿@using PagedList.Core.Mvc
+@model PagedList.Core.IPagedList<MyPhamSoul.Models.KhachHang>
+
+@{
+    int CurrentPage = ViewBag.CurrentPage;
+    ViewData["Title"] = "Danh sách khách hàng" + CurrentPage;
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    table thead th {
+        background-color: #e6e6e6; /* Màu nền của đầu mục */
+        color: #000; /* Màu chữ của đầu mục */
+    }
+</style>
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Danh sách khách hàng</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="~/Home">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">Danh sách khách hàng : page @CurrentPage</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="col-lg-12">
+                            <div class="d-md-flex">
+                                <div class="m-b-10 m-r-15 col-md-3">
+                                    <select class="custom-select" id="idrole" name="idrole" style="min-width: 200px" asp-items="ViewBag.QuyenTruyCap">
+                                        <option value="0" disabled selected>Tìm kiếm theo tên khách hàng</option>
+                                    </select>
+                                </div>
+                                <div class="m-b-10 col-md-3">
+                                    <select class="custom-select" id="idstatus" name="idstatus" style="min-width: 200px" asp-items="ViewBag.lsTrangThai">
+                                        <option value="" disabled selected>Tìm kiếm theo số điện thoại</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6 text-right">
+                                    <button class="btn btn-primary">
+                                        <i class="anticon anticon-plus-cỉrcle m-r-5"></i>
+                                        <span>Thêm khách hàng</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="example2" class="table table-bordered table-hover">
+                            <thead>
+                                <tr class="text-center">
+                                    <th>STT</th>
+                                    <th>Họ và tên</th>
+                                    <th>Số điện thoại</th>
+                                    <th>Địa chỉ</th>
+                                    <th>Chức năng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    var i=1;
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@i</td>
+                                            <td>
+                                                <p>@item.TenKhachHang</p>
+                                            </td>
+                                            <td>
+                                                <p>@item.SoDienThoai</p>
+                                            </td>
+                                            <td>@item.DiaChi</td>
+
+                                            <td class="text-right">
+                                                <a class="btn btn-primary btn-tone m-r-5" asp-action="Details" asp-route-id="@item.MaKhachHang">Chi tiết</a>
+                                                <a class="btn btn-success btn-tone m-r-5" asp-action="Edit" asp-route-id="@item.MaKhachHang">Sửa</a>
+                                                <a class="btn btn-danger btn-tone m-r-5" asp-action="Delete" asp-route-id="@item.MaKhachHang">Xóa</a>
+                                            </td>
+                                        </tr>
+                                        i++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        <div aria-label="Page navigation example">
+                            <div class="card-body">
+                                <!-- Mã bảng hiện tại của bạn ở đây -->
+
+                                <div aria-label="Page navigation example" class="d-flex justify-content-center">
+                                    <ul class="pagination">
+                                        <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                            <a class="page-link" asp-action="Index" asp-route-page="1" asp-route-MaDM="@ViewBag.CurrentMaDM" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-Search="@ViewBag.CurrentSearch" asp-route-MinPrice="@ViewBag.CurrentMinPrice" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice"><<</a>
+                                        </li>
+                                        <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                            <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageNumber - 1)" asp-route-MaDM="@ViewBag.CurrentMaDM" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-Search="@ViewBag.CurrentSearch" asp-route-MinPrice="@ViewBag.CurrentMinPrice" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice"><</a>
+                                        </li>
+                                        @if (Model.PageCount <= 3)
+                                        {
+                                            for (int page = 1; page <= Model.PageCount; page++)
+                                            {
+                                                        <li class="page-item @(page == Model.PageNumber ? "active" : "")">
+                                                            <a class="page-link" asp-action="Index" asp-route-page="@(page)" asp-route-MaDM="@ViewBag.CurrentMaDM" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-Search="@ViewBag.CurrentSearch" asp-route-MinPrice="@ViewBag.CurrentMinPrice" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice">@(page)</a>
+                                                        </li>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            var startPage = Math.Max(1, Model.PageNumber - 1);
+                                            var endPage = Math.Min(Model.PageCount, startPage + 2);
+
+                                            if (startPage == 2)
+                                            {
+                                                        <li class="page-item">
+                                                            <a class="page-link" asp-action="Index" asp-route-page="1" asp-route-MaDM="@ViewBag.CurrentMaDM" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-Search="@ViewBag.CurrentSearch" asp-route-MinPrice="@ViewBag.CurrentMinPrice" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice">1</a>
+                                                        </li>
+                                            }
+                                            else if (startPage > 2)
+                                            {
+                                                        <li class="page-item">
+                                                            <a class="page-link" asp-action="Index" asp-route-page="1" asp-route-MaDM="@ViewBag.CurrentMaDM" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-Search="@ViewBag.CurrentSearch" asp-route-MinPrice="@ViewBag.CurrentMinPrice" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice">1</a>
+                                                        </li>
+                                                        <li class="page-item disabled">
+                                                            <span class="page-link">...</span>
+                                                        </li>
+                                            }
+
+                                            for (int page = startPage; page <= endPage; page++)
+                                            {
+                                                        <li class="page-item @(page == Model.PageNumber ? "active" : "")">
+                                                            <a class="page-link" asp-action="Index" asp-route-page="@(page)" asp-route-MaDM="@ViewBag.CurrentMaDM" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-Search="@ViewBag.CurrentSearch" asp-route-MinPrice="@ViewBag.CurrentMinPrice" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice">@(page)</a>
+                                                        </li>
+                                            }
+
+                                            if (endPage == Model.PageCount - 1)
+                                            {
+
+                                                        <li class="page-item">
+                                                            <a class="page-link" asp-action="Index" asp-route-page="@Model.PageCount" asp-route-MaDM="@ViewBag.CurrentMaDM" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-Search="@ViewBag.CurrentSearch" asp-route-MinPrice="@ViewBag.CurrentMinPrice" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice">@Model.PageCount</a>
+                                                        </li>
+                                            }
+                                            else if (endPage < Model.PageCount - 1)
+                                            {
+                                                        <li class="page-item disabled">
+                                                            <span class="page-link">...</span>
+                                                        </li>
+                                                        <li class="page-item">
+                                                            <a class="page-link" asp-action="Index" asp-route-page="@Model.PageCount" asp-route-MaDM="@ViewBag.CurrentMaDM" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-Search="@ViewBag.CurrentSearch" asp-route-MinPrice="@ViewBag.CurrentMinPrice" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice">@Model.PageCount</a>
+                                                        </li>
+                                            }
+                                        }
+
+                                        <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                            <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageNumber + 1)" asp-route-MaDM="@ViewBag.CurrentMaDM" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-Search="@ViewBag.CurrentSearch" asp-route-MinPrice="@ViewBag.CurrentMinPrice" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice">></a>
+                                        </li>
+                                        <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                            <a class="page-link" asp-action="Index" asp-route-page="@Model.PageCount" asp-route-MaDM="@ViewBag.CurrentMaDM" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-Search="@ViewBag.CurrentSearch" asp-route-MinPrice="@ViewBag.CurrentMinPrice" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice">>></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</section>

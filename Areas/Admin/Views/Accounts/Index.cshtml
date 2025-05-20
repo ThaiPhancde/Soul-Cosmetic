@@ -1,0 +1,237 @@
+﻿@using PagedList.Core.Mvc
+@model PagedList.Core.IPagedList<MyPhamSoul.Models.Account>
+@{
+    ViewData["Title"] = "Quản lý tài khoản";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    table thead th {
+        background-color: #e6e6e6; /* Màu nền của đầu mục */
+        color: #000; /* Màu chữ của đầu mục */
+    }
+</style>
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Danh sách tài khoản quản trị</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                    <li class="breadcrumb-item active">DataTables</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="row card-body">
+                        <div class="col-lg-12">
+                            <div class="d-md-flex">
+                             
+                                 <div class="col-lg-2">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Họ và tên" id="searchTen" value="@ViewBag.CurrentTen" />
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-2">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Email" id="searchEmail" value="@ViewBag.CurrentEmail" />
+                                    </div>
+                                </div>
+                                 <div class="col-lg-2">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" placeholder="Số điện thoại" id="searchSDT" value="@ViewBag.CurrentSDT" />
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-2">
+                                    <select class="custom-select" id="searchRole" name="searchRole" style="min-width: 200px" asp-items="ViewBag.QuyenTruyCap">
+                                        <option value="0" disabled selected>Chọn quyền truy cập</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-2" style="margin-left: 10px;">
+           
+                                        <button class="btn btn-outline-secondary" type="button" id="searchButton"><b>Tìm kiếm</b></button>
+                                </div>
+                                    <div class="col-lg-2">
+                                        <a class="btn btn-primary" asp-controller="Accounts" asp-action="Create" asp-route-Page="@ViewBag.CurrentPage" asp-route-Ten="@ViewBag.CurrentTen" asp-route-Email="@ViewBag.CurrentEmail" asp-route-SDT="@ViewBag.CurrentSDT" asp-route-Quyen="@ViewBag.CurrentRole" asp-route-TrangThai="@ViewBag.CurrentStatus"><i class="anticon anticon-plus-circle m-r-5"></i> <span>Thêm tài khoản</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="example2" class="table table-bordered table-hover">
+                            <thead>
+                                <tr class="text-center">
+                                    <th>STT</th>
+                                    <th>Họ và tên</th>
+                                    <th>Địa chỉ Email</th>
+                                    <th>Số điện thoại</th>                       
+                                    <th>Quyền truy cập</th>                                
+                                    <th>Chức năng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    var i = 1;
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td class="align-middle text-center">@i</td>
+                                           
+                                            <td class="align-middle ">
+                                            
+                                                    @item.FullName
+
+                                            </td>
+                                            <td class="align-middle text-center">@item.AccountEmail</td>
+                                            <td class="align-middle text-center">@item.Phone</td>
+                                            <td class="align-middle text-center">@item.Role.Description</td>
+                                            
+                                            <td class="align-middle text-center" style="display:flex;">
+                                                <a style="margin-left: 60px;" class="btn btn-info btn-tone m-r-5" asp-action="Details"  asp-route-id="@item.AccountId" asp-route-Page="@ViewBag.CurrentPage" asp-route-Ten="@ViewBag.CurrentTen" asp-route-Email="@ViewBag.CurrentEmail" asp-route-SDT="@ViewBag.CurrentSDT" asp-route-Quyen="@ViewBag.CurrentRole" asp-route-TrangThai="@ViewBag.CurrentStatus">Chi tiết</a>
+                                                <a style="margin-left: 20px;" class="btn btn-success btn-tone m-r-5" asp-action="Edit" asp-route-id="@item.AccountId"  asp-route-Page="@ViewBag.CurrentPage" asp-route-Ten="@ViewBag.CurrentTen" asp-route-Email="@ViewBag.CurrentEmail" asp-route-SDT="@ViewBag.CurrentSDT" asp-route-Quyen="@ViewBag.CurrentRole" asp-route-TrangThai="@ViewBag.CurrentStatus">Sửa</a>
+                                                <a style="margin-left: 20px;" class="btn btn-danger btn-tone m-r-5" asp-action="Delete" asp-route-id="@item.AccountId"  asp-route-Page="@ViewBag.CurrentPage" asp-route-Ten="@ViewBag.CurrentTen" asp-route-Email="@ViewBag.CurrentEmail" asp-route-SDT="@ViewBag.CurrentSDT" asp-route-Quyen="@ViewBag.CurrentRole" asp-route-TrangThai="@ViewBag.CurrentStatus">Xóa</a>
+                                            </td>
+                                        </tr>
+                                        i++;
+                                    }
+                                }
+                             </tbody>
+                        </table>
+                        <div class="card-body">
+                            <div aria-label="Page navigation example" class="d-flex justify-content-center">
+                                <ul class="pagination">
+                                    <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                        <a class="page-link" asp-action="Index" asp-route-page="1" asp-route-Ten="@ViewBag.CurrentTen" asp-route-Email="@ViewBag.CurrentEmail" asp-route-SDT="@ViewBag.CurrentSDT" asp-route-Quyen="@ViewBag.CurrentRole" asp-route-TrangThai="@ViewBag.CurrentStatus"><<</a>
+                                    </li>
+                                    <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                        <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageNumber - 1)" asp-route-Ten="@ViewBag.CurrentTen" asp-route-Email="@ViewBag.CurrentEmail" asp-route-SDT="@ViewBag.CurrentSDT" asp-route-Quyen="@ViewBag.CurrentRole" asp-route-TrangThai="@ViewBag.CurrentStatus"><</a>
+                                    </li>
+                                    @if (Model.PageCount <= 3)
+                                    {
+                                        for (int page = 1; page <= Model.PageCount; page++)
+                                        {
+                                            <li class="page-item @(page == Model.PageNumber ? "active" : "")">
+                                                <a class="page-link" asp-action="Index" asp-route-page="@(page)" asp-route-Ten="@ViewBag.CurrentTen" asp-route-Email="@ViewBag.CurrentEmail" asp-route-SDT="@ViewBag.CurrentSDT" asp-route-Quyen="@ViewBag.CurrentRole" asp-route-TrangThai="@ViewBag.CurrentStatus">@(page)</a>
+                                            </li>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var startPage = Math.Max(1, Model.PageNumber - 1);
+                                        var endPage = Math.Min(Model.PageCount, startPage + 2);
+
+                                        if (startPage == 2)
+                                        {
+                                            <li class="page-item">
+                                                <a class="page-link" asp-action="Index" asp-route-page="1" asp-route-Ten="@ViewBag.CurrentTen" asp-route-Email="@ViewBag.CurrentEmail" asp-route-SDT="@ViewBag.CurrentSDT" asp-route-Quyen="@ViewBag.CurrentRole" asp-route-TrangThai="@ViewBag.CurrentStatus">1</a>
+                                            </li>
+                                        }
+                                        else if (startPage > 2)
+                                        {
+                                            <li class="page-item">
+                                                <a class="page-link" asp-action="Index" asp-route-page="1" asp-route-Ten="@ViewBag.CurrentTen" asp-route-Email="@ViewBag.CurrentEmail" asp-route-SDT="@ViewBag.CurrentSDT" asp-route-Quyen="@ViewBag.CurrentRole" asp-route-TrangThai="@ViewBag.CurrentStatus" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice">1</a>
+                                            </li>
+                                            <li class="page-item disabled">
+                                                <span class="page-link">...</span>
+                                            </li>
+                                        }
+
+                                        for (int page = startPage; page <= endPage; page++)
+                                        {
+                                            <li class="page-item @(page == Model.PageNumber ? "active" : "")">
+                                                <a class="page-link" asp-action="Index" asp-route-page="@(page)" asp-route-Ten="@ViewBag.CurrentTen" asp-route-Email="@ViewBag.CurrentEmail" asp-route-SDT="@ViewBag.CurrentSDT" asp-route-Quyen="@ViewBag.CurrentRole" asp-route-TrangThai="@ViewBag.CurrentStatus">@(page)</a>
+                                            </li>
+                                        }
+
+                                        if (endPage == Model.PageCount - 1)
+                                        {
+
+                                            <li class="page-item">
+                                                <a class="page-link" asp-action="Index" asp-route-page="@Model.PageCount" asp-route-Ten="@ViewBag.CurrentTen" asp-route-Email="@ViewBag.CurrentEmail" asp-route-SDT="@ViewBag.CurrentSDT" asp-route-Quyen="@ViewBag.CurrentRole" asp-route-TrangThai="@ViewBag.CurrentStatus">@Model.PageCount</a>
+                                            </li>
+                                        }
+                                        else if (endPage < Model.PageCount - 1)
+                                        {
+                                            <li class="page-item disabled">
+                                                <span class="page-link">...</span>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" asp-action="Index" asp-route-page="@Model.PageCount" asp-route-Ten="@ViewBag.CurrentTen" asp-route-Email="@ViewBag.CurrentEmail" asp-route-SDT="@ViewBag.CurrentSDT" asp-route-Quyen="@ViewBag.CurrentRole" asp-route-TrangThai="@ViewBag.CurrentStatus">@Model.PageCount</a>
+                                            </li>
+                                        }
+                                    }
+
+                                    <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                        <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageNumber + 1)" asp-route-Ten="@ViewBag.CurrentTen" asp-route-Email="@ViewBag.CurrentEmail" asp-route-SDT="@ViewBag.CurrentSDT" asp-route-Quyen="@ViewBag.CurrentRole" asp-route-TrangThai="@ViewBag.CurrentStatus">></a>
+                                    </li>
+                                    <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                        <a class="page-link" asp-action="Index" asp-route-page="@Model.PageCount" asp-route-Ten="@ViewBag.CurrentTen" asp-route-Email="@ViewBag.CurrentEmail" asp-route-SDT="@ViewBag.CurrentSDT" asp-route-Quyen="@ViewBag.CurrentRole" asp-route-TrangThai="@ViewBag.CurrentStatus">>></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            // Xử lý sự kiện khi nút Tìm kiếm được nhấn
+            $('#searchButton').click(function () {
+                var Ten = $('#searchTen').val();
+                var Email = $('#searchEmail').val();
+                var SDT = $('#searchSDT').val();
+                var Quyen = $('#searchRole').val();
+                var TrangThai = $('#searchStatus').val();
+
+                var moTa = $('#searchMoTa').val();
+                $.ajax({
+                    url: '/Admin/Accounts/Filtter',
+                    datatype: 'json',
+                    type: 'GET',
+                    data: {
+                        Ten: Ten,
+                        Email: Email,
+                        Quyen: Quyen,
+                        TrangThai: TrangThai,
+                        SDT: SDT
+                    },
+                    async: true,
+                    success: function (results) {
+                        if (results.status == 'success') {
+                            window.location.href = results.redirectUrl;
+                        }
+                    },
+                    error: function (xhr) {
+                        alert('error');
+                    }
+                });
+            });
+
+        });
+    </script>
+}

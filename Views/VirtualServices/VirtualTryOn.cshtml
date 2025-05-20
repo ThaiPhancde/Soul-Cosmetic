@@ -1,0 +1,455 @@
+@{
+    ViewData["Title"] = "Thử mỹ phẩm ảo";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+    var products = ViewBag.Products as List<object>;
+}
+
+<!-- Start Breadcrumb Area -->
+<div class="breadcrumb-area breadcrumb-bg-1 pt-50 pb-70 mb-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="breadcrumb-title">Thử mỹ phẩm ảo</h1>
+                <ul class="breadcrumb-list">
+                    <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a href="/VirtualServices">Virtual Services</a></li>
+                    <li class="breadcrumb-item active">Thử mỹ phẩm ảo</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Breadcrumb Area -->
+
+<!-- Start Hero Section -->
+<div class="hero-section">
+    <div class="container">
+        <div class="row align-items-center mb-100">
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <div class="hero-content">
+                    <h2 class="hero-title mb-4">Thử mỹ phẩm từ xa với công nghệ AR</h2>
+                    <p class="hero-description mb-4">Không cần đến cửa hàng, bạn vẫn có thể thử các sản phẩm trang điểm yêu thích thông qua công nghệ thực tế tăng cường (AR). Điều này giúp bạn tiết kiệm thời gian và chọn đúng sản phẩm phù hợp với tông da của mình.</p>
+                    <div class="hero-features mb-5">
+                        <div class="feature-item d-flex align-items-center mb-3">
+                            <div class="feature-icon me-3">
+                                <i class="fa fa-check-circle text-success fa-2x"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h4 class="feature-title mb-0">Thử hàng trăm màu son và phấn mắt</h4>
+                            </div>
+                        </div>
+                        <div class="feature-item d-flex align-items-center mb-3">
+                            <div class="feature-icon me-3">
+                                <i class="fa fa-check-circle text-success fa-2x"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h4 class="feature-title mb-0">Kết quả chân thực với công nghệ AR tiên tiến</h4>
+                            </div>
+                        </div>
+                        <div class="feature-item d-flex align-items-center">
+                            <div class="feature-icon me-3">
+                                <i class="fa fa-check-circle text-success fa-2x"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h4 class="feature-title mb-0">Dễ dàng mua sắm sau khi thử</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#try-on-section" class="btn btn-lg btn-primary">Thử ngay</a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-image">
+                    <img src="/images/blog/blog-grid-home-1-img-1.jpg" alt="Virtual Try-On" class="img-fluid rounded shadow">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Hero Section -->
+
+<!-- Start Try-On Section -->
+<div id="try-on-section" class="try-on-section section-space-y-axis-100 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="section-heading mb-3">THỬ MỸ PHẨM ẢO</h2>
+                <div class="section-separator mx-auto mb-3"></div>
+                <p class="section-description">Chọn sản phẩm và màu sắc bạn muốn thử</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="try-on-wrapper bg-white p-4 rounded shadow-sm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="product-selection mb-4">
+                                <h4 class="mb-3">Chọn sản phẩm</h4>
+                                <select id="product-select" class="form-select mb-3">
+                                    <option value="">-- Chọn loại sản phẩm --</option>
+                                    @foreach (var product in products)
+                                    {
+                                        <option value="@product.GetType().GetProperty("Id").GetValue(product, null)">
+                                            @product.GetType().GetProperty("Name").GetValue(product, null)
+                                        </option>
+                                    }
+                                </select>
+                                <div id="product-description" class="mb-3">
+                                    Vui lòng chọn sản phẩm để xem mô tả.
+                                </div>
+                                <h4 class="mb-3">Chọn màu sắc</h4>
+                                <div id="color-options" class="d-flex flex-wrap mb-4">
+                                    <div class="text-center">Vui lòng chọn sản phẩm trước</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="camera-preview">
+                                <h4 class="mb-3">Xem trước</h4>
+                                <div class="camera-preview-container position-relative">
+                                    <div class="preview-placeholder bg-light d-flex align-items-center justify-content-center rounded mb-3" style="height: 300px;">
+                                        <div class="text-center p-4">
+                                            <i class="fa fa-camera fa-3x mb-3 text-muted"></i>
+                                            <p>Cho phép truy cập camera để thử mỹ phẩm ảo</p>
+                                            <button id="start-camera" class="btn btn-primary">Bật camera</button>
+                                        </div>
+                                    </div>
+                                    <video id="camera-stream" class="d-none w-100 rounded mb-3" height="300" autoplay></video>
+                                    <canvas id="ar-canvas" class="position-absolute top-0 start-0 w-100 h-100 d-none"></canvas>
+                                </div>
+                                <div class="camera-controls d-flex justify-content-between">
+                                    <button id="take-photo" class="btn btn-success" disabled><i class="fa fa-camera me-2"></i>Chụp ảnh</button>
+                                    <button id="save-photo" class="btn btn-primary" disabled><i class="fa fa-download me-2"></i>Lưu ảnh</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Try-On Section -->
+
+<!-- Start How It Works Section -->
+<div class="how-it-works-section section-space-y-axis-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="section-heading mb-3">CÁCH SỬ DỤNG</h2>
+                <div class="section-separator mx-auto mb-3"></div>
+                <p class="section-description">Dưới đây là các bước đơn giản để sử dụng tính năng thử mỹ phẩm ảo</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="process-card text-center">
+                    <div class="process-icon-wrapper mb-4">
+                        <div class="process-icon-circle d-flex align-items-center justify-content-center mx-auto rounded-circle bg-primary text-white" style="width: 80px; height: 80px;">
+                            <span class="process-number fs-2 fw-bold">1</span>
+                        </div>
+                    </div>
+                    <h4 class="process-title mb-3">Cho phép truy cập camera</h4>
+                    <p class="process-description">Khi được yêu cầu, hãy cho phép trình duyệt truy cập camera của bạn.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="process-card text-center">
+                    <div class="process-icon-wrapper mb-4">
+                        <div class="process-icon-circle d-flex align-items-center justify-content-center mx-auto rounded-circle bg-primary text-white" style="width: 80px; height: 80px;">
+                            <span class="process-number fs-2 fw-bold">2</span>
+                        </div>
+                    </div>
+                    <h4 class="process-title mb-3">Chọn sản phẩm</h4>
+                    <p class="process-description">Chọn loại sản phẩm bạn muốn thử từ danh sách có sẵn.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="process-card text-center">
+                    <div class="process-icon-wrapper mb-4">
+                        <div class="process-icon-circle d-flex align-items-center justify-content-center mx-auto rounded-circle bg-primary text-white" style="width: 80px; height: 80px;">
+                            <span class="process-number fs-2 fw-bold">3</span>
+                        </div>
+                    </div>
+                    <h4 class="process-title mb-3">Chọn màu sắc</h4>
+                    <p class="process-description">Lựa chọn màu sắc bạn muốn thử từ bảng màu có sẵn.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="process-card text-center">
+                    <div class="process-icon-wrapper mb-4">
+                        <div class="process-icon-circle d-flex align-items-center justify-content-center mx-auto rounded-circle bg-primary text-white" style="width: 80px; height: 80px;">
+                            <span class="process-number fs-2 fw-bold">4</span>
+                        </div>
+                    </div>
+                    <h4 class="process-title mb-3">Thử và mua sắm</h4>
+                    <p class="process-description">Xem kết quả trên khuôn mặt của bạn và mua sắm nếu bạn thích.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End How It Works Section -->
+
+<!-- Start Product Recommendations Section -->
+<div class="product-recommendations-section section-space-y-axis-100 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="section-heading mb-3">SẢN PHẨM BÁN CHẠY</h2>
+                <div class="section-separator mx-auto mb-3"></div>
+                <p class="section-description">Những sản phẩm được yêu thích nhất của chúng tôi</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="product-card bg-white rounded shadow-sm h-100 overflow-hidden">
+                    <div class="product-image position-relative">
+                        <img src="/images/blog/blog-grid-home-1-img-5.jpg" alt="Son môi Soul" class="img-fluid w-100" style="height: 200px; object-fit: cover;">
+                        <div class="product-badges position-absolute top-0 start-0 p-3">
+                            <span class="badge bg-danger">-20%</span>
+                        </div>
+                    </div>
+                    <div class="product-content p-3">
+                        <h4 class="product-title mb-2">Son môi lâu trôi Soul</h4>
+                        <p class="product-description mb-2">Son lì mịn môi, lâu trôi, không khô môi</p>
+                        <div class="product-price mb-3">
+                            <span class="price-current me-2">199.000₫</span>
+                            <span class="price-old text-decoration-line-through text-muted">249.000₫</span>
+                        </div>
+                        <a href="#" class="btn btn-outline-primary w-100">Mua ngay</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="product-card bg-white rounded shadow-sm h-100 overflow-hidden">
+                    <div class="product-image position-relative">
+                        <img src="/images/blog/blog-grid-home-1-img-3.jpg" alt="Phấn mắt Soul" class="img-fluid w-100" style="height: 200px; object-fit: cover;">
+                        <div class="product-badges position-absolute top-0 start-0 p-3">
+                            <span class="badge bg-success">Mới</span>
+                        </div>
+                    </div>
+                    <div class="product-content p-3">
+                        <h4 class="product-title mb-2">Phấn mắt Soul Palette</h4>
+                        <p class="product-description mb-2">Bảng phấn mắt 12 màu với kết cấu mềm mịn, dễ tán</p>
+                        <div class="product-price mb-3">
+                            <span class="price-current me-2">349.000₫</span>
+                        </div>
+                        <a href="#" class="btn btn-outline-primary w-100">Mua ngay</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="product-card bg-white rounded shadow-sm h-100 overflow-hidden">
+                    <div class="product-image position-relative">
+                        <img src="/images/blog/blog-grid-home-1-img-4.jpg" alt="Má hồng Soul" class="img-fluid w-100" style="height: 200px; object-fit: cover;">
+                    </div>
+                    <div class="product-content p-3">
+                        <h4 class="product-title mb-2">Má hồng Soul Blush</h4>
+                        <p class="product-description mb-2">Má hồng dạng kem cho vẻ ửng hồng tự nhiên</p>
+                        <div class="product-price mb-3">
+                            <span class="price-current me-2">229.000₫</span>
+                        </div>
+                        <a href="#" class="btn btn-outline-primary w-100">Mua ngay</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="product-card bg-white rounded shadow-sm h-100 overflow-hidden">
+                    <div class="product-image position-relative">
+                        <img src="/images/blog/blog-grid-home-1-img-2.jpg" alt="Phấn nền Soul" class="img-fluid w-100" style="height: 200px; object-fit: cover;">
+                        <div class="product-badges position-absolute top-0 start-0 p-3">
+                            <span class="badge bg-info">Best Seller</span>
+                        </div>
+                    </div>
+                    <div class="product-content p-3">
+                        <h4 class="product-title mb-2">Phấn nền Soul Cushion</h4>
+                        <p class="product-description mb-2">Phấn nền dạng cushion che phủ hoàn hảo, mỏng nhẹ</p>
+                        <div class="product-price mb-3">
+                            <span class="price-current me-2">399.000₫</span>
+                            <span class="price-old text-decoration-line-through text-muted">429.000₫</span>
+                        </div>
+                        <a href="#" class="btn btn-outline-primary w-100">Mua ngay</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Product Recommendations Section -->
+
+@section Scripts {
+    <script>
+        // Giả lập tính năng AR (trong thực tế sẽ sử dụng thư viện AR chuyên nghiệp)
+        document.addEventListener('DOMContentLoaded', function() {
+            const productSelect = document.getElementById('product-select');
+            const productDescription = document.getElementById('product-description');
+            const colorOptions = document.getElementById('color-options');
+            const startCameraButton = document.getElementById('start-camera');
+            const cameraStream = document.getElementById('camera-stream');
+            const arCanvas = document.getElementById('ar-canvas');
+            const takePhotoButton = document.getElementById('take-photo');
+            const savePhotoButton = document.getElementById('save-photo');
+            let selectedProductId = null;
+            let selectedColor = null;
+            let stream = null;
+
+            // Danh sách sản phẩm (đã được truyền từ controller)
+            const products = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(products));
+
+            // Xử lý khi chọn sản phẩm
+            productSelect.addEventListener('change', function() {
+                selectedProductId = this.value;
+                if (!selectedProductId) {
+                    productDescription.textContent = 'Vui lòng chọn sản phẩm để xem mô tả.';
+                    colorOptions.innerHTML = '<div class="text-center">Vui lòng chọn sản phẩm trước</div>';
+                    return;
+                }
+
+                // Tìm sản phẩm được chọn
+                const selectedProduct = products.find(p => p.Id == selectedProductId);
+                if (selectedProduct) {
+                    // Hiển thị mô tả sản phẩm
+                    productDescription.textContent = selectedProduct.Description;
+
+                    // Hiển thị các tùy chọn màu
+                    colorOptions.innerHTML = '';
+                    selectedProduct.Colors.forEach(color => {
+                        const colorElement = document.createElement('div');
+                        colorElement.className = 'color-option me-2 mb-2';
+                        colorElement.style.width = '30px';
+                        colorElement.style.height = '30px';
+                        colorElement.style.backgroundColor = color;
+                        colorElement.style.borderRadius = '50%';
+                        colorElement.style.cursor = 'pointer';
+                        colorElement.style.border = '1px solid #ddd';
+                        
+                        colorElement.addEventListener('click', function() {
+                            // Bỏ chọn màu hiện tại
+                            document.querySelectorAll('.color-option').forEach(el => {
+                                el.style.border = '1px solid #ddd';
+                            });
+                            
+                            // Chọn màu mới
+                            this.style.border = '2px solid #000';
+                            selectedColor = color;
+                            
+                            // Nếu camera đang bật, áp dụng màu lên canvas
+                            applyColorEffect();
+                        });
+                        
+                        colorOptions.appendChild(colorElement);
+                    });
+                }
+            });
+
+            // Xử lý khi nhấn nút bật camera
+            startCameraButton.addEventListener('click', function() {
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    navigator.mediaDevices.getUserMedia({ video: true })
+                        .then(function(mediaStream) {
+                            stream = mediaStream;
+                            cameraStream.srcObject = mediaStream;
+                            cameraStream.onloadedmetadata = function(e) {
+                                cameraStream.classList.remove('d-none');
+                                document.querySelector('.preview-placeholder').classList.add('d-none');
+                                arCanvas.classList.remove('d-none');
+                                arCanvas.width = cameraStream.videoWidth || 640;
+                                arCanvas.height = cameraStream.videoHeight || 480;
+                                takePhotoButton.disabled = false;
+                            };
+                        })
+                        .catch(function(error) {
+                            console.error('Không thể truy cập camera: ', error);
+                            alert('Không thể truy cập camera. Vui lòng kiểm tra quyền truy cập của trình duyệt.');
+                        });
+                } else {
+                    alert('Trình duyệt của bạn không hỗ trợ API media devices.');
+                }
+            });
+
+            // Xử lý khi nhấn nút chụp ảnh
+            takePhotoButton.addEventListener('click', function() {
+                if (cameraStream.srcObject) {
+                    const ctx = arCanvas.getContext('2d');
+                    // Vẽ hình ảnh từ video lên canvas
+                    ctx.drawImage(cameraStream, 0, 0, arCanvas.width, arCanvas.height);
+                    
+                    // Áp dụng hiệu ứng màu nếu đã chọn
+                    applyColorEffect();
+                    
+                    savePhotoButton.disabled = false;
+                }
+            });
+
+            // Xử lý khi nhấn nút lưu ảnh
+            savePhotoButton.addEventListener('click', function() {
+                if (arCanvas) {
+                    const image = arCanvas.toDataURL('image/png');
+                    const link = document.createElement('a');
+                    link.download = 'soul-virtual-try-on.png';
+                    link.href = image;
+                    link.click();
+                }
+            });
+
+            // Hàm áp dụng hiệu ứng màu lên canvas (giả lập)
+            function applyColorEffect() {
+                if (!selectedColor || !arCanvas.getContext || !cameraStream.srcObject) return;
+                
+                const ctx = arCanvas.getContext('2d');
+                ctx.clearRect(0, 0, arCanvas.width, arCanvas.height);
+                ctx.drawImage(cameraStream, 0, 0, arCanvas.width, arCanvas.height);
+                
+                // Đây chỉ là mô phỏng giản lược - trong thực tế sẽ cần sử dụng thư viện AR chuyên nghiệp
+                // để nhận diện khuôn mặt và áp dụng màu vào đúng vị trí (môi, mắt, má,...)
+                if (selectedProductId == 1) { // Son môi
+                    // Giả lập vẽ son môi (chỉ để mô phỏng)
+                    const centerX = arCanvas.width / 2;
+                    const centerY = arCanvas.height * 0.7;
+                    
+                    ctx.beginPath();
+                    ctx.fillStyle = selectedColor;
+                    ctx.globalAlpha = 0.6; // Độ trong suốt
+                    ctx.ellipse(centerX, centerY, 30, 15, 0, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.globalAlpha = 1.0;
+                } 
+                else if (selectedProductId == 2) { // Phấn mắt
+                    // Giả lập vẽ phấn mắt (chỉ để mô phỏng)
+                    const eyeLeftX = arCanvas.width * 0.35;
+                    const eyeRightX = arCanvas.width * 0.65;
+                    const eyeY = arCanvas.height * 0.4;
+                    
+                    ctx.beginPath();
+                    ctx.fillStyle = selectedColor;
+                    ctx.globalAlpha = 0.5;
+                    ctx.ellipse(eyeLeftX, eyeY, 20, 10, 0, 0, 2 * Math.PI);
+                    ctx.fill();
+                    
+                    ctx.beginPath();
+                    ctx.ellipse(eyeRightX, eyeY, 20, 10, 0, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.globalAlpha = 1.0;
+                }
+                else if (selectedProductId == 3) { // Má hồng
+                    // Giả lập vẽ má hồng (chỉ để mô phỏng)
+                    const cheekLeftX = arCanvas.width * 0.3;
+                    const cheekRightX = arCanvas.width * 0.7;
+                    const cheekY = arCanvas.height * 0.5;
+                    
+                    ctx.beginPath();
+                    ctx.fillStyle = selectedColor;
+                    ctx.globalAlpha = 0.3;
+                    ctx.ellipse(cheekLeftX, cheekY, 25, 25, 0, 0, 2 * Math.PI);
+                    ctx.fill();
+                    
+                    ctx.beginPath();
+                    ctx.ellipse(cheekRightX, cheekY, 25, 25, 0, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.globalAlpha = 1.0;
+                }
+            }
+        });
+    </script>
+} 

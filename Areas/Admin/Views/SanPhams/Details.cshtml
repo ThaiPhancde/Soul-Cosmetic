@@ -1,0 +1,153 @@
+﻿@model MyPhamSoul.Models.SanPham
+
+@{
+    string CurrentMaDM = ViewBag.CurrentMaDM;
+    string CurrentSearch = ViewBag.CurrentSearch;
+    int CurrentPage = ViewBag.CurrentPage;
+    double? CurrentMinPrice = ViewBag.CurrentMinPrice;
+    double? CurrentMaxPrice = ViewBag.CurrentMaxPrice;
+    ViewData["Title"] = "Chi tiết sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="~/Home">Trang chủ</a></li>
+                <a class="breadcrumb-item" asp-area="Admin" asp-controller="SanPhams" asp-action="Index">Danh sách sản phẩm</a>
+                <li class="breadcrumb-item active">Chi tiết sản phẩm</li>
+            </ol>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<div class="card-body">
+    <h3>Thông tin chi tiết của sản phẩm:</h3>
+    <div class="card">
+        <div class="table">
+            <table class="">
+                <tbody>
+                    <tr>
+                        <td>Mã sản phẩm:</td>
+                        <td class="text-dark font-weight-semibold">@Model.MaSanPham</td>
+                    </tr>
+                    <tr>
+                        <td>Tên sản phẩm:</td>
+                        <td class="text-dark font-weight-semibold">@Model.TenSanPham</td>
+                    </tr>
+                    @*<tr>
+                        <td>Màu:</td>
+                        <td>@Model.Mau</td>
+                    </tr>*@
+                    <tr>
+                        <td>Giá:</td>
+                        <td>@Model.Gia.Value.ToString("#,##0") VNĐ</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Số lượng tồn kho:</td>
+                        <td>@Model.Slkho</td>
+                    </tr>
+                    <tr>
+                        <td>Ngày sản xuất:</td>
+                        <td>@Model.NgaySx</td>
+                    </tr>
+                    <tr>
+                        <td>Ngày cập nhật:</td>
+                        <td>@Model.NgaySua</td>
+                    </tr>
+                    <tr>
+                        <td>Lượt mua:</td>
+                        <td>@Model.LuotMua</td>
+                    </tr>
+                    <tr>
+                    <tr>
+                        <td>Ảnh:</td>
+                        <td>  <img src="@Url.Content("~/images/sanPhams/" + Model.Anh)" alt="Ảnh sản phẩm" class="img-thumbnail" style="max-width: 200px; max-height: 100px;" /></td>
+                    </tr>
+                    <tr>
+                        <td>Mô tả:</td>
+                        <td><textarea id="txtDetail" class="form-control" asp-for="MoTa" rows="4" style="height: 119px;"></textarea></td>
+                    </tr>
+                    @*<tr>
+                        <td>Trạng thái:</td>
+                        <td>
+                                @if (Model.Active)
+                                {
+                                <div class="switch m-r-10">
+                                    <input type="checkbox" asp-for="Active" checked="" disabled="">
+                                    <label for="Trạng thái"></label>
+                                </div>
+                                }
+                                else
+                                {
+                                <div class="switch m-r-10">
+                                    <input type="checkbox" asp-for="Active" disabled="">
+                                    <label for="Trạng thái"></label>
+                                </div>
+                                }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Home Flag:</td>
+                        <td>
+                                @if (Model.HomeFlag)
+                                {
+                                <div class="switch m-r-10">
+                                    <input type="checkbox" asp-for="HomeFlag" checked="" disabled="">
+                                    <label for="HomeFlag"></label>
+                                </div>
+                                }
+                                else
+                                {
+                                <div class="switch m-r-10">
+                                    <input type="checkbox" asp-for="HomeFlag" disabled="">
+                                    <label for="HomeFlag"></label>
+                                </div>
+                                }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>BestSellers:</td>
+                        <td>
+                                @if (Model.BestSellers)
+                                {
+                                <div class="switch m-r-10">
+                                    <input type="checkbox" asp-for="BestSellers" checked="" disabled="">
+                                    <label for="Yêu thích"></label>
+                                </div>
+                                }
+                                else
+                                {
+                                <div class="switch m-r-10">
+                                    <input type="checkbox" asp-for="BestSellers" disabled="">
+                                    <label for="Yêu thích"></label>
+                                </div>
+                                }
+                        </td>
+                    </tr>*@
+                    <tr>
+                        <td>
+
+                            <form asp-action="Details" asp-for="MaDanhMuc" asp-route-MaID="@ViewBag.CurrentMaID"  asp-route-page="@ViewBag.CurrentPage" asp-route-MaDM="@ViewBag.CurrentMaDM" asp-route-Search="@ViewBag.CurrentSearch" asp-route-MinPrice="@ViewBag.CurrentMinPrice" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice">
+                                <a asp-action="Edit" class="btn btn-success" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-id="@Model.MaSanPham" asp-route-page="@ViewBag.CurrentPage" asp-route-MaDM="@ViewBag.CurrentMaDM" asp-route-Search="@ViewBag.CurrentSearch" asp-route-MinPrice="@ViewBag.CurrentMinPrice" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice">Sửa thông tin</a> |
+                                <input type="submit" class="btn btn-secondary" id="backToList" value="Trở lại" />
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        // Đảm bảo rằng trang đã tải hoàn toàn trước khi thực thi mã JavaScript
+        $(document).ready(function () {
+            CKEDITOR.replace('txtDetail', {
+                customConfig: '/Content/ckeditor/config.js',
+                extraAllowedContent: 'span',
+            });
+        });
+
+    </script>
+}

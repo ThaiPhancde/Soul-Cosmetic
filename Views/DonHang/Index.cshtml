@@ -1,0 +1,311 @@
+﻿@using PagedList.Core.Mvc
+@model PagedList.Core.IPagedList<MyPhamSoul.Models.DonHang>
+
+@{
+    string Currentid = ViewBag.Currentid;
+    string Currentid1 = ViewBag.Currentid1;
+    string Currentid2 = ViewBag.Currentid2;
+    string Currentid3 = ViewBag.Currentid3;
+    int CurrentPage = ViewBag.CurrentPage;
+    ViewData["Title"] = "Danh sách đơn hàng - Trang " + CurrentPage;
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+}
+<style>
+    table thead th {
+        background-color: #e6e6e6; /* Màu nền của đầu mục */
+        color: #000; /* Màu chữ của đầu mục */
+    }
+</style>
+
+
+<div class="breadcrumb-section breadcrumb-bg-color--golden">
+    <div class="breadcrumb-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="breadcrumb-title">Đơn hàng </h3>
+                    <div class="breadcrumb-nav breadcrumb-nav-color--black breadcrumb-nav-hover-color--golden">
+                        <nav aria-label="breadcrumb">
+                            <ul>
+                                <li><a href="/">Trang chủ</a></li>
+                                
+                                <li class="active" aria-current="page">Lịch sử mua hàng</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="row card-body">
+                        <div class="col-lg-12">
+                            <div class="d-md-flex">
+                                <div>
+                                    <div class="input-group">
+                                        <input style="margin-left:150px;" type="text" class="form-control" placeholder="Tìm theo ID" id="searchId" value="@ViewBag.CurrentMaID" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="input-group">
+                                        <input style="margin-left:10px;" type="text" class="form-control" placeholder="Tìm kiếm theo tên khách hàng" id="searchName" value="@ViewBag.CurrentSearch" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <div an class="input-group">
+                                        <input style="margin-left:10px;" type="number" class="form-control" placeholder="Từ giá" id="minPriceInput" value="@ViewBag.CurrentMinPrice" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="input-group">
+                                        <input style="margin-left:10px;" type="number" class="form-control" placeholder="Đến giá" id="maxPriceInput" value="@ViewBag.CurrentMaxPrice" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="input-group-append">
+                                        <button style="margin-left:10px; height: 40px;" class="btn btn-outline-secondary" type="button" id="searchButton">Tìm kiếm</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="example2" class="table table-bordered table-hover">
+                            <thead>
+                                <tr class="text-center">
+                                    <th>ID</th>
+                                    <th>Người nhận</th>
+                                    <th>Địa chỉ </th>
+                                    <th>Ngày đặt</th>
+                                    <th>Tổng tiền</th>
+                                    <th>Trạng thái</th>
+
+                                    <th>Chức năng</th>
+                                </tr>
+                            </thead>
+                            <tbody id="records_table">
+                                @if (Model != null)
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td class="align-middle text-center">@item.MaDonHang</td>
+
+                                            <td>@item.MaKhachHangNavigation.TenKhachHang</td>
+                                            <td>@item.MaKhachHangNavigation.DiaChi</td>
+
+                                            <td class="align-middle text-center">@item.NgayDatHang.Value.ToString("dd/MM/yyyy")</td>
+                                            <td class="align-middle text-center">@(item.TongThanhToan.HasValue ? item.TongThanhToan.Value.ToString("#,##0") : "0") VNĐ</td>
+                                            <td class="align-middle text-center">
+                                                @if (item.TrangThaiDonHang == 1)
+                                                {
+                                                    <span class=" badge bg-success">Chờ xác nhận</span>
+                                                }
+                                                else if (item.TrangThaiDonHang == 2)
+                                                {
+                                                    <span class="badge bg-warning">Đang vận chuyển</span>
+                                                }
+                                                else if (item.TrangThaiDonHang == 3)
+                                                {
+                                                    <span class="badge bg-primary">Đã giao hàng</span>
+                                                }
+                                                else if (item.TrangThaiDonHang == 4)
+                                                {
+                                                    <span class="badge bg" style="background-color: #c82333">Đã hủy</span>
+                                                }
+                                            </td>
+                                            <td class="text-right">
+                                                @if (item.TrangThaiDonHang == 1)
+                                                {
+                                                    <a class="btn btn-info btn-tone m-r-5" asp-action="ChangeStatus" asp-route-id="@item.MaDonHang" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-page="@ViewBag.CurrentPage" asp-route-MaDM="@ViewBag.CurrentMaDM" asp-route-Search="@ViewBag.CurrentSearch" asp-route-MinPrice="@ViewBag.CurrentMinPrice" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice" style="color: white">Cập nhật trạng thái</a>
+                                                }
+                                                <a class="btn btn-secondary btn-tone m-r-5" asp-action="Details" asp-route-id="@item.MaDonHang" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-page="@ViewBag.CurrentPage" asp-route-MaDM="@ViewBag.CurrentMaDM" asp-route-Search="@ViewBag.CurrentSearch" asp-route-MinPrice="@ViewBag.CurrentMinPrice" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice" style="color: white">Xem đơn hàng</a>
+                                            </td>
+                                          
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        <div aria-label="Page navigation example">
+                            <div class="card-body">
+                                <!-- Mã bảng hiện tại của bạn ở đây -->
+
+                                <div aria-label="Page navigation example" class="d-flex justify-content-center">
+                                    <ul class="pagination">
+                                        <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                            <a class="page-link" asp-action="Index" asp-route-page="1" asp-route-MaID="@ViewBag.Current" aMaIDsp-route-Search="@ViewBag.CurrentSearch" asp-route-MoTa="@ViewBag.CurrentMoTa">Đầu</a>
+                                        </li>
+                                        <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                            <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageNumber - 1)" asp-route-MaID="@ViewBag.Current" aMaIDsp-route-Search="@ViewBag.CurrentSearch" asp-route-MoTa="@ViewBag.CurrentMoTa">Trước</a>
+                                        </li>
+                                        @if (Model.PageCount <= 3)
+                                        {
+                                            for (int page = 1; page <= Model.PageCount; page++)
+                                            {
+                                                <li class="page-item @(page == Model.PageNumber ? "active" : "")">
+                                                    <a class="page-link" asp-action="Index" asp-route-page="@(page)" asp-route-MaID="@ViewBag.Current" aMaIDsp-route-Search="@ViewBag.CurrentSearch" asp-route-MoTa="@ViewBag.CurrentMoTa">@(page)</a>
+                                                </li>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            var startPage = Math.Max(1, Model.PageNumber - 1);
+                                            var endPage = Math.Min(Model.PageCount, startPage + 2);
+
+                                            if (startPage == 2)
+                                            {
+                                                <li class="page-item">
+                                                    <a class="page-link" asp-action="Index" asp-route-page="1" asp-route-MaID="@ViewBag.Current" aMaIDsp-route-Search="@ViewBag.CurrentSearch" asp-route-MoTa="@ViewBag.CurrentMoTa">1</a>
+                                                </li>
+                                            }
+                                            else if (startPage > 2)
+                                            {
+                                                <li class="page-item">
+                                                    <a class="page-link" asp-action="Index" asp-route-page="1" asp-route-MaID="@ViewBag.Current" aMaIDsp-route-Search="@ViewBag.CurrentSearch" asp-route-MoTa="@ViewBag.CurrentMoTa" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice">1</a>
+                                                </li>
+                                                <li class="page-item disabled">
+                                                    <span class="page-link">...</span>
+                                                </li>
+                                            }
+
+                                            for (int page = startPage; page <= endPage; page++)
+                                            {
+                                                <li class="page-item @(page == Model.PageNumber ? "active" : "")">
+                                                    <a class="page-link" asp-action="Index" asp-route-page="@(page)" asp-route-MaID="@ViewBag.Current" aMaIDsp-route-Search="@ViewBag.CurrentSearch" asp-route-MoTa="@ViewBag.CurrentMoTa">@(page)</a>
+                                                </li>
+                                            }
+
+                                            if (endPage == Model.PageCount - 1)
+                                            {
+
+                                                <li class="page-item">
+                                                    <a class="page-link" asp-action="Index" asp-route-page="@Model.PageCount" asp-route-MaID="@ViewBag.Current" aMaIDsp-route-Search="@ViewBag.CurrentSearch" asp-route-MoTa="@ViewBag.CurrentMoTa">@Model.PageCount</a>
+                                                </li>
+                                            }
+                                            else if (endPage < Model.PageCount - 1)
+                                            {
+                                                <li class="page-item disabled">
+                                                    <span class="page-link">...</span>
+                                                </li>
+                                                <li class="page-item">
+                                                    <a class="page-link" asp-action="Index" asp-route-page="@Model.PageCount" asp-route-MaID="@ViewBag.Current" aMaIDsp-route-Search="@ViewBag.CurrentSearch" asp-route-MoTa="@ViewBag.CurrentMoTa">@Model.PageCount</a>
+                                                </li>
+                                            }
+                                        }
+
+                                        <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                            <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageNumber + 1)" asp-route-MaID="@ViewBag.Current" aMaIDsp-route-Search="@ViewBag.CurrentSearch" asp-route-MoTa="@ViewBag.CurrentMoTa">Tiếp</a>
+                                        </li>
+                                        <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                            <a class="page-link" asp-action="Index" asp-route-page="@Model.PageCount" asp-route-MaID="@ViewBag.Current" aMaIDsp-route-Search="@ViewBag.CurrentSearch" asp-route-MoTa="@ViewBag.CurrentMoTa">Cuối</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+</section>
+
+<style>
+    .image-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 999;
+    }
+
+        .image-modal img {
+            max-width: 90%;
+            max-height: 90%;
+        }
+</style>
+
+<script>
+    function updateStatus(donHangId, trangThaiDonHang) {
+        fetch(`/DonHang/UpdateStatus?donHangId=${donHangId}&trangThaiDonHang=${trangThaiDonHang}`, { method: 'POST' })
+            .then(function (response) {
+                if (response.ok) {
+                    location.reload();
+                }
+            });
+    }
+</script>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            // Xử lý sự kiện khi nút Tìm kiếm được nhấn
+            $('#searchButton').click(function () {
+                var search = $('#searchName').val();
+                var MaID = $('#searchId').val();
+                var minPrice = $('#minPriceInput').val();
+                var maxPrice = $('#maxPriceInput').val();
+
+                $.ajax({
+                    url: '/DonHang/Filtter',
+                    datatype: 'json',
+                    type: 'GET',
+                    data: {
+
+                        search: search,
+                        MaID: MaID,
+                        minPrice: minPrice,
+                        maxPrice: maxPrice
+                    },
+                    async: true,
+                    success: function (results) {
+                        if (results.status == 'success') {
+                            window.location.href = results.redirectUrl;
+                        }
+                    },
+                    error: function (xhr) {
+                        alert('error');
+                    }
+                });
+            });
+
+            // Hiển thị ảnh
+            $('.image-link').click(function () {
+                var imageUrl = $(this).data('image-url');
+                if (imageUrl) {
+                    var imageElement = $('<img>').attr('src', imageUrl).attr('alt', 'Hình ảnh sản phẩm');
+                    var modal = $('<div>').addClass('image-modal').append(imageElement);
+                    modal.appendTo('body');
+
+                    modal.click(function (e) {
+                        if (e.target === this) {
+                            modal.remove(); // Đóng modal khi người dùng nhấn vào nó
+                        }
+                    });
+                }
+            });
+            // Nhập số tiền
+        });
+    </script>
+}

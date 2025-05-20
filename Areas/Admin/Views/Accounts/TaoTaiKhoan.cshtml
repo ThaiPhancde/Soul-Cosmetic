@@ -1,0 +1,86 @@
+﻿@model MyPhamSoul.ModelViews.RegisterVM
+
+@{
+    ViewData["Title"] = "Đăng ký tài khoản";
+    Layout = "~/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="card-body custom-card-body">
+    <div class="container">
+        <div class="col-lg-6 col-md-6 mx-auto">
+            <div class="account_form aos-init aos-animate" data-aos="fade-up" data-aos-delay="0">
+                <h3 class="text-center"> Tạo tài khoản</h3>
+                <form asp-controller="Accounts" asp-action="TaoTaiKhoan">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="default-form-box">
+                        <label>Họ và tên</label>
+                        <input type="text" asp-for="TenKhachHang" placeholder="Họ và tên">
+                        <span asp-validation-for="TenKhachHang" class="text-danger"></span>
+                    </div>
+                     <div class="default-form-box">
+                        <label>Ngày sinh</label>
+                        <input type="date" asp-for="NgaySinh" placeholder="Ngày sinh">
+                        <span asp-validation-for="NgaySinh" class="text-danger"></span>
+                    </div>
+                    <div class="default-form-box">
+                        <label>Giới tính</label>
+                        
+                        <select class="custom-select" style="min-width: 200px" asp-for="GioiTinh">
+                            <option selected value="">Chọn giới tính</option>
+                            <option value="true">Nam</option>
+                            <option value="false">Nữ</option>
+                        </select>
+                        <br />
+                        <br />
+                    </div>
+                    <div class="default-form-box">
+                        <label>Địa chỉ Email</label>
+                        <input type="email" asp-for="Email" placeholder="Địa chỉ Email">
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                   
+                    <div class="default-form-box">
+                        <div>
+                            <label>Số điện thoại</label>
+                            <input type="number" asp-for="SoDienThoai" placeholder="Số điện thoại">
+                            <span asp-validation-for="SoDienThoai" class="text-danger"></span>
+                        </div>
+                      
+                    </div>
+                    <div class="default-form-box">
+                        <label>Mật khẩu</label>
+                        <input type="password" asp-for="Password" placeholder="Mật khẩu">
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="default-form-box">
+                        <label>Nhập lại mật khẩu</label>
+                        <input type="password" asp-for="ConfirmPassword" placeholder="Nhập lại mật khẩu">
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+                    <div class="login_submit">
+                        <button class="btn btn-md btn-black-default-hover mb-4" type="submit">Tạo</button>
+                    </div>
+                </form>
+                <div>
+                    <a asp-controller="Accounts" asp-action="Index">Trở lại</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .custom-card-body {
+        padding: 60px; /* Điều chỉnh kích thước padding theo mong muốn */
+    }
+
+    .account_form {
+        margin: 10px; /* Điều chỉnh khoảng cách giữa các yếu tố bên trong */
+    }
+
+    h3 {
+        font-weight: bold;
+    }
+
+</style>

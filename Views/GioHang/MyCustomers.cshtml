@@ -1,0 +1,212 @@
+﻿@model Tuple<List<MyPhamSoul.Models.KhachHang>, MyPhamSoul.Models.GioHang>
+
+@{
+    ViewData["Title"] = "Đơn hàng";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+}
+
+<h2>My Customers</h2>
+
+<!-- Hiển thị thông tin giỏ hàng -->
+<h3>My Shopping Cart</h3>
+
+
+
+
+
+
+
+
+
+
+
+<!-- Hiển thị danh sách KhachHang -->
+
+
+
+<a asp-action="Logout" asp-controller="Account">Logout</a>
+
+
+
+
+<div class="checkout-section">
+    <div class="container">
+
+        <!-- Start User Details Checkout Form -->
+        <div class="checkout_form aos-init aos-animate" data-aos="fade-up" data-aos-delay="400">
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <div class="user-actions accordion aos-init aos-animate" data-aos="fade-up" data-aos-delay="0">
+                        <h3>
+                            <i class="fa fa-file-o" aria-hidden="true"></i>
+                            Chọn địa chỉ
+                            <a class="Returning" href="#" data-bs-toggle="collapse" data-bs-target="#checkout_login" aria-expanded="true">Click here </a>
+                        </h3>
+                        <div id="checkout_login" class="collapse" data-parent="#checkout_login">
+                            <div class="checkout_info">
+                                <p>
+                                    Nếu bạn từng mua hàng trước đây, bạn có thể chọn địa chỉ đã lưu
+                                </p>
+                            </div>@if (Model.Item1.Count > 0)
+                            {
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            
+                                            <th>Tên người nhận</th>
+                                            <th>Số điện thoại</th>
+                                            <th>Địa chỉ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var customer in Model.Item1)
+                                        {
+                                            <tr>
+                                                
+                                                <td>@customer.TenKhachHang</td>
+                                                <td>@customer.SoDienThoai</td>
+                                                <td>@customer.DiaChi</td>
+                                                <td></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                            else
+                            {
+                                <p>No customers found.</p>
+                            }
+
+                        </div>
+                    </div>
+                    <div class="user-actions accordion aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
+                        <h3>
+                            <i class="fa fa-file-o" aria-hidden="true"></i>
+                            Nhập địa chỉ
+                            <a class="Returning" href="#" data-bs-toggle="collapse" data-bs-target="#checkout_coupon" aria-expanded="true">Click here</a>
+
+                        </h3>
+                        <div id="checkout_coupon" class="collapse checkout_coupon" data-parent="#checkout_coupon">
+                            <div class="checkout_info">
+                                <form action="#">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="default-form-box">
+                                                <label>Họ và tên</label>
+                                                <input type="text" name="hoTen">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <div class="default-form-box">
+                                                <label>Địa chỉ <span>*</span></label>
+                                                <input type="text" name="diaChi">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="default-form-box">
+                                                <label>Số điẹn thoại<span>*</span></label>
+                                                <input type="text" name="soDienThoai">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="default-form-box">
+                                                <label> Email<span>*</span></label>
+                                                <input type="text" name="enmail">
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+
+                    <h3>ĐƠN CỦA BẠN</h3>
+                    <div class="order_table table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Sản phẩm</th>
+                                    <th>Tổng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var line in Model.Item2.Lines)
+                                {
+                                    if (line != null) // Kiểm tra line không phải là null
+                                    {
+                                        <tr>
+                                            <td> @line.SanPham.TenSanPham <strong> × @line.SoLuong</strong></td>
+
+                                            <td> @string.Format("{0:#,##0} VNĐ",(line.SoLuong * line.SanPham.Gia ))</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Tổng giỏ hàng</th>
+                                    <td>@string.Format("{0:#,##0} VNĐ",Model.Item2.ComputeTotalValues())</td>
+                                </tr>
+                                <tr>
+                                    <th>Shipping</th>
+                                    <td><strong>10.000 VNĐ</strong></td>
+                                </tr>
+                                <tr class="order_total">
+                                    <th>Thanh toán</th>
+                                    <td><strong>@string.Format("{0:#,##0} VNĐ",Model.Item2.ComputeTotalValues()+10000)</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="payment_method">
+                        <div class="panel-default">
+                            <label class="checkbox-default" for="currencyCod" data-bs-toggle="collapse" data-bs-target="#methodCod">
+                                <input type="checkbox" id="currencyCod">
+                                <span>Thanh toán khi giao hàng</span>
+                            </label>
+
+                            <div id="methodCod" class="collapse" data-parent="#methodCod">
+                                <div class="card-body1">
+                                    <p>
+                                        Please send a check to Store Name, Store Street, Store Town, Store State
+                                        / County, Store Postcode.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-default">
+                            <label class="checkbox-default" for="currencyPaypal" data-bs-toggle="collapse" data-bs-target="#methodPaypal">
+                                <input type="checkbox" id="currencyPaypal">
+                                <span>PayPal</span>
+                            </label>
+                            <div id="methodPaypal" class="collapse " data-parent="#methodPaypal">
+                                <div class="card-body1">
+                                    <p>
+                                        Pay via PayPal; you can pay with your credit card if you don’t have a
+                                        PayPal account.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order_button pt-3">
+                            <button class="btn btn-md btn-black-default-hover" type="submit">
+                                THANH TOÁN
+                            </button>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                
+            </div>
+           
+        </div>
+    </div> <!-- Start User Details Checkout Form -->
+</div>
+</div>

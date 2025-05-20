@@ -1,0 +1,249 @@
+﻿﻿@using PagedList.Core.Mvc
+@model PagedList.Core.IPagedList<MyPhamSoul.Models.SanPham>
+
+@{
+    int? CurrentPage = ViewBag.CurrentPage;
+    ViewData["Title"] = "Danh sách sản phẩm - Trang " + CurrentPage;
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Danh sách sản phẩm</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="~/Home">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">Danh sách sản phẩm : page @CurrentPage</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="row card-body">
+                        <div class="col-md-3">
+                            <div class="col-md-12">
+                                <div class="input-affix m-v-10">
+                                    <i class="prefix-icon anticon anticon-search opacity-04"></i>
+                                    <input id="keyword" name="keyword" type="text" class="form-control" placeholder="Tìm kiếm sản phẩm">
+                                </div>
+                            </div>
+                        </div>
+                    @*    <div class="col-md-2">
+                            <div class="col-md-12">
+                                <div class="input-affix m-v-10">
+                                    <i class="prefix-icon anticon anticon-dollar"></i>
+                                    <input id="priceMin" name="priceMin" type="number" class="form-control" placeholder="Giá tối thiểu">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="col-md-12">
+                                <div class="input-affix m-v-10">
+                                    <i class="prefix-icon anticon anticon-dollar"></i>
+                                    <input id="priceMax" name="priceMax" type="number" class="form-control" placeholder="Giá tối đa">
+                                </div>
+                            </div>
+                        </div>*@
+                        <form asp-controller="SanPhams" asp-action="FindProduct" method="post" class="form-inline">
+                            Nhập tên sản phẩm<input type="text" name="name" asp-route-page="@ViewBag.CurrentPage" /><button>Tìm kiếm</button>
+                        </form>
+                    @*    <button id="searchButton" asp-route-page="@ViewBag.CurrentPage" type="button">Tìm kiếm</button>
+*@
+                        <div class="col-lg-4">
+                            <div class="d-md-flex">
+                                <div class="m-b-8 m-r-10">
+                                    <select class="custom-select" id="txtMaDM" name="txtMaDM" style="min-width: 200px" asp-items="ViewBag.DanhMuc">
+                                        <option selected>Chọn danh mục</option>
+                                        <option value="">Chọn tất cả</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-4 text-right">
+                                    <a class="btn btn-primary" asp-controller="SanPhams" asp-action="Create" asp-route-page="@ViewBag.CurrentPage"><i class="anticon anticon-plus-circle m-r-5"></i> <span>Thêm sản phẩm</span></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="example2" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Ảnh</th>
+                                        <th>Giá</th>
+                                        <th>Tồn kho</th>
+                                        <th>Trạng thái</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="records_table">
+                                    @if (Model != null)
+                                    {
+                                        foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>@item.MaSanPham</td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <h6 class="m-b-0 m-l-10">@item.TenSanPham</h6>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <a href="javascript:void(0);" class="image-link" data-image-url="@Url.Content("~/images/sanPhams/" + item.Anh)">@item.Anh</a>
+                                                </td>
+
+                                                <td>@item.Gia.Value.ToString("#,##0") VNĐ</td>
+                                                <td>@item.Slkho</td>
+                                                <td>
+                                                    @if (item.Slkho.Value > 0)
+                                                    {
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="badge badge-success badge-dot m-r-10">
+                                                                <div>Còn hàng</div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="badge badge-success badge-dot m-r-10">
+                                                                <div>Hết hàng</div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-primary btn-tone m-r-5" asp-action="Details" asp-route-id="@item.MaSanPham" asp-route-page="@ViewBag.CurrentPage">Chi tiết</a>
+                                                    <a class="btn btn-success btn-tone m-r-5" asp-action="Edit" asp-route-id="@item.MaSanPham" asp-route-page="@ViewBag.CurrentPage">Sửa</a>
+                                                    <a class="btn btn-danger btn-tone m-r-5" asp-action="Delete" asp-route-id="@item.MaSanPham" asp-route-page="@ViewBag.CurrentPage">Xóa</a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                            <div aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <pager class="pager-container" list="@Model" asp-area="Admin" asp-controller="SanPhams" asp-route-MaDM="@ViewBag.CurrentMaDM" asp-action="Index" />
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+</section>
+
+<style>
+    .image-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 999;
+    }
+
+        .image-modal img {
+            max-width: 90%;
+            max-height: 90%;
+        }
+</style>
+
+@section Scripts{
+
+    <script>
+        $(document).ready(function () {
+            jQuery("#txtMaDM").change(function () {
+                var maDM = jQuery(this).children(":selected").attr("value");
+
+                $('#txtMaDM option').removeAttr('selected');
+                $("#txtMaDM > [value='" + maDM + "']").attr("selected", "true");
+
+                $.ajax({
+                    url: '/Admin/SanPhams/Filtter',
+                    datatype: "json",
+                    type: "GET",
+                    data: {
+                        MaDM: maDM
+                    },
+                    async: true,
+                    success: function (results) {
+                        if (results.status == "success") {
+                            window.location.href = results.redirectUrl;
+                        }
+                    },
+                    error: function (xhr) {
+                        alert('error');
+                    }
+                });
+            });
+
+            $("#searchButton").click(function () {
+                var keyword = $('#keyword').val();
+                var priceMin = $('#priceMin').val();
+                var priceMax = $('#priceMax').val();
+
+                
+                $.ajax({
+                    url: '/Admin/Search/FindProduct',
+                    datatype: "json",
+                    type: "POST",
+                    data: {
+                        keyword: keyword,
+                        priceMin: priceMin,
+                        priceMax: priceMax
+                    },
+                    async: true,
+                    success: function (results) {
+                        $("#records_table").html(results);
+                    },
+                    error: function (xhr) {
+                        alert('error');
+                    }
+                });
+                localStorage.setItem('searchKeyword', keyword);
+                localStorage.setItem('searchPriceMin', priceMin);
+                localStorage.setItem('searchPriceMax', priceMax);
+            });
+
+            //Hiển thị ảnh
+            $('.image-link').click(function () {
+                var imageUrl = $(this).data('image-url');
+                if (imageUrl) {
+                    var imageElement = $('<img>').attr('src', imageUrl).attr('alt', 'Hình ảnh sản phẩm');
+                    var modal = $('<div>').addClass('image-modal').append(imageElement);
+                    modal.appendTo('body');
+
+                    modal.click(function (e) {
+                        if (e.target === this) {
+                            modal.remove(); // Đóng modal khi người dùng nhấn vào nó
+                        }
+                    });
+                }
+            });
+
+
+        });
+
+    </script>
+}

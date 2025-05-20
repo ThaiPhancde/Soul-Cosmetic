@@ -1,0 +1,44 @@
+﻿@model MyPhamSoul.Models.Hang
+
+@{
+    ViewData["Title"] = "Chi tiết hãng sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="~/Home">Trang chủ</a></li>
+                <a class="breadcrumb-item" asp-area="Admin" asp-controller="Hangs" asp-action="Index">Danh sách hãng sản phẩm</a>
+                <li class="breadcrumb-item active">Chi tiết hãng sản phẩm</li>
+            </ol>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<div class="card-body">
+    <h3>Thông tin chi tiết của hãng sản phẩm:</h3>
+    <div class="card">
+        <div class="table">
+            <table class="">
+                <tbody>
+                    <tr>
+                        <td>Mã hãng sản phẩm:</td>
+                        <td class="text-dark font-weight-semibold">@Model.MaHang</td>
+                    </tr>
+                    <tr>
+                        <td>Tên hãng sản phẩm:</td>
+                        <td class="text-dark font-weight-semibold">@Model.TenHang</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <form asp-action="Index" asp-for="MaHang" asp-route-TenLoai="@ViewBag.CurrentLoai" asp-route-page="@ViewBag.CurrentPage">
+                                <a asp-action="Edit" class="btn btn-success" asp-route-TenLoai="@ViewBag.CurrentLoai" asp-route-id="@Model.MaHang" asp-route-page="@ViewBag.CurrentPage">Sửa thông tin</a> |
+                                <input type="submit" class="btn btn-secondary" id="backToList" value="Trở lại" />
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

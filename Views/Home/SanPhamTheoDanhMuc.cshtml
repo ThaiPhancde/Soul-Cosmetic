@@ -1,0 +1,675 @@
+﻿
+
+@model List<SanPham>
+
+@{
+    ViewData["Title"] = "Chi Tiết Sản Phẩm";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+}
+
+@{
+    var danhMuc = ViewData["DanhMuc"] as DanhMucSanPham;
+}
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Bạn cần bao gói jQuery trong trang -->
+
+
+
+<style>
+
+    .view-all-reviews {
+        margin-left: 170px;
+        font-size: 18px;
+        color: #f5a1a1;
+        font-weight: bold;
+    }
+
+    .view-all-reviews:hover {
+            color: #e01111;
+    }
+
+    
+    .stars input[type="radio"] {
+        display: none;
+    }
+
+    .stars label {
+        font-size: 30px;
+        color: #ccc;
+        cursor: pointer;
+    }
+
+    .stars input[type="radio"]:checked ~ label {
+        color: #ffcc00;
+    }
+
+    .stars label:before {
+        content: '\2605'; /* unicode cho một ngôi sao */
+
+    }
+        .product-variable-color .out-of-stock
+
+    {
+        opacity: 0.5; /* Mờ đi */
+        pointer-events: none; /* Ngăn chặn bấm vào */
+    }
+    }
+</style>
+
+<div class="breadcrumb-section breadcrumb-bg-color--golden">
+    <div class="breadcrumb-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="breadcrumb-title">Shop - @danhMuc.TenDanhMuc</h3>
+                    <div class="breadcrumb-nav breadcrumb-nav-color--black breadcrumb-nav-hover-color--golden">
+                        <nav aria-label="breadcrumb">
+                            <ul>
+                                <li><a href="index.html">Home</a></li>
+                                <li><a href="shop-grid-sidebar-left.html">Shop</a></li>
+                                <li class="active" aria-current="page">@danhMuc.TenDanhMuc</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Start Product Details Section -->
+
+<div class="product-details-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-5 col-lg-6">
+                <div class="product-details-gallery-area" data-aos="fade-up" data-aos-delay="0">
+                    <!-- Start Large Image -->
+                    <div class="product-large-image product-large-image-horaizontal swiper-container">
+                        <div class="swiper-wrapper">
+                            @foreach (var item in Model)
+                            {
+                                <div class="product-image-large-image swiper-slide zoom-image-hover img-responsive">
+                                    <img src="/images/sanPhams/@item.Anh" alt="@item.TenSanPham">
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                    <!-- End Large Image -->
+                    <!-- Start Thumbnail Image -->
+                    <div class="product-image-thumb product-image-thumb-horizontal swiper-container pos-relative mt-5">
+                        <div class="swiper-wrapper">
+                            @foreach (var item in Model)
+                            {
+                                <div class="product-image-thumb-single swiper-slide">
+                                    <img class="img-fluid" src="/images/sanPhams/@item.Anh" alt="@item.TenSanPham">
+                                </div>
+                            }
+
+                        </div>
+                        <!-- Add Arrows -->
+                        <div class="gallery-thumb-arrow swiper-button-next"></div>
+                        <div class="gallery-thumb-arrow swiper-button-prev"></div>
+                    </div>
+                    <!-- End Thumbnail Image -->
+                </div>
+            </div>
+
+
+            <div class="col-xl-7 col-lg-6">
+                <div class="product-details-content-area product-details--golden" data-aos="fade-up"
+                     data-aos-delay="200">
+                    <!-- Start  Product Details Text Area-->
+                    <div class="product-details-text">
+                        <h4 class="title">@danhMuc.TenDanhMuc</h4>
+                        
+                        <del>
+
+                            
+                                <span class="noGiaSP">@string.Format("{0:#,##0} VNĐ",(danhMuc.Gia+15000))</span>
+                                
+                            
+                        </del>
+                         
+                        <div class="price">
+                            
+                            <span class="product-discount-price">@string.Format("{0:#,##0} VNĐ",(danhMuc.Gia))</span>
+                            
+                        </div>
+                        
+                        <p>
+                            @danhMuc.MoTa
+                        </p>
+                    </div> <!-- End  Product Details Text Area-->
+                    <!-- Start Product Variable Area -->
+                    <div class="product-details-variable">
+                        
+                        <!-- Product Variable Single Item -->
+                        <div class="variable-single-item">
+                            <div class="product-stock">      
+                                <div>
+                                    <span class="product-stock-in">
+                                        <i class="ion-checkmark-circled"></i>
+                                    </span>
+                                    <span>Còn lại </span>
+                                    <span class="spkho">...</span>
+                                    <span> sản phẩm</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product Variable Single Item -->
+                        <div class="variable-single-item">
+                            <label class="label">Color: <span class="label__value">11 Fuchsia Vibe</span></label>
+                            <div class="product-variable-color">
+                                @foreach (var item in Model)
+                                {
+                                    bool isOutOfStock = item.Slkho == 0;
+                                    <label for="product-color-@item.Mau" class="@(isOutOfStock ? "out-of-stock" : "")">
+                                        <input name="product-color" id="product-color-@item.Mau" class="color-select" type="checkbox"
+                                               data-product-name="@item.TenSanPham"
+                                               data-product-kho="@item.Slkho"
+                                               data-product-price="@item.Gia"
+                                               data-product-masanpham="@item.MaSanPham"
+                                        @(isOutOfStock ? "disabled" : "")>
+                                        <span style="background-color: @item.Mau;"></span>
+                                    </label>
+                                }
+                            </div>
+
+                            <script>
+
+                                document.addEventListener('DOMContentLoaded', function () {
+                                    var quantityInput = document.getElementById("quantityInput");
+                                    var colorInputs = document.querySelectorAll('.color-select');
+
+                                    // Lắng nghe sự kiện khi số lượng sản phẩm thay đổi
+                                    quantityInput.addEventListener("change", function (event) {
+                                        var selectedColorInput = getSelectedColorInput();
+                                        if (selectedColorInput) {
+                                            var availableQuantity = parseInt(selectedColorInput.getAttribute('data-product-kho'));
+                                            var quantity = parseInt(quantityInput.value);
+                                            if (quantity > availableQuantity) {
+                                                alert('Số lượng sản phẩm không được lớn hơn số lượng trong kho!');
+                                                quantityInput.value = availableQuantity; // Thiết lập lại số lượng nhập thành số lượng trong kho
+                                            }
+                                        }
+                                    });
+
+                                    // Lắng nghe sự kiện khi chọn màu sản phẩm
+                                    colorInputs.forEach(function (colorInput) {
+                                        colorInput.addEventListener("change", function (event) {
+                                            var availableQuantity = parseInt(colorInput.getAttribute('data-product-kho'));
+                                            var quantity = parseInt(quantityInput.value);
+                                            if (quantity > availableQuantity) {
+                                                alert('Số lượng sản phẩm không được lớn hơn số lượng trong kho!');
+                                                quantityInput.value = availableQuantity; // Thiết lập lại số lượng nhập thành số lượng trong kho
+                                            }
+                                        });
+                                    });
+
+                                    // Hàm lấy màu sản phẩm đã chọn
+                                    function getSelectedColorInput() {
+                                        var selectedColorInput = null;
+                                        colorInputs.forEach(function (colorInput) {
+                                            if (colorInput.checked) {
+                                                selectedColorInput = colorInput;
+                                            }
+                                        });
+                                        return selectedColorInput;
+                                    }
+                                });
+
+                                // Lắng nghe sự kiện khi chọn màu
+                                // Lắng nghe sự kiện khi chọn màu
+                                var colorSelects = document.querySelectorAll('.color-select');
+                                colorSelects.forEach(function (colorSelect) {
+                                    colorSelect.addEventListener('change', function (event) {
+                                        var selectedProductName = event.target.getAttribute('data-product-name');
+                                        var selectedKho = event.target.getAttribute('data-product-kho');
+                                        var selectedPrice = parseFloat(event.target.getAttribute('data-product-price')); // Lấy giá sản phẩm
+
+                                        var selectedKhuyenMai = parseFloat(event.target.getAttribute('data-product-khuyenmai')); // Lấy mức khuyến mãi
+
+                                        // Cập nhật tên sản phẩm
+                                        var labelValue = document.querySelector('.label__value');
+                                        labelValue.textContent = selectedProductName;
+                                        // Cập nhật kho
+                                        var khoElement = document.querySelector('.spkho');
+                                        khoElement.textContent = selectedKho;
+
+                                        // Tính toán giá khuyến mãi
+                                        var discountPrice = selectedPrice ;
+
+                                        var price = selectedPrice + 15000;
+
+                                        // Cập nhật giá khuyến mãi
+                                        var discountPriceElement = document.querySelector('.product-discount-price');
+                                        var price1 = document.querySelector('.noGiaSP')
+                                        discountPriceElement.textContent = discountPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                                        price1.textContent = price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                                    });
+                                });
+                                // Lắng nghe sự kiện khi nhấn nút "GIỎ HÀNG"
+                                document.addEventListener('DOMContentLoaded', function () {
+                                    var addToCartButton = document.querySelector('#addToCartButton');
+                                    addToCartButton.addEventListener('click', function (event) {
+                                        event.preventDefault();
+
+                                        // Kiểm tra xem người dùng có được xác thực hay không
+                                        var isAuthenticated = @User.Identity.IsAuthenticated.ToString().ToLower();
+
+                                        if (!isAuthenticated) {
+                                            // Chuyển hướng đến trang đăng nhập
+                                            window.location.href = '/dang-nhap.html'; // Cập nhật URL theo cần thiết
+                                        } else {
+                                            // Lấy giá trị của số lượng sản phẩm
+                                            var quantityInput = document.getElementById("quantityInput");
+                                            var quantity = parseInt(quantityInput.value);
+                                            
+
+                                            // Kiểm tra số lượng nhập vào có lớn hơn số lượng trong kho không
+                                            
+                                            // Kiểm tra xem người dùng đã chọn màu cho sản phẩm chưa
+                                            var selectedColor = document.querySelector('.color-select:checked');
+                                            if (!selectedColor) {
+                                                alert('Bạn chưa chọn màu cho sản phẩm!!!');
+                                                return;
+                                            }
+
+                                            var masanpham = selectedColor.getAttribute('data-product-masanpham');
+
+                                            // Tiếp tục với việc thêm sản phẩm vào giỏ hàng
+                                            $.ajax({
+                                                url: '/GioHang/AddGioHang',
+                                                type: 'POST',
+                                                data: { MaSanPham: masanpham, SoLuong: quantity },
+                                                success: function (data) {
+                                                   
+                                                    location.reload();
+                                                },
+                                                error: function (xhr, status, error) {
+                                                    alert('Số lượng không lớn hơn số lượng sản phẩm trong kho hoặc chưa chọn màu sản phẩm!!!');
+                                                }
+                                            });
+                                        }
+                                    });
+                                });
+
+
+                            </script>
+
+
+                            <script>
+                                // Lắng nghe sự kiện khi chọn màu và chỉ cho phép chọn duy nhất một ô
+                                var colorSelects = document.querySelectorAll('.color-select');
+                                colorSelects.forEach(function (colorSelect) {
+                                    colorSelect.addEventListener('change', function (event) {
+                                        // Bỏ chọn tất cả các ô màu khác
+                                        colorSelects.forEach(function (otherColorSelect) {
+                                            if (otherColorSelect !== event.target) {
+                                                otherColorSelect.checked = false;
+                                            }
+                                        });
+                                    });
+                                });
+                            </script>
+
+                        </div>
+
+                        
+                        <!-- Product Variable Single Item -->
+                        <div class="d-flex align-items-center ">
+                            <div class="variable-single-item">
+                                <span>Số lượng</span>
+                                <div class="product-variable-quantity">
+                                    <input id="quantityInput" min="1" max="100" value="1" type="number">
+                                    <div id="quantityWarning" style="display: none; color: red;">Số lượng sản phẩm phải lớn hơn 0</div>
+                                </div>
+                            </div>
+
+                            <script>
+                                // Lắng nghe sự kiện khi người dùng thay đổi giá trị số lượng
+                                document.getElementById("quantityInput").addEventListener("change", function (event) {
+                                    var input = event.target;
+                                    var warning = document.getElementById("quantityWarning");
+                                    // Kiểm tra nếu giá trị nhỏ hơn 1, hiển thị cảnh báo và thiết lập lại giá trị thành 1
+                                    if (input.value < 1) {
+                                        input.value = 1;
+                                        warning.style.display = "block";
+                                    } else {
+                                        warning.style.display = "none";
+                                    }
+                                });
+
+
+                            </script>
+
+                            @* <div class="product-add-to-cart-btn">
+                                <a href="/GioHang/AddGioHang/?MaSanPham=SP0001" data-bs-toggle="modal" data-bs-target="#modalAddcart">+ THÊM VÀO GIỎ HÀNG</a>
+                            </div> *@
+                            
+                            <div class="product-add-to-cart-btn">
+                                <a href="#" id="addToCartButton">GIỎ HÀNG</a>
+                            </div>
+
+                        </div>
+                        
+                    </div> <!-- End Product Variable Area -->
+                    <!-- Start  Product Details Catagories Area-->
+                   
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Product Details Section -->
+
+
+
+
+<!-- Start Product Content Tab Section -->
+<div class="product-details-content-tab-section section-top-gap-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="product-details-content-tab-wrapper" data-aos="fade-up" data-aos-delay="0">
+
+                    <!-- Start Product Details Tab Button -->
+                    <ul class="nav tablist product-details-content-tab-btn d-flex justify-content-center">
+                        <li>
+                            <a class="nav-link active" data-bs-toggle="tab" href="#description">
+                                Chi tiết
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" data-bs-toggle="tab" href="#specification">
+                                Cách sử dụng
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" data-bs-toggle="tab" href="#review">
+                                Đánh giá
+                            </a>
+                        </li>
+                    </ul> <!-- End Product Details Tab Button -->
+                    <!-- Start Product Details Tab Content -->
+                    <div class="product-details-content-tab">
+                        <div class="tab-content">
+                            <!-- Start Product Details Tab Content Singel -->
+                            <div class="tab-pane active show" id="description">
+                                <div class="single-tab-content-item">
+                                    <p>
+                                        @danhMuc.ChiTiet
+                                    </p>
+                                </div>
+                            </div> <!-- End Product Details Tab Content Singel -->
+                            <!-- Start Product Details Tab Content Singel -->
+                            <div class="tab-pane" id="specification">
+                                <div class="single-tab-content-item">
+                                    
+                                    <p>
+                                        @danhMuc.CachDung
+                                    </p>
+                                </div>
+                            </div> <!-- End Product Details Tab Content Singel -->
+                            <!-- Start Product Details Tab Content Singel -->
+                            <div class="tab-pane" id="review">
+                                <div class="row">
+                                    <!-- Rating -->
+                                    <div class="col-md-3">
+                                        <div id="rating">
+
+                                            @await Component.InvokeAsync("RatingSummary", new { maMon = danhMuc.MaDanhMuc })
+
+
+                                        </div>
+                                    </div>
+                                    <!-- /Rating -->
+                                    <!-- Reviews -->
+                                    <div class="col-md-6">
+                                        <div id="reviews">
+                                           
+                                            @await Component.InvokeAsync("DanhGia", new { maMon = danhMuc.MaDanhMuc })
+                                            <div class="review-body">
+                                                <p>
+                                                    <a href="@Url.Action("Index", "DanhGia", new { maMon = danhMuc.MaDanhMuc })" class="view-all-reviews">Xem tất cả đánh giá...</a>
+                                                </p>
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+                                    <!-- /Reviews -->
+                                    <!-- Review Form -->
+                                    <div class="col-md-3">
+                                        <div id="review-form">
+                                            <form class="review-form" method="post" action="/Home/SubmitReview" enctype="multipart/form-data" onsubmit="return validateForm()">
+                                                <input type="hidden" name="maMon" value="@danhMuc.MaDanhMuc"> <!-- Pass the value of MaMon -->
+                                                <input type="hidden" id="rating" name="rating"> <!-- Hidden input to store rating value -->
+
+                                                <textarea class="input" name="content" placeholder="Viết đánh giá"></textarea>
+                                                <div class="input-rating">
+                                                    <span>Đánh giá: </span>
+                                                    <div class="stars">
+                                                        <input id="star5" name="stars" value="5" type="radio" onclick="updateRating(5)"><label for="star5"></label>
+                                                        <input id="star4" name="stars" value="4" type="radio" onclick="updateRating(4)"><label for="star4"></label>
+                                                        <input id="star3" name="stars" value="3" type="radio" onclick="updateRating(3)"><label for="star3"></label>
+                                                        <input id="star2" name="stars" value="2" type="radio" onclick="updateRating(2)"><label for="star2"></label>
+                                                        <input id="star1" name="stars" value="1" type="radio" onclick="updateRating(1)"><label for="star1"></label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="input-images">
+                                                    <label for="images">Tải lên tối đa 5 ảnh:</label>
+                                                    <input type="file" id="image1" name="image1" accept="image/*">
+                                                    <input type="file" id="image2" name="image2" accept="image/*">
+                                                    <input type="file" id="image3" name="image3" accept="image/*">
+                                                    <input type="file" id="image4" name="image4" accept="image/*">
+                                                    <input type="file" id="image5" name="image5" accept="image/*">
+                                                </div>
+
+                                                <div class="input-video">
+                                                    <label for="video">Tải lên video (chỉ 1 video):</label>
+                                                    <input type="file" id="video" name="video" accept="video/*">
+                                                </div>
+
+                                                <button type="submit" class="primary-btn">Xác nhận</button>
+                                            </form>
+
+                                        </div>
+                                    </div>
+
+
+                                    <script>
+                                        function updateRating(value) {
+                                            document.getElementById('rating').value = value; // Update the hidden input with the selected rating value
+                                        }
+                                        function validateForm() {
+                                            var stars = document.getElementsByName('stars');
+                                            var ratingSelected = false;
+
+                                            for (var i = 0; i < stars.length; i++) {
+                                                if (stars[i].checked) {
+                                                    ratingSelected = true;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (!ratingSelected) {
+                                                alert('Vui lòng chọn số sao khi đánh giá.');
+                                                return false; // Ngăn việc gửi form
+                                            }
+
+                                            return true; // Cho phép gửi form nếu đã chọn đánh giá
+                                        }
+                                    </script>
+                                    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                                    {
+                                        <div class="alert alert-danger" role="alert">
+                                            @ViewBag.ErrorMessage
+                                        </div>
+                                    }
+
+                                    <!-- /Review Form -->
+                                </div>
+                            </div> <!-- End Product Details Tab Content Singel -->
+                        </div>
+                    </div> <!-- End Product Details Tab Content -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!-- End Product Content Tab Section -->
+<!-- Start Product Default Slider Section -->
+<div class="product-default-slider-section section-top-gap-100 section-fluid">
+    <!-- Start Section Content Text Area -->
+    <div class="section-title-wrapper" data-aos="fade-up" data-aos-delay="0">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-content-gap">
+                        <div class="secton-content">
+                            <h3 class="section-title">SẢN PHẨM TƯƠNG TỰ</h3>
+                            
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Start Section Content Text Area -->
+    <div class="product-wrapper" data-aos="fade-up" data-aos-delay="0">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="product-slider-default-1row default-slider-nav-arrow">
+                        <!-- Slider main container -->
+                        <div class="swiper-container product-default-slider-4grid-1row">
+                            <!-- Additional required wrapper -->
+                            <div class="swiper-wrapper">
+                                
+                                <!-- Sử dụng vòng lặp để hiển thị danh sách danh mục -->
+                                @foreach (var item in ViewData["DanhMucList"] as List<DanhMucSanPham>)
+                                {
+                                    <div class="product-default-single-item product-color--golden swiper-slide">
+                                        <div class="image-box">
+                                            <a asp-controller="Home" asp-action="SanPhamTheoDanhMuc" asp-route-maDanhMuc="@item.MaDanhMuc" class="image-link">
+                                                <img src="/images/DanhMucSanPham/@item.HinhAnh" alt="@item.TenDanhMuc">
+                                                
+                                            </a>
+                                            <div class="action-link">
+                                                <div class="action-link-left">
+                                                    <a asp-controller="Home" asp-action="SanPhamTheoDanhMuc" asp-route-maDanhMuc="@item.MaDanhMuc">Mua ngay</a>
+                                                </div>
+                                                <div class="action-link-right">
+                                                    <a href="#" data-bs-toggle="modal"
+                                                       data-bs-target="#modalQuickview">
+                                                        <i class="icon-magnifier"></i>
+                                                    </a>
+                                                    <a href="wishlist.html"><i class="icon-heart"></i></a>
+                                                    <a href="compare.html"><i class="icon-shuffle"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="content">
+                                            <div class="content-left">
+                                                <h6 class="title">
+                                                    <a asp-controller="Home" asp-action="SanPhamTheoDanhMuc" asp-route-maDanhMuc="@item.MaDanhMuc">
+                                                        @item.TenDanhMuc <!-- Hiển thị tên danh mục từ dữ liệu danh mục -->
+                                                    </a>
+                                                </h6>
+                                                <ul class="review-star">
+                                                    <li class="fill"><i class="ion-android-star"></i></li>
+                                                    <li class="fill"><i class="ion-android-star"></i></li>
+                                                    <li class="fill"><i class="ion-android-star"></i></li>
+                                                    <li class="fill"><i class="ion-android-star"></i></li>
+                                                    <li class="empty"><i class="ion-android-star"></i></li>
+                                                </ul>
+                                            </div>
+                                            <div class="content-right">
+                                                <span class="price">@string.Format("{0:#,##0} VNĐ",(item.Gia))</span> <!-- Thay giá bằng giá danh mục nếu có -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+
+                                
+                            </div>
+                        </div>
+                        <!-- If we need navigation buttons -->
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-button-next"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Product Default Slider Section -->
+<!-- Start Modal Add cart -->
+<div class="modal fade" id="modalAddcart" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col text-right">
+                            <button type="button" class="close modal-close" data-bs-dismiss="modal"
+                                    aria-label="Close">
+                                <span aria-hidden="true"> <i class="fa fa-times"></i></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="modal-add-cart-product-img">
+                                        <img class="img-fluid"
+                                             src="/images/product/default/home-1/default-1.jpg" alt="">
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="modal-add-cart-info">
+                                        <i class="fa fa-check-square"></i>Added to cart
+                                        successfully!
+                                    </div>
+                                    <div class="modal-add-cart-product-cart-buttons">
+                                        <a href="cart.html">View Cart</a>
+                                        <a href="checkout.html">Checkout</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5 modal-border">
+                            <ul class="modal-add-cart-product-shipping-info">
+                                <li>
+                                    <strong>
+                                        <i class="icon-shopping-cart"></i> There Are 5 Items In Your
+                                        Cart.
+                                    </strong>
+                                </li>
+                                <li> <strong>TOTAL PRICE: </strong> <span>$187.00</span></li>
+                                <li class="modal-continue-button">
+                                    <a href="#" data-bs-dismiss="modal">
+                                        CONTINUE
+                                        SHOPPING
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!-- End Modal Add cart -->

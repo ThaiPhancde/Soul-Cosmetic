@@ -1,0 +1,620 @@
+﻿@model Tuple<List<MyPhamSoul.Models.KhachHang>, MyPhamSoul.Models.GioHang>
+
+@{
+    ViewData["Title"] = "Đơn hàng";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+}
+
+<style>
+    #newAddressSection {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff; /* Màu nền trắng */
+        padding: 20px; /* Khoảng cách nội dung từ mép ô nhập */
+        border-radius: 10px; /* Góc bo tròn cho ô nhập */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Đổ bóng cho ô nhập */
+        z-index: 1000; /* Đảm bảo ô nhập nổi lên trên các phần khác */
+    }
+
+        #newAddressSection input {
+            width: 100%; /* Chiều rộng 100% */
+            box-sizing: border-box; /* Tính cả border và padding trong chiều rộng */
+            margin-bottom: 15px; /* Khoảng cách giữa các ô nhập */
+            padding: 10px; /* Khoảng cách nội dung từ mép ô nhập pay
+            border: 1px solid #ccc; /* Đường viền ô nhập */
+            border-radius: 5px; /* Góc bo tròn cho ô nhập */
+        }
+</style>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var addAddressButton = document.getElementById("addAddressButton");
+        var newAddressSection = document.getElementById("newAddressSection");
+
+        addAddressButton.addEventListener("click", function () {
+            newAddressSection.style.display = "block";
+        });
+
+        
+    });
+</script>
+
+
+
+@* <script>
+    function saveAddress() {
+        var tenKhachHang = $("#TenKhachHang").val();
+        var diaChi = $("#DiaChi").val();
+        var soDienThoai = $("#SoDienThoai").val();
+        var email = $("#email").val();
+
+        var data = {
+            TenKhachHang: tenKhachHang,
+            DiaChi: diaChi,
+            SoDienThoai: soDienThoai,
+            email: email
+        };
+
+        $.ajax({
+            url: "/GioHang/SaveAddress",
+            type: "POST",
+            data: data,
+            success: function (response) {
+                // Xử lý kết quả thành công
+                console.log("Lưu địa chỉ thành công");
+                window.location.reload(); // Hoặc chuyển hướng đến trang khác nếu cần
+            },
+            error: function (xhr, status, error) {
+                // Xử lý lỗi
+                console.log("Lỗi: " + error);
+            }
+        });
+    }
+</script> *@
+
+    
+
+
+<div class="card card-primary" id="newAddressSection" style="display: none;">
+    <button type="button" class="close ml-auto text-right" aria-label="Close" id="closeAddressSection">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <div class="card-header">
+        <h3 class="card-title">THÊM NGƯỜI NHẬN</h3>
+        
+    </div>
+
+    <div class="container">
+        <div class="card-body">
+
+            <form asp-action="SaveAddress" method="post">
+                <div class="form-group">
+                    <label for="hoTen">Tên người nhận </label>
+                    <input type="text" class="form-control" id="hoTen" name="hoTen" required>
+                </div>
+                <div class="form-group">
+                    <label for="diaChi">Địa chỉ</label>
+                    <input type="text" class="form-control" id="diaChi" name="diaChi" required>
+                </div>
+                <div class="form-group">
+                    <label for="soDienThoai">Số điện thoại</label>
+                    <input type="text" class="form-control" id="soDienThoai" name="soDienThoai" required>
+                </div>
+                
+                <button type="submit" class="btn btn-md btn btn-md btn-golden">Lưu</button>
+            </form>
+            <script>
+                var hoTen = document.getElementById('hoTen').value.trim();
+
+                if (hoTen === '') {
+                event.preventDefault();
+                alert('Vui lòng nhập tên người nhận.');
+                }
+
+                var hoTen = document.getElementById('hoTen').value.trim();
+
+                if (hoTen.length > 50) {
+                    event.preventDefault();
+                    alert('Tên người nhận không được vượt quá 50 ký tự.');
+                }
+
+                var diaChi = document.getElementById('diaChi').value.trim();
+
+                if (diaChi === '') {
+                    event.preventDefault();
+                    alert('Vui lòng nhập địa chỉ.');
+                }
+
+                if (diaChi.length > 200) {
+                    event.preventDefault();
+                    alert('Địa chỉ không được vượt quá 200 ký tự.');
+                }
+
+                var soDienThoai = document.getElementById('soDienThoai').value.trim();
+
+                if (soDienThoai === '') {
+                    event.preventDefault();
+                    alert('Vui lòng nhập số điện thoại.');
+                }
+
+                if (!/^[0-9]{10}$/.test(soDienThoai)) {
+                    event.preventDefault(); // Ngăn chặn việc submit form
+                    alert('Số điện thoại phải gồm đúng 10 chữ số.');
+                    return;
+                }
+            </script>
+        </div>
+        <!-- /.card-body -->
+
+        
+    </div>
+
+   
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var addAddressButton = document.getElementById("addAddressButton");
+        var newAddressSection = document.getElementById("newAddressSection");
+        var closeAddressSection = document.getElementById("closeAddressSection");
+
+        addAddressButton.addEventListener("click", function () {
+            newAddressSection.style.display = "block";
+        });
+
+        closeAddressSection.addEventListener("click", function () {
+            newAddressSection.style.display = "none";
+        });
+    });
+</script>
+
+
+
+<div class="breadcrumb-section breadcrumb-bg-color--golden">
+    <div class="breadcrumb-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="breadcrumb-title">THANH TOÁN</h3>
+                    <div class="breadcrumb-nav breadcrumb-nav-color--black breadcrumb-nav-hover-color--golden">
+                        <nav aria-label="breadcrumb">
+                            <ul>
+                                <li><a href="/Home">Trang chủ</a></li>
+                                
+                                <li class="active" aria-current="page">Thanh toán</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<div class="checkout-section">
+    <div class="container">
+
+        <!-- Start User Details Checkout Form -->
+        <div class="checkout_form aos-init aos-animate" data-aos="fade-up" data-aos-delay="400">
+            <form asp-action="ThanhToan" method="post" asp-controller="GioHang">
+            <div class="row">
+
+                
+
+                <div class="col-lg-6 col-md-6">
+                    <h3>ĐỊA CHỈ</h3>
+                    <div class="order_table table-responsive">
+                        @if (Model.Item1.Count > 0)
+                        {
+                           
+                                <table class="table">
+                                <thead>
+                                    <tr>
+
+                                        <th>Tên người nhận</th>
+                                        <th>Số điện thoại</th>
+                                        <th>Địa chỉ</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var customer in Model.Item1)
+                                    {
+                                        <tr>
+
+                                            <td>@customer.TenKhachHang</td>
+                                            <td>@customer.SoDienThoai</td>
+                                            <td>@customer.DiaChi</td>
+                                                <td>
+                                                    <input type="radio" name="selectedKhachHang" value="@customer.MaKhachHang" />
+                                                </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            
+                            
+
+                                <button id="addAddressButton" class="btn btn-md btn btn-md btn-golden" type="button">Thêm địa chỉ</button>
+                        }
+                        else
+                        {
+                            <p>No customers found.</p>
+                                <button id="addAddressButton" class="btn btn-md btn btn-md btn-golden" type="button">Thêm địa chỉ</button>
+                        }
+                    </div>              
+                </div>
+                
+  
+               
+                <div class="col-lg-6 col-md-6">
+
+                    <h3>ĐƠN CỦA BẠN</h3>
+                    <div class="order_table table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Sản phẩm</th>
+                                    <th>Tổng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var line in Model.Item2.Lines)
+                                {
+                                    if (line != null) // Kiểm tra line không phải là null
+                                    {
+                                        <tr>
+                                            <td> @line.SanPham.TenSanPham <strong> × @line.SoLuong</strong></td>
+
+                                            <td> @string.Format("{0:#,##0} VNĐ",(line.SoLuong * line.SanPham.Gia))</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Tổng giỏ hàng</th>
+                                    <td>@string.Format("{0:#,##0} VNĐ",Model.Item2.ComputeTotalValues())</td>
+                                </tr>
+                                    <tr>
+                                        <th>Giảm giá</th>
+                                        <td>@string.Format("{0:#,##0} VNĐ", Model.Item2.TienGiam)</td>
+                                    </tr>
+                                <tr>
+                                    <th>Phí vận chuyển</th>
+                                        <td><strong>@string.Format("{0:#,##0} VNĐ", Model.Item2.PhiVanChuyen)</strong></td>
+                                </tr>
+                                <tr class="order_total">
+                                    <th>Tổng thanh toán</th>
+                                    <td><strong>@string.Format("{0:#,##0} VNĐ",Model.Item2.TongTienThanhToan)</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="payment_method">
+                        @*<div class="panel-default">
+                            <label class="checkbox-default" for="currencyCod" data-bs-toggle="collapse" data-bs-target="#methodCod">
+                                <input type="checkbox" id="currencyCod">
+                                <span>Thanh toán khi giao hàng</span>
+                            </label>
+
+                            <div id="methodCod" class="collapse" data-parent="#methodCod">
+                                <div class="card-body1">
+                                    <p>
+                                        Please send a check to Store Name, Store Street, Store Town, Store State
+                                        / County, Store Postcode.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-default">
+                            <label class="checkbox-default" for="currencyPaypal" data-bs-toggle="collapse" data-bs-target="#methodPaypal">
+                                <input type="checkbox" id="currencyPaypal">
+                                <span>PayPal</span>
+                            </label>
+                            <div id="methodPaypal" class="collapse " data-parent="#methodPaypal">
+                                <div class="card-body1">
+                                    <p>
+                                        Pay via PayPal; you can pay with your credit card if you don't have a
+                                        PayPal account.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>*@
+                        <div class="order_button pt-3">
+                            <input type="submit" name="payment" class="btn btn-md btn-black-default-hover" type="submit" value="Thanh toán tiền mặt">
+                            <div id="paypal-button-container" style="max-width:1000px; margin-top:15px;"></div>
+                        </div>
+
+                        <script>
+                                document.addEventListener('DOMContentLoaded', function () {
+                                var paymentButtons = document.querySelectorAll('.btn.btn-md.btn-black-default-hover[name="payment"]');
+                                var addressRadios = document.querySelectorAll('input[name="selectedKhachHang"]');
+
+                                paymentButtons.forEach(function (button) {
+                                button.addEventListener('click', function (event) {
+                                var checkedAddress = false;
+                                addressRadios.forEach(function (radio) {
+                                if (radio.checked) {
+                                checkedAddress = true;
+                                }
+                                });
+
+                                if (!checkedAddress) {
+                                event.preventDefault();
+                                alert('Vui lòng chọn địa chỉ giao hàng trước khi thanh toán.');
+                                }
+                                });
+                                });
+                                });
+
+                            </script>
+                    </div>
+
+
+                </div>
+
+                
+            </div>
+            </form>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12 mb-60" style="margin-left: 15px; display: flex;">
+
+                    <form id="voucherForm" method="post" action="/GioHang/CheckOut">
+                        <div class="form-group">
+                            <label style="color: #D10024; font-size: 17px; font-weight: bold; text-align: center; margin-top: 10px; margin-left: 230px;" for="MaKM">KHUYẾN MÃI:</label>
+                            <div style="display:flex;">
+                                <button style="height: 35px; margin-right: 20px; margin-top: 1px;" type="button" id="selectVoucherButton">
+                                    Chọn voucher
+                                </button>
+                                <input style="width: 250px; margin-top: 2px;" type="text" class="form-control" id="MaKM" name="MaKM" value="@ViewBag.MaKM">
+                                <button style="margin-left: 20px;" type="submit" class="btn btn-primary">Áp dụng</button>
+                            </div>
+                        </div>
+
+                    </form>
+
+                    <script>
+                        document.getElementById("selectVoucherButton").addEventListener("click", function () {
+                            // Chuyển hướng đến trang hiển thị danh sách voucher
+                            window.location.href = "/KhuyenMai";
+                        });
+                    </script>
+                    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @ViewBag.ErrorMessage
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div> <!-- Start User Details Checkout Form -->
+</div>
+
+@section Scripts {
+    <script src="https://www.paypal.com/sdk/js?client-id=@ViewBag.PaypalClientdId&currency=USD&intent=capture"></script>
+    <script>
+        // Kiểm tra chọn địa chỉ trước khi khởi tạo PayPal
+        let addressSelected = false;
+        const addressRadios = document.querySelectorAll('input[name="selectedKhachHang"]');
+        
+        // Theo dõi trạng thái chọn địa chỉ
+        addressRadios.forEach(function(radio) {
+            if (radio.checked) {
+                addressSelected = true;
+                document.getElementById('paypal-button-container').style.display = 'block';
+            }
+            
+            radio.addEventListener('change', function() {
+                if (this.checked) {
+                    addressSelected = true;
+                    // Hiển thị nút PayPal khi đã chọn địa chỉ
+                    document.getElementById('paypal-button-container').style.display = 'block';
+                }
+            });
+        });
+        
+        // Ẩn nút PayPal ban đầu nếu chưa chọn địa chỉ
+        document.getElementById('paypal-button-container').style.display = addressSelected ? 'block' : 'none';
+
+        // Thêm biến để theo dõi quá trình thanh toán
+        let isProcessingPayment = false;
+
+        paypal.Buttons({
+            style: {
+                layout: 'vertical',
+                color: 'gold',
+                shape: 'rect',
+                label: 'paypal'
+            },
+            createOrder: function(data, actions) {
+                // Ngăn chặn xử lý thanh toán nhiều lần
+                if (isProcessingPayment) {
+                    console.log("Đang xử lý thanh toán, vui lòng đợi...");
+                    return null;
+                }
+                
+                // Kiểm tra xem đã chọn địa chỉ chưa
+                if (!addressSelected) {
+                    alert('Vui lòng chọn địa chỉ giao hàng trước khi thanh toán.');
+                    return null;
+                }
+                
+                // Hiển thị thông báo đang xử lý
+                const paypalButtonContainer = document.getElementById('paypal-button-container');
+                if (!document.getElementById('processing-start-message')) {
+                    const processingStartMessage = document.createElement('div');
+                    processingStartMessage.id = 'processing-start-message';
+                    processingStartMessage.style.textAlign = 'center';
+                    processingStartMessage.style.marginTop = '10px';
+                    processingStartMessage.style.padding = '10px';
+                    processingStartMessage.style.backgroundColor = '#fff3cd';
+                    processingStartMessage.style.borderRadius = '5px';
+                    processingStartMessage.innerHTML = '<span style="color:#856404;font-weight:bold;">Đang khởi tạo đơn hàng PayPal...</span>';
+                    paypalButtonContainer.parentNode.insertBefore(processingStartMessage, paypalButtonContainer.nextSibling);
+                }
+                
+                isProcessingPayment = true;
+                
+                return fetch("/GioHang/create-paypal-order", {
+                    method: "post",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(function(response) {
+                    // Xóa thông báo khởi tạo
+                    const processingStartMsg = document.getElementById('processing-start-message');
+                    if (processingStartMsg) processingStartMsg.remove();
+                    
+                    if (!response.ok) {
+                        isProcessingPayment = false;
+                        return response.json().then(function(error) { 
+                            console.error("Error response:", error);
+                            throw error; 
+                        });
+                    }
+                    return response.json();
+                })
+                .then(function(order) {
+                    console.log("Order created:", order);
+                    return order.id;
+                })
+                .catch(function(error) {
+                    isProcessingPayment = false;
+                    console.error("Create order error:", error);
+                    alert("Có lỗi xảy ra khi tạo đơn hàng: " + (error.message || "Vui lòng thử lại sau"));
+                    return null;
+                });
+            },
+            onApprove: function(data, actions) {
+                console.log("Payment approved, capturing payment...");
+                // Hiển thị trạng thái đang xử lý
+                const paypalButtonContainer = document.getElementById('paypal-button-container');
+                const processingMessage = document.createElement('div');
+                processingMessage.id = 'processing-message';
+                processingMessage.style.textAlign = 'center';
+                processingMessage.style.marginTop = '10px';
+                processingMessage.style.padding = '10px';
+                processingMessage.style.backgroundColor = '#fff3cd';
+                processingMessage.style.borderRadius = '5px';
+                processingMessage.innerHTML = '<span style="color:#856404;font-weight:bold;">Đang xử lý thanh toán, vui lòng đợi...</span>';
+                
+                paypalButtonContainer.parentNode.insertBefore(processingMessage, paypalButtonContainer.nextSibling);
+                
+                return fetch('/GioHang/capture-paypal-order', {
+                    method: "post",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        orderID: data.orderID
+                    })
+                })
+                .then(function(response) {
+                    if (!response.ok) {
+                        return response.json().then(function(error) { 
+                            console.error("Capture error response:", error);
+                            throw error; 
+                        });
+                    }
+                    return response.json();
+                })
+                .then(function(captureData) {
+                    console.log("Payment captured:", captureData);
+                    // Hiển thị thông báo thành công
+                    const processingMsg = document.getElementById('processing-message');
+                    if (processingMsg) {
+                        processingMsg.style.backgroundColor = '#d4edda';
+                        processingMsg.innerHTML = '<span style="color:#155724;font-weight:bold;">Thanh toán thành công! Đang chuyển hướng...</span>';
+                    }
+                    
+                    // Đổi địa chỉ tới action thông báo thành công sau 2 giây
+                    setTimeout(function() {
+                        window.location.href = "/GioHang/PaymentSuccess";
+                    }, 2000);
+                })
+                .catch(function(error) {
+                    isProcessingPayment = false;
+                    console.error("Capture error:", error);
+                    // Xóa thông báo đang xử lý
+                    const processingMsg = document.getElementById('processing-message');
+                    if (processingMsg) {
+                        processingMsg.style.backgroundColor = '#f8d7da';
+                        processingMsg.innerHTML = '<span style="color:#721c24;font-weight:bold;">Lỗi: ' + (error.message || "Không thể xử lý thanh toán") + '</span>';
+                    }
+                    
+                    alert("Có lỗi xảy ra khi xử lý thanh toán: " + (error.message || "Vui lòng thử lại sau"));
+                });
+            },
+            onCancel: function(data) {
+                console.log("Payment cancelled:", data);
+                isProcessingPayment = false;
+                const processingMsg = document.getElementById('processing-message');
+                if (processingMsg) processingMsg.remove();
+                
+                const startMsg = document.getElementById('processing-start-message');
+                if (startMsg) startMsg.remove();
+                
+                // Hiển thị thông báo hủy
+                const paypalButtonContainer = document.getElementById('paypal-button-container');
+                const cancelMessage = document.createElement('div');
+                cancelMessage.id = 'cancel-message';
+                cancelMessage.style.textAlign = 'center';
+                cancelMessage.style.marginTop = '10px';
+                cancelMessage.style.padding = '10px';
+                cancelMessage.style.backgroundColor = '#fff3cd';
+                cancelMessage.style.borderRadius = '5px';
+                cancelMessage.innerHTML = '<span style="color:#856404;">Bạn đã hủy thanh toán qua PayPal</span>';
+                
+                paypalButtonContainer.parentNode.insertBefore(cancelMessage, paypalButtonContainer.nextSibling);
+                
+                // Xóa thông báo sau 5 giây
+                setTimeout(function() {
+                    const cancelMsg = document.getElementById('cancel-message');
+                    if (cancelMsg) cancelMsg.remove();
+                }, 5000);
+            },
+            onError: function(err) {
+                console.error("PayPal error:", err);
+                isProcessingPayment = false;
+                const processingMsg = document.getElementById('processing-message');
+                if (processingMsg) processingMsg.remove();
+                
+                const startMsg = document.getElementById('processing-start-message');
+                if (startMsg) startMsg.remove();
+                
+                // Hiển thị thông báo lỗi
+                const paypalButtonContainer = document.getElementById('paypal-button-container');
+                const errorMessage = document.createElement('div');
+                errorMessage.id = 'error-message';
+                errorMessage.style.textAlign = 'center';
+                errorMessage.style.marginTop = '10px';
+                errorMessage.style.padding = '10px';
+                errorMessage.style.backgroundColor = '#f8d7da';
+                errorMessage.style.borderRadius = '5px';
+                errorMessage.innerHTML = '<span style="color:#721c24;font-weight:bold;">Lỗi PayPal: ' + err + '</span>';
+                
+                paypalButtonContainer.parentNode.insertBefore(errorMessage, paypalButtonContainer.nextSibling);
+                
+                alert("Có lỗi xảy ra với PayPal: " + err);
+            }
+        }).render('#paypal-button-container');
+    </script>
+}

@@ -1,0 +1,385 @@
+﻿@model MyPhamSoul.Models.GioHang
+@{
+    ViewData["Title"] = "Gio Hang";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+
+}
+<style>
+    /* Lớp CSS cho toàn bộ ô số lượng */
+
+    .thumbnail-image {
+        max-width: 100px;
+        max-height: 100px;
+    }
+
+
+    /* Lớp CSS cho container của nút cộng và trừ */
+    .quantity-container {
+        display: flex;
+        align-items: center;
+    }
+
+    /* Lớp CSS cho nút cộng và trừ */
+    .quantity-button {
+        background-color: #b19361; /* Màu nền vàng */
+        color: white; /* Màu chữ trắng */
+        font-weight: bold; /* Làm cho chữ đậm hơn */
+        padding: 10px; /* Điều chỉnh khoảng cách bên trong nút */
+
+
+        cursor: pointer; /* Biểu tượng con trỏ khi đưa chuột vào nút */
+    }
+
+    /* Lớp CSS cho trường nhập số */
+    .quantity-input {
+        background-color: white; /* Màu nền trắng */
+        color: black; /* Màu chữ đen */
+    }
+
+</style>
+
+
+@if (Model == null || Model.Lines.Count == 0)
+{
+    <div class="breadcrumb-section breadcrumb-bg-color--golden">
+        <div class="breadcrumb-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h3 class="breadcrumb-title">Giỏ hàng rỗng!!!</h3>
+                        <div class="breadcrumb-nav breadcrumb-nav-color--black breadcrumb-nav-hover-color--golden">
+                            <nav aria-label="breadcrumb">
+                                <ul>
+                                    <li><a href="index.html">Home</a></li>
+                                    <li><a href="shop-grid-sidebar-left.html">Shop</a></li>
+                                    <li class="active" aria-current="page">Giỏ hàng rỗng</li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="empty-cart-section section-fluid">
+        <div class="emptycart-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-md-10 offset-md-1 col-xl-6 offset-xl-3">
+                        <div class="emptycart-content text-center">
+                            <div class="image">
+                                <img class="img-fluid" src="/images/emprt-cart/empty-cart.png" alt="">
+                            </div>
+                            <h4 class="title">Giỏ hàng của bạn đang trống</h4>
+                            <h6 class="sub-title">Không có sản phẩm nào trong giỏ hàng của bạn!</h6>
+                            <a href="/Home/DanhMucSanPham" class="btn btn-lg btn-golden">Tiếp tục mua sắm</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="breadcrumb-section breadcrumb-bg-color--golden">
+        <div class="breadcrumb-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h3 class="breadcrumb-title">Giỏ hàng</h3>
+                        <div class="breadcrumb-nav breadcrumb-nav-color--black breadcrumb-nav-hover-color--golden">
+                            <nav aria-label="breadcrumb">
+                                <ul>
+                                    <li><a href="/Home">Trang chủ</a></li>
+                                    
+                                    <li class="active" aria-current="page">Giỏ hàng</li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="cart-section">
+        <!-- Start Cart Table -->
+        <div class="cart-table-wrapper" data-aos="fade-up" data-aos-delay="0">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table_desc">
+                            <div class="table_page table-responsive">
+                                <table>
+                                    <!-- Start Cart Table Head -->
+                                    <thead>
+                                        <tr>
+                                            <th class="product_remove">Xóa</th>
+                                            <th class="product_thumb">Hình Ảnh</th>
+                                            <th class="product_name">Sản phẩm</th>
+                                            <th class="product-price">Giá</th>
+                                            <th class="product_quantity">Số lượng</th>
+                                            <th class="product_total">Tổng</th>
+                                        </tr>
+                                    </thead> <!-- End Cart Table Head -->
+                                    <tbody id="cart-items">
+                                        @if (Model?.Lines != null) // Kiểm tra Model và Model.Lines không phải là null
+                                        {
+                                            @foreach (var line in Model.Lines)
+                                            {
+                                                if (line != null) // Kiểm tra line không phải là null
+                                                {
+                                                    <!-- Start Cart Single Item-->
+                                                    <tr id="cart-item-@line.SanPham.MaSanPham">
+                                                        <td class="product_remove">
+                                                            <a href="#" class="remove-item" data-ma-san-pham="@line.SanPham.MaSanPham"><i class="fa fa-trash-o"></i></a>
+                                                        </td>
+
+                                                        <td class="product_thumb">
+                                                            <a href="#">
+
+                                                                <img src="/images/sanPhams/@line.SanPham.Anh" alt="" class="thumbnail-image">
+                                                            </a>
+                                                        </td>
+                                                        <td class="product_name">
+                                                            <a href="product-details-default.html">
+                                                                @line.SanPham.TenSanPham
+                                                            </a>
+                                                        </td>
+                                                        <td class="product-price">@string.Format("{0:#,##0} VNĐ", (line.SanPham.Gia))</td>
+
+                                                        <td class="product_quantity">
+                                                            <div class="quantity-controls">
+                                                                <a href="#" class="quantity-button quantity-decrease" data-ma-san-pham="@line.SanPham.MaSanPham">-</a>
+                                                                <input min="1" value="@line.SoLuong" id="quantity-@line.SanPham.MaSanPham" class="quantity-input" data-max-quantity="@line.SanPham.Slkho" onkeypress="return handleKeyPress(event)">
+                                                                <input type="hidden" name="name" value="@line.SanPham.Slkho" />
+                                                                <a href="#" class="quantity-button quantity-increase" data-ma-san-pham="@line.SanPham.MaSanPham">+</a>
+                                                                <div id="quantityWarning-@line.SanPham.MaSanPham" style="display: none; color: red;">Số lượng sản phẩm phải lớn hơn 0 và không vượt quá số lượng trong kho!!!</div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="product_total" id="product-total-@line.SanPham.MaSanPham">@string.Format("{0:#,##0} VNĐ", (line.SoLuong * line.SanPham.Gia))</td>
+                                                    </tr> <!-- End Cart Single Item-->
+                                                }
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="cart_submit">
+                                <a href="/Home/DanhMucSanPham" class="btn btn-md btn-golden">Tiếp tục mua sắm</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- End Cart Table -->
+
+        <!-- Start Coupon Start -->
+        <div class="coupon_area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="coupon_code left" data-aos="fade-up" data-aos-delay="200">
+                            <h3>Mã giảm giá</h3>
+                            <div class="coupon_inner">
+                                <p>Nhập mã khuyến mãi của bạn.</p>
+                                <input class="mb-2" placeholder="Mã khuyến mãi" type="text">
+                                <button type="submit" class="btn btn-md btn-golden">Áp dụng</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="coupon_code right" data-aos="fade-up" data-aos-delay="400">
+                            <h3>Tổng giỏ hàng</h3>
+                            <div class="coupon_inner">
+                                <div class="cart_subtotal">
+                                    <p>Tổng phụ</p>
+                                    <p class="cart_amount" id="subtotal">@string.Format("{0:#,##0} VNĐ", Model.ComputeTotalValues())</p>
+                                </div>
+                                <div class="cart_subtotal ">
+                                    <p>Phí vận chuyển</p>
+                                    <p class="cart_amount"><span>Phí cố định:</span> 10,000 VNĐ</p>
+                                </div>
+                                
+                                <div class="cart_subtotal">
+                                    <p>Tổng cộng</p>
+                                    <p class="cart_amount" id="total">@string.Format("{0:#,##0} VNĐ", Model.ComputeTotalValues() + 10000)</p>
+                                </div>
+                                <div class="checkout_btn">
+                                    <a href="/GioHang/CheckOut/?maKM=0" class="btn btn-md btn-golden">Tiến hành thanh toán</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- End Coupon Start -->
+    </div>
+}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Tăng số lượng sản phẩm
+        var increaseButtons = document.querySelectorAll('.quantity-increase');
+        increaseButtons.forEach(function (button) {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+                var maSanPham = button.getAttribute('data-ma-san-pham');
+                var quantityInput = document.getElementById('quantity-' + maSanPham);
+                var currentQuantity = parseInt(quantityInput.value);
+                var maxQuantity = parseInt(quantityInput.getAttribute('data-max-quantity'));
+                
+                if (currentQuantity < maxQuantity) {
+                    // Gửi yêu cầu thêm sản phẩm vào giỏ hàng với Ajax
+                    $.ajax({
+                        url: '/GioHang/AddGioHang1',
+                        type: 'POST',
+                        data: { maSanPham: maSanPham },
+                        success: function (data) {
+                            // Cập nhật số lượng hiển thị
+                            quantityInput.value = currentQuantity + 1;
+                            // Cập nhật tổng tiền của sản phẩm
+                            updateCartTotals();
+                        },
+                        error: function (xhr, status, error) {
+                            alert('Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng');
+                        }
+                    });
+                } else {
+                    // Hiển thị cảnh báo khi vượt quá số lượng trong kho
+                    document.getElementById('quantityWarning-' + maSanPham).style.display = 'block';
+                    setTimeout(function() {
+                        document.getElementById('quantityWarning-' + maSanPham).style.display = 'none';
+                    }, 3000);
+                }
+            });
+        });
+
+        // Giảm số lượng sản phẩm
+        var decreaseButtons = document.querySelectorAll('.quantity-decrease');
+        decreaseButtons.forEach(function (button) {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+                var maSanPham = button.getAttribute('data-ma-san-pham');
+                var quantityInput = document.getElementById('quantity-' + maSanPham);
+                var currentQuantity = parseInt(quantityInput.value);
+                
+                if (currentQuantity > 1) {
+                    // Gửi yêu cầu giảm số lượng sản phẩm với Ajax
+                    $.ajax({
+                        url: '/GioHang/Remove_1_FromGioHang',
+                        type: 'POST',
+                        data: { maSanPham: maSanPham },
+                        success: function (data) {
+                            // Cập nhật số lượng hiển thị
+                            quantityInput.value = currentQuantity - 1;
+                            // Cập nhật tổng tiền của sản phẩm
+                            updateCartTotals();
+                        },
+                        error: function (xhr, status, error) {
+                            alert('Đã xảy ra lỗi khi cập nhật giỏ hàng');
+                        }
+                    });
+                }
+            });
+        });
+
+        // Xóa sản phẩm khỏi giỏ hàng
+        var removeButtons = document.querySelectorAll('.remove-item');
+        removeButtons.forEach(function (button) {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+                var maSanPham = button.getAttribute('data-ma-san-pham');
+                
+                // Gửi yêu cầu xóa sản phẩm với Ajax
+                $.ajax({
+                    url: '/GioHang/RemoveFromGioHang',
+                    type: 'GET',
+                    data: { maSanPham: maSanPham },
+                    success: function (data) {
+                        // Xóa dòng sản phẩm khỏi DOM
+                        document.getElementById('cart-item-' + maSanPham).remove();
+                        // Cập nhật tổng tiền
+                        updateCartTotals();
+                        
+                        // Kiểm tra nếu giỏ hàng trống, tải lại trang
+                        if (document.querySelectorAll('#cart-items tr').length === 0) {
+                            location.reload();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Đã xảy ra lỗi khi xóa sản phẩm khỏi giỏ hàng');
+                    }
+                });
+            });
+        });
+
+        // Xử lý nhập số lượng bằng bàn phím
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+
+                var quantityInput = event.target;
+                var quantity = parseInt(quantityInput.value);
+                var maxQuantity = parseInt(quantityInput.getAttribute('data-max-quantity'));
+                var maSanPham = quantityInput.getAttribute('id').replace('quantity-', '');
+
+                // Kiểm tra nếu số lượng hợp lệ
+                if (quantity >= 1 && quantity <= maxQuantity) {
+                    updateQuantity(maSanPham, quantity);
+                } else {
+                    // Hiển thị cảnh báo số lượng không hợp lệ
+                    document.getElementById('quantityWarning-' + maSanPham).style.display = 'block';
+                    setTimeout(function() {
+                        document.getElementById('quantityWarning-' + maSanPham).style.display = 'none';
+                    }, 3000);
+                }
+            }
+        }
+
+        // Cập nhật số lượng sản phẩm trong giỏ hàng
+        function updateQuantity(maSanPham, quantity) {
+            $.ajax({
+                url: '/GioHang/UpdateQuantity',
+                type: 'POST',
+                data: { maSanPham: maSanPham, soLuong: quantity },
+                success: function (data) {
+                    // Cập nhật tổng tiền
+                    updateCartTotals();
+                },
+                error: function (xhr, status, error) {
+                    alert('Đã xảy ra lỗi khi cập nhật số lượng sản phẩm');
+                }
+            });
+        }
+
+        // Cập nhật tổng tiền của giỏ hàng
+        function updateCartTotals() {
+            $.ajax({
+                url: '/GioHang/GetCartTotals',
+                type: 'GET',
+                success: function (data) {
+                    // Cập nhật tổng phụ và tổng cộng
+                    $('#subtotal').text(formatCurrency(data.subtotal) + ' VNĐ');
+                    $('#total').text(formatCurrency(data.total) + ' VNĐ');
+                    
+                    // Cập nhật tổng tiền cho từng sản phẩm
+                    data.items.forEach(function(item) {
+                        $('#product-total-' + item.maSanPham).text(formatCurrency(item.total) + ' VNĐ');
+                        $('#quantity-' + item.maSanPham).val(item.soLuong);
+                    });
+                }
+            });
+        }
+
+        // Định dạng số tiền
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('vi-VN').format(value);
+        }
+
+        // Gắn sự kiện handleKeyPress cho tất cả các input số lượng
+        document.querySelectorAll('.quantity-input').forEach(function(input) {
+            input.addEventListener('keypress', handleKeyPress);
+        });
+    });
+</script>

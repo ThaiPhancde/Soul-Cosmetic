@@ -1,0 +1,569 @@
+@{
+    ViewData["Title"] = "Phân tích da";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+}
+
+<!-- Start Breadcrumb Area -->
+<div class="breadcrumb-area breadcrumb-bg-1 pt-50 pb-70 mb-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="breadcrumb-title">Phân tích da</h1>
+                <ul class="breadcrumb-list">
+                    <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a href="/VirtualServices">Virtual Services</a></li>
+                    <li class="breadcrumb-item active">Phân tích da</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Breadcrumb Area -->
+
+<!-- Start Hero Section -->
+<div class="hero-section">
+    <div class="container">
+        <div class="row align-items-center mb-100">
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <div class="hero-content">
+                    <h2 class="hero-title mb-4">Hiểu rõ làn da của bạn với công nghệ phân tích tiên tiến</h2>
+                    <p class="hero-description mb-4">Dịch vụ phân tích da của chúng tôi sử dụng công nghệ tiên tiến để đánh giá chính xác tình trạng da, xác định các vấn đề sâu bên dưới bề mặt và đề xuất các giải pháp chăm sóc phù hợp với từng loại da.</p>
+                    <div class="hero-features mb-5">
+                        <div class="feature-item d-flex align-items-center mb-3">
+                            <div class="feature-icon me-3">
+                                <i class="fa fa-check-circle text-success fa-2x"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h4 class="feature-title mb-0">Phân tích chuyên sâu 8 chỉ số da</h4>
+                            </div>
+                        </div>
+                        <div class="feature-item d-flex align-items-center mb-3">
+                            <div class="feature-icon me-3">
+                                <i class="fa fa-check-circle text-success fa-2x"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h4 class="feature-title mb-0">Đề xuất sản phẩm cá nhân hóa</h4>
+                            </div>
+                        </div>
+                        <div class="feature-item d-flex align-items-center">
+                            <div class="feature-icon me-3">
+                                <i class="fa fa-check-circle text-success fa-2x"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h4 class="feature-title mb-0">Tư vấn quy trình chăm sóc da chuyên sâu</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#analysis-form" class="btn btn-lg btn-primary">Bắt đầu phân tích</a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-image">
+                    <img src="/images/blog/blog-grid-home-1-img-2.jpg" alt="Phân tích da" class="img-fluid rounded shadow">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Hero Section -->
+
+<!-- Start How It Works Section -->
+<div class="how-it-works-section section-space-y-axis-100 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="section-heading mb-3">QUÁ TRÌNH PHÂN TÍCH DA</h2>
+                <div class="section-separator mx-auto mb-3"></div>
+                <p class="section-description">Chỉ với 3 bước đơn giản để nhận được phân tích da chi tiết</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="process-card text-center">
+                    <div class="process-icon-wrapper mb-4">
+                        <div class="process-icon-circle d-flex align-items-center justify-content-center mx-auto rounded-circle bg-primary text-white" style="width: 80px; height: 80px;">
+                            <span class="process-number fs-2 fw-bold">1</span>
+                        </div>
+                    </div>
+                    <h4 class="process-title mb-3">Hoàn thành bảng câu hỏi</h4>
+                    <p class="process-description">Cung cấp thông tin chi tiết về làn da, thói quen chăm sóc và các vấn đề bạn đang gặp phải.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="process-card text-center">
+                    <div class="process-icon-wrapper mb-4">
+                        <div class="process-icon-circle d-flex align-items-center justify-content-center mx-auto rounded-circle bg-primary text-white" style="width: 80px; height: 80px;">
+                            <span class="process-number fs-2 fw-bold">2</span>
+                        </div>
+                    </div>
+                    <h4 class="process-title mb-3">Tải lên hình ảnh da của bạn</h4>
+                    <p class="process-description">Tải lên 3 hình ảnh khuôn mặt của bạn ở các góc khác nhau theo hướng dẫn.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="process-card text-center">
+                    <div class="process-icon-wrapper mb-4">
+                        <div class="process-icon-circle d-flex align-items-center justify-content-center mx-auto rounded-circle bg-primary text-white" style="width: 80px; height: 80px;">
+                            <span class="process-number fs-2 fw-bold">3</span>
+                        </div>
+                    </div>
+                    <h4 class="process-title mb-3">Nhận báo cáo chi tiết</h4>
+                    <p class="process-description">Nhận báo cáo phân tích chi tiết và lời khuyên cá nhân hóa từ chuyên gia của chúng tôi.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End How It Works Section -->
+
+<!-- Start Skin Analysis Metrics Section -->
+<div class="metrics-section section-space-y-axis-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="section-heading mb-3">CHỈ SỐ PHÂN TÍCH</h2>
+                <div class="section-separator mx-auto mb-3"></div>
+                <p class="section-description">Công nghệ của chúng tôi phân tích 8 chỉ số quan trọng của làn da</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-3 col-sm-6">
+                <div class="metric-card text-center p-4 bg-white rounded shadow-sm h-100">
+                    <div class="metric-icon mb-3">
+                        <i class="fa fa-tint fa-3x text-primary"></i>
+                    </div>
+                    <h4 class="metric-title mb-3">Độ ẩm</h4>
+                    <p class="metric-description mb-0">Đánh giá mức độ hydrat hóa và khả năng giữ ẩm của làn da.</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="metric-card text-center p-4 bg-white rounded shadow-sm h-100">
+                    <div class="metric-icon mb-3">
+                        <i class="fa fa-sun-o fa-3x text-primary"></i>
+                    </div>
+                    <h4 class="metric-title mb-3">Tổn thương UV</h4>
+                    <p class="metric-description mb-0">Xác định mức độ tổn thương do tia cực tím gây ra theo thời gian.</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="metric-card text-center p-4 bg-white rounded shadow-sm h-100">
+                    <div class="metric-icon mb-3">
+                        <i class="fa fa-line-chart fa-3x text-primary"></i>
+                    </div>
+                    <h4 class="metric-title mb-3">Độ đàn hồi</h4>
+                    <p class="metric-description mb-0">Đánh giá độ đàn hồi và săn chắc của làn da.</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="metric-card text-center p-4 bg-white rounded shadow-sm h-100">
+                    <div class="metric-icon mb-3">
+                        <i class="fa fa-droplet fa-3x text-primary"></i>
+                    </div>
+                    <h4 class="metric-title mb-3">Dầu nhờn</h4>
+                    <p class="metric-description mb-0">Đo lường lượng dầu nhờn trên bề mặt da và trong lỗ chân lông.</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="metric-card text-center p-4 bg-white rounded shadow-sm h-100">
+                    <div class="metric-icon mb-3">
+                        <i class="fa fa-circle-o fa-3x text-primary"></i>
+                    </div>
+                    <h4 class="metric-title mb-3">Lỗ chân lông</h4>
+                    <p class="metric-description mb-0">Phân tích kích thước và tình trạng lỗ chân lông trên khuôn mặt.</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="metric-card text-center p-4 bg-white rounded shadow-sm h-100">
+                    <div class="metric-icon mb-3">
+                        <i class="fa fa-adjust fa-3x text-primary"></i>
+                    </div>
+                    <h4 class="metric-title mb-3">Sắc tố da</h4>
+                    <p class="metric-description mb-0">Đánh giá tình trạng tăng sắc tố, đốm nâu và tàn nhang.</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="metric-card text-center p-4 bg-white rounded shadow-sm h-100">
+                    <div class="metric-icon mb-3">
+                        <i class="fa fa-wrench fa-3x text-primary"></i>
+                    </div>
+                    <h4 class="metric-title mb-3">Nếp nhăn</h4>
+                    <p class="metric-description mb-0">Phát hiện và đánh giá mức độ các nếp nhăn và đường mịn.</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="metric-card text-center p-4 bg-white rounded shadow-sm h-100">
+                    <div class="metric-icon mb-3">
+                        <i class="fa fa-fire fa-3x text-primary"></i>
+                    </div>
+                    <h4 class="metric-title mb-3">Nhạy cảm & Viêm</h4>
+                    <p class="metric-description mb-0">Xác định mức độ nhạy cảm và tình trạng viêm trên da.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Skin Analysis Metrics Section -->
+
+<!-- Start Analysis Form Section -->
+<div id="analysis-form" class="analysis-form-section section-space-y-axis-100 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="section-heading mb-3">BẮT ĐẦU PHÂN TÍCH DA CỦA BẠN</h2>
+                <div class="section-separator mx-auto mb-3"></div>
+                <p class="section-description">Hoàn thành mẫu đơn dưới đây để nhận được phân tích chi tiết</p>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="analysis-form p-4 bg-white rounded shadow-sm">
+                    <form action="#" method="post" enctype="multipart/form-data">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="name" class="form-label">Họ và tên <span class="text-danger">*</span></label>
+                                    <input type="text" id="name" name="name" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                                    <input type="email" id="email" name="email" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="phone" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+                                    <input type="tel" id="phone" name="phone" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="age" class="form-label">Tuổi <span class="text-danger">*</span></label>
+                                    <input type="number" id="age" name="age" min="1" max="120" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="gender" class="form-label">Giới tính <span class="text-danger">*</span></label>
+                                    <select id="gender" name="gender" class="form-select" required>
+                                        <option value="">-- Chọn giới tính --</option>
+                                        <option value="female">Nữ</option>
+                                        <option value="male">Nam</option>
+                                        <option value="other">Khác</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="skin-type" class="form-label">Loại da của bạn <span class="text-danger">*</span></label>
+                                    <select id="skin-type" name="skinType" class="form-select" required>
+                                        <option value="">-- Chọn loại da --</option>
+                                        <option value="oily">Da dầu</option>
+                                        <option value="dry">Da khô</option>
+                                        <option value="combination">Da hỗn hợp</option>
+                                        <option value="normal">Da thường</option>
+                                        <option value="sensitive">Da nhạy cảm</option>
+                                        <option value="unknown">Không chắc chắn</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label class="form-label">Vấn đề về da bạn đang gặp phải <span class="text-danger">*</span></label>
+                                    <div class="row g-2">
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="acne" name="skinIssues[]" value="acne">
+                                                <label class="form-check-label" for="acne">Mụn</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="wrinkles" name="skinIssues[]" value="wrinkles">
+                                                <label class="form-check-label" for="wrinkles">Nếp nhăn</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="pigmentation" name="skinIssues[]" value="pigmentation">
+                                                <label class="form-check-label" for="pigmentation">Đốm nâu/Tàn nhang</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="dryness" name="skinIssues[]" value="dryness">
+                                                <label class="form-check-label" for="dryness">Khô/Bong tróc</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="oiliness" name="skinIssues[]" value="oiliness">
+                                                <label class="form-check-label" for="oiliness">Da nhờn</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="sensitivity" name="skinIssues[]" value="sensitivity">
+                                                <label class="form-check-label" for="sensitivity">Nhạy cảm/Kích ứng</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="pores" name="skinIssues[]" value="pores">
+                                                <label class="form-check-label" for="pores">Lỗ chân lông to</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="dullness" name="skinIssues[]" value="dullness">
+                                                <label class="form-check-label" for="dullness">Da xỉn màu</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="other-issue" name="skinIssues[]" value="other">
+                                                <label class="form-check-label" for="other-issue">Khác</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="other-issues-text" class="form-label">Nếu bạn chọn "Khác", vui lòng mô tả:</label>
+                                    <textarea id="other-issues-text" name="otherIssuesText" class="form-control" rows="2"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="current-routine" class="form-label">Quy trình chăm sóc da hiện tại của bạn:</label>
+                                    <textarea id="current-routine" name="currentRoutine" class="form-control" rows="3" placeholder="Vui lòng liệt kê các sản phẩm bạn đang sử dụng và tần suất sử dụng."></textarea>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label class="form-label">Tải lên hình ảnh khuôn mặt <span class="text-danger">*</span></label>
+                                    <p class="text-muted small mb-3">Vui lòng tải lên 3 hình ảnh: chính diện, nghiêng trái và nghiêng phải. Hình ảnh phải rõ ràng, trong điều kiện ánh sáng tự nhiên và không trang điểm.</p>
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                            <div class="upload-area p-3 bg-light rounded text-center">
+                                                <div class="mb-2">
+                                                    <i class="fa fa-camera fa-2x text-muted"></i>
+                                                </div>
+                                                <p class="mb-2">Chính diện</p>
+                                                <input type="file" id="front-image" name="frontImage" class="form-control" accept="image/*" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="upload-area p-3 bg-light rounded text-center">
+                                                <div class="mb-2">
+                                                    <i class="fa fa-camera fa-2x text-muted"></i>
+                                                </div>
+                                                <p class="mb-2">Nghiêng trái</p>
+                                                <input type="file" id="left-image" name="leftImage" class="form-control" accept="image/*" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="upload-area p-3 bg-light rounded text-center">
+                                                <div class="mb-2">
+                                                    <i class="fa fa-camera fa-2x text-muted"></i>
+                                                </div>
+                                                <p class="mb-2">Nghiêng phải</p>
+                                                <input type="file" id="right-image" name="rightImage" class="form-control" accept="image/*" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="additional-info" class="form-label">Thông tin bổ sung:</label>
+                                    <textarea id="additional-info" name="additionalInfo" class="form-control" rows="3" placeholder="Vui lòng chia sẻ bất kỳ thông tin bổ sung nào về làn da hoặc lịch sử chăm sóc da của bạn."></textarea>
+                                </div>
+                            </div>
+                            <div class="col-12 mt-4">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="privacy-policy" required>
+                                    <label class="form-check-label" for="privacy-policy">
+                                        Tôi đồng ý với <a href="#" class="text-primary">chính sách bảo mật</a> và cho phép sử dụng thông tin của tôi để phân tích da.
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-lg">Gửi yêu cầu phân tích</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Analysis Form Section -->
+
+<!-- Start Testimonials Section -->
+<div class="testimonials-section section-space-y-axis-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="section-heading mb-3">KHÁCH HÀNG NÓI GÌ</h2>
+                <div class="section-separator mx-auto mb-3"></div>
+                <p class="section-description">Phản hồi từ khách hàng đã sử dụng dịch vụ phân tích da của chúng tôi</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="testimonial-card p-4 bg-white rounded shadow-sm h-100">
+                    <div class="testimonial-content mb-4">
+                        <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                        <p class="mb-0">"Dịch vụ phân tích da đã giúp tôi hiểu rõ hơn về làn da của mình. Trước đây tôi luôn nghĩ mình có da dầu, nhưng hóa ra tôi có da hỗn hợp thiên dầu. Các sản phẩm được khuyên dùng đã làm thay đổi hoàn toàn làn da của tôi sau 3 tháng."</p>
+                    </div>
+                    <div class="testimonial-author d-flex align-items-center">
+                        <div class="author-image me-3">
+                            <img src="/images/blog/blog-grid-home-1-img-6.jpg" alt="Hà Linh" class="rounded-circle" width="50" height="50">
+                        </div>
+                        <div class="author-info">
+                            <h5 class="author-name mb-0">Hà Linh</h5>
+                            <p class="author-title mb-0 text-muted">Khách hàng, 28 tuổi</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial-card p-4 bg-white rounded shadow-sm h-100">
+                    <div class="testimonial-content mb-4">
+                        <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                        <p class="mb-0">"Tôi đã gặp vấn đề với mụn ẩn trong nhiều năm và đã thử mọi cách. Sau khi sử dụng dịch vụ phân tích da, tôi đã hiểu rõ hơn về nguyên nhân và được tư vấn một quy trình phù hợp. Sau 2 tháng, làn da của tôi đã cải thiện đáng kể."</p>
+                    </div>
+                    <div class="testimonial-author d-flex align-items-center">
+                        <div class="author-image me-3">
+                            <img src="/images/blog/blog-grid-home-1-img-5.jpg" alt="Minh Tú" class="rounded-circle" width="50" height="50">
+                        </div>
+                        <div class="author-info">
+                            <h5 class="author-name mb-0">Minh Tú</h5>
+                            <p class="author-title mb-0 text-muted">Khách hàng, 32 tuổi</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial-card p-4 bg-white rounded shadow-sm h-100">
+                    <div class="testimonial-content mb-4">
+                        <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                        <p class="mb-0">"Báo cáo phân tích da rất chi tiết và dễ hiểu. Tôi đặc biệt ấn tượng với các đề xuất sản phẩm phù hợp với ngân sách của tôi. Chuyên gia tư vấn rất nhiệt tình và trả lời mọi câu hỏi của tôi. Tôi sẽ sử dụng dịch vụ này 6 tháng một lần."</p>
+                    </div>
+                    <div class="testimonial-author d-flex align-items-center">
+                        <div class="author-image me-3">
+                            <img src="/images/blog/blog-grid-home-1-img-4.jpg" alt="Quang Minh" class="rounded-circle" width="50" height="50">
+                        </div>
+                        <div class="author-info">
+                            <h5 class="author-name mb-0">Quang Minh</h5>
+                            <p class="author-title mb-0 text-muted">Khách hàng, 35 tuổi</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Testimonials Section -->
+
+<!-- Start FAQ Section -->
+<div class="faq-section section-space-y-axis-100 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="section-heading mb-3">CÂU HỎI THƯỜNG GẶP</h2>
+                <div class="section-separator mx-auto mb-3"></div>
+                <p class="section-description">Giải đáp những thắc mắc phổ biến về dịch vụ phân tích da</p>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item border-0 mb-3 shadow-sm">
+                        <h2 class="accordion-header" id="heading1">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
+                                Dịch vụ phân tích da hoạt động như thế nào?
+                            </button>
+                        </h2>
+                        <div id="collapse1" class="accordion-collapse collapse show" aria-labelledby="heading1" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Dịch vụ phân tích da của chúng tôi sử dụng công nghệ phân tích hình ảnh kết hợp với thông tin từ bảng câu hỏi chi tiết bạn cung cấp. Sau khi nhận được thông tin và hình ảnh, đội ngũ chuyên gia của chúng tôi sẽ phân tích và đánh giá tình trạng da của bạn dựa trên 8 chỉ số quan trọng. Từ đó, chúng tôi sẽ cung cấp báo cáo chi tiết cùng các đề xuất sản phẩm và quy trình chăm sóc phù hợp.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item border-0 mb-3 shadow-sm">
+                        <h2 class="accordion-header" id="heading2">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                                Mất bao lâu để nhận được kết quả phân tích?
+                            </button>
+                        </h2>
+                        <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="heading2" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Thông thường, bạn sẽ nhận được báo cáo phân tích da trong vòng 48-72 giờ sau khi gửi đầy đủ thông tin và hình ảnh. Trong trường hợp cần thêm thông tin hoặc hình ảnh rõ hơn, chúng tôi sẽ liên hệ với bạn để yêu cầu bổ sung.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item border-0 mb-3 shadow-sm">
+                        <h2 class="accordion-header" id="heading3">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                                Các hình ảnh da cần đáp ứng yêu cầu gì?
+                            </button>
+                        </h2>
+                        <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="heading3" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Để có kết quả phân tích chính xác nhất, hình ảnh của bạn cần đáp ứng các yêu cầu sau:
+                                <ul class="mt-2">
+                                    <li>Chụp trong điều kiện ánh sáng tự nhiên</li>
+                                    <li>Không trang điểm, không sử dụng bộ lọc</li>
+                                    <li>Mặt sạch, tóc buộc gọn để lộ toàn bộ khuôn mặt</li>
+                                    <li>Cần có 3 góc: chính diện, nghiêng trái và nghiêng phải</li>
+                                    <li>Hình ảnh rõ nét, không bị mờ hoặc quá tối/sáng</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item border-0 mb-3 shadow-sm">
+                        <h2 class="accordion-header" id="heading4">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                                Tôi có được tư vấn trực tiếp sau khi nhận báo cáo không?
+                            </button>
+                        </h2>
+                        <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="heading4" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Có, sau khi nhận được báo cáo phân tích, bạn có thể đặt lịch tư vấn trực tuyến 15 phút miễn phí với chuyên gia của chúng tôi để giải đáp thêm các thắc mắc. Nếu bạn muốn tư vấn chuyên sâu hơn, bạn có thể đăng ký dịch vụ tư vấn trực tuyến với thời lượng dài hơn.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item border-0 mb-3 shadow-sm">
+                        <h2 class="accordion-header" id="heading5">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+                                Tần suất nên thực hiện phân tích da là bao lâu?
+                            </button>
+                        </h2>
+                        <div id="collapse5" class="accordion-collapse collapse" aria-labelledby="heading5" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Chúng tôi khuyên bạn nên thực hiện phân tích da 3-6 tháng một lần, hoặc khi bạn thấy có sự thay đổi đáng kể về làn da hoặc môi trường sống. Điều này giúp theo dõi sự tiến triển của làn da và điều chỉnh quy trình chăm sóc kịp thời.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End FAQ Section -->
+
+<!-- Start CTA Section -->
+<div class="cta-section section-space-y-axis-100 bg-primary text-white">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h2 class="cta-title mb-4">Sẵn sàng hiểu rõ làn da của bạn?</h2>
+                <p class="cta-description mb-4">Đăng ký dịch vụ phân tích da ngay hôm nay và nhận quy trình chăm sóc da cá nhân hóa từ các chuyên gia của chúng tôi.</p>
+                <a href="#analysis-form" class="btn btn-lg btn-outline-light">Bắt đầu phân tích ngay</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End CTA Section --> 

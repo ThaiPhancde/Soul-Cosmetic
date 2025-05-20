@@ -1,0 +1,315 @@
+﻿@model MyPhamSoul.Models.GioHang
+@{
+    ViewData["Title"] = "Gio Hang";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+
+}
+<style>
+    /* Lớp CSS cho toàn bộ ô số lượng */
+
+    .thumbnail-image {
+        max-width: 100px;
+        max-height: 100px;
+    }
+
+
+    /* Lớp CSS cho container của nút cộng và trừ */
+    .quantity-container {
+        display: flex;
+        align-items: center;
+    }
+
+    /* Lớp CSS cho nút cộng và trừ */
+    .quantity-button {
+        background-color: #b19361; /* Màu nền vàng */
+        color: white; /* Màu chữ trắng */
+        font-weight: bold; /* Làm cho chữ đậm hơn */
+        padding: 10px; /* Điều chỉnh khoảng cách bên trong nút */
+
+
+        cursor: pointer; /* Biểu tượng con trỏ khi đưa chuột vào nút */
+    }
+
+    /* Lớp CSS cho trường nhập số */
+    .quantity-input {
+        background-color: white; /* Màu nền trắng */
+        color: black; /* Màu chữ đen */
+    }
+</style>
+
+
+@if (Model == null || Model.Lines.Count == 0)
+{
+    <div class="breadcrumb-section breadcrumb-bg-color--golden">
+        <div class="breadcrumb-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h3 class="breadcrumb-title">Empty Cart</h3>
+                        <div class="breadcrumb-nav breadcrumb-nav-color--black breadcrumb-nav-hover-color--golden">
+                            <nav aria-label="breadcrumb">
+                                <ul>
+                                    <li><a href="index.html">Home</a></li>
+                                    <li><a href="shop-grid-sidebar-left.html">Shop</a></li>
+                                    <li class="active" aria-current="page">Empty Cart</li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="empty-cart-section section-fluid">
+        <div class="emptycart-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-md-10 offset-md-1 col-xl-6 offset-xl-3">
+                        <div class="emptycart-content text-center">
+                            <div class="image">
+                                <img class="img-fluid" src="/images/emprt-cart/empty-cart.png" alt="">
+                            </div>
+                            <h4 class="title">Giỏ hàng của bạn đang trống</h4>
+                            <h6 class="sub-title">Không có sản phẩm nào trong giỏ hàng của bạn!</h6>
+                            <a href="/Home/DanhMucSanPham" class="btn btn-lg btn-golden">Tiếp tục mua sắm</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="breadcrumb-section breadcrumb-bg-color--golden">
+        <div class="breadcrumb-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h3 class="breadcrumb-title">Giỏ hàng</h3>
+                        <div class="breadcrumb-nav breadcrumb-nav-color--black breadcrumb-nav-hover-color--golden">
+                            <nav aria-label="breadcrumb">
+                                <ul>
+                                    <li><a href="index.html">Home</a></li>
+                                    <li><a href="shop-grid-sidebar-left.html">Shop</a></li>
+                                    <li class="active" aria-current="page">Cart</li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="cart-section">
+        <!-- Start Cart Table -->
+        <div class="cart-table-wrapper" data-aos="fade-up" data-aos-delay="0">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table_desc">
+                            <div class="table_page table-responsive">
+                                <table>
+                                    <!-- Start Cart Table Head -->
+                                    <thead>
+                                        <tr>
+                                            <th class="product_remove">Xóa</th>
+                                            <th class="product_thumb">Hình Ảnh</th>
+                                            <th class="product_name">Sản phẩm</th>
+                                            <th class="product-price">Giá</th>
+                                            <th class="product_quantity">Số lượng</th>
+                                            <th class="product_total">Tổng</th>
+                                        </tr>
+                                    </thead> <!-- End Cart Table Head -->
+                                    <tbody>
+                                        @if (Model?.Lines != null) // Kiểm tra Model và Model.Lines không phải là null
+                                        {
+                                            @foreach (var line in Model.Lines)
+                                            {
+                                                if (line != null) // Kiểm tra line không phải là null
+                                                {
+                                                    <!-- Start Cart Single Item-->
+                                                    <tr>
+                                                        <td class="product_remove">
+                                                            <a href="/GioHang/RemoveFromGioHang/?maSanPham=@line.SanPham.MaSanPham"><i class="fa fa-trash-o"></i></a>
+                                                        </td>
+
+                                                        <td class="product_thumb">
+                                                            <a href="#">
+
+                                                                <img src="/images/sanPhams/@line.SanPham.Anh" alt="" class="thumbnail-image">
+                                                            </a>
+                                                        </td>
+                                                        <td class="product_name">
+                                                            <a href="product-details-default.html">
+                                                                @line.SanPham.TenSanPham
+                                                            </a>
+                                                        </td>
+                                                        <td class="product-price">@string.Format("{0:#,##0} VNĐ", (line.SanPham.Gia))</td>
+
+
+
+                                                        <td class="product_quantity">
+
+                                                            <div class="quantity-controls">
+                                                                <a href="#" class="quantity-button quantity-decrease" data-ma-san-pham="@line.SanPham.MaSanPham">-</a>
+                                                                <input min="1" max="100" value="@line.SoLuong" id="quantity-@line.SanPham.MaSanPham" class="quantity-input" onkeypress="return handleKeyPress(event)">
+                                                                <div id="quantityWarning" style="display: none; color: red;">Số lượng sản phẩm phải lớn hơn 0</div>
+
+
+                                                                <a href="#" class="quantity-button quantity-increase" data-ma-san-pham="@line.SanPham.MaSanPham">+</a>
+
+
+                                                            </div>
+                                                        </td>
+
+                                                        <script>
+                                                            document.addEventListener('DOMContentLoaded', function () {
+                                                                var increaseButtons = document.querySelectorAll('.quantity-increase');
+                                                                increaseButtons.forEach(function (button) {
+                                                                    button.addEventListener('click', function (event) {
+                                                                        event.preventDefault();
+
+                                                                        var maSanPham = button.getAttribute('data-ma-san-pham');
+
+                                                                        // Gửi yêu cầu thêm sản phẩm vào giỏ hàng với Ajax
+                                                                        $.ajax({
+                                                                            url: '/GioHang/AddGioHang1',
+                                                                            type: 'POST',
+                                                                            data: { maSanPham: maSanPham },
+                                                                            success: function (data) {
+                                                                                // Sau khi thêm sản phẩm thành công, làm gì đó (ví dụ: cập nhật lại giao diện hoặc hiển thị thông báo)
+                                                                                // Ví dụ:
+
+                                                                                location.reload(); // Load lại trang để cập nhật giỏ hàng
+                                                                            },
+                                                                            error: function (xhr, status, error) {
+                                                                                // Xử lý lỗi khi gửi yêu cầu thêm sản phẩm vào giỏ hàng
+                                                                                alert('Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng');
+                                                                            }
+                                                                        });
+                                                                    });
+                                                                });
+                                                            });
+
+                                                            document.addEventListener('DOMContentLoaded', function () {
+                                                                var increaseButtons = document.querySelectorAll('.quantity-decrease');
+                                                                increaseButtons.forEach(function (button) {
+                                                                    button.addEventListener('click', function (event) {
+                                                                        event.preventDefault();
+
+                                                                        var maSanPham = button.getAttribute('data-ma-san-pham');
+
+                                                                        // Gửi yêu cầu thêm sản phẩm vào giỏ hàng với Ajax
+                                                                        $.ajax({
+                                                                            url: '/GioHang/Remove_1_FromGioHang',
+                                                                            type: 'POST',
+                                                                            data: { maSanPham: maSanPham },
+                                                                            success: function (data) {
+                                                                                // Sau khi thêm sản phẩm thành công, làm gì đó (ví dụ: cập nhật lại giao diện hoặc hiển thị thông báo)
+                                                                                // Ví dụ:
+
+                                                                                location.reload(); // Load lại trang để cập nhật giỏ hàng
+                                                                            },
+                                                                            error: function (xhr, status, error) {
+                                                                                // Xử lý lỗi khi gửi yêu cầu thêm sản phẩm vào giỏ hàng
+                                                                                alert('Đã xảy ra lỗi khi xoá sản phẩm vào giỏ hàng');
+                                                                            }
+                                                                        });
+                                                                    });
+                                                                });
+                                                            });
+
+                                                            function handleKeyPress(event) {
+                                                                if (event.key === 'Enter') {
+                                                                    event.preventDefault();
+
+                                                                    var quantityInput = event.target;
+                                                                    var quantity = parseInt(quantityInput.value);
+
+                                                                    // Kiểm tra nếu số lượng hợp lệ (lớn hơn 0)
+                                                                    if (quantity > 0) {
+                                                                        var maSanPham = quantityInput.getAttribute('id').replace('quantity-', '');
+
+                                                                        // Gửi yêu cầu cập nhật số lượng sản phẩm trong giỏ hàng
+                                                                        updateQuantity(maSanPham, quantity);
+                                                                    } else {
+                                                                        // Hiển thị cảnh báo số lượng phải lớn hơn 0
+                                                                        document.getElementById('quantityWarning').style.display = 'block';
+                                                                    }
+                                                                }
+                                                            }
+
+                                                            function updateQuantity(maSanPham, quantity) {
+                                                                // Gửi yêu cầu cập nhật số lượng sản phẩm trong giỏ hàng với Ajax
+                                                                $.ajax({
+                                                                    url: '/GioHang/UpdateQuantity',
+                                                                    type: 'POST',
+                                                                    data: { maSanPham: maSanPham, soLuong: quantity },
+                                                                    success: function (data) {
+                                                                        // Sau khi cập nhật số lượng thành công, làm gì đó (ví dụ: cập nhật lại giao diện hoặc hiển thị thông báo)
+                                                                        // Ví dụ:
+                                                                        location.reload(); // Load lại trang để cập nhật giỏ hàng
+                                                                    },
+                                                                    error: function (xhr, status, error) {
+                                                                        // Xử lý lỗi khi gửi yêu cầu cập nhật số lượng sản phẩm trong giỏ hàng
+                                                                        alert('Đã xảy ra lỗi khi cập nhật số lượng sản phẩm');
+                                                                    }
+                                                                });
+                                                            }
+
+
+                                                        </script>
+
+
+                                                        <td class="product-price">@string.Format("{0:#,##0} VNĐ", (line.SanPham.Gia * line.SoLuong))</td>
+                                                    </tr> <!-- End Cart Single Item-->
+                                                }
+                                            }
+                                        }
+                                    </tbody>
+
+                                </table>
+                            </div>
+                            <div class="cart_submit">
+
+                                <a href="/Home/DanhMucSanPham" class="btn btn-md btn-golden">Tiếp tục mua sắm</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- End Cart Table -->
+        <!-- Start Coupon Start -->
+        <div class="coupon_area">
+            <div class="container">
+                <div class="row">
+
+
+
+                    <div class="col-lg-6 col-md-6">
+                        <div class="coupon_code right" data-aos="fade-up" data-aos-delay="400">
+                            <h3>Thanh toán giỏ hàng</h3>
+                            <div class="coupon_inner">
+                                <div class="cart_subtotal">
+                                    <p>Tổng tiền hàng</p>
+                                    <p class="cart_amount">@string.Format("{0:#,##0} VNĐ", Model.ComputeTotalValues())</p>
+                                </div>
+                                @if (Model.ComputeTotalValues() != 0)
+                                {
+                                    <div class="checkout_btn">
+                                        <a href="/GioHang/CheckOut" class="btn btn-md btn-golden">Tiến hành thanh toán</a>
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div> <!-- End Coupon Start -->
+    </div> <!-- ...:::: End Cart Section:::... -->
+}

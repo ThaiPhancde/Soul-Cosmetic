@@ -1,0 +1,423 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.min.js"></script>
+<style>
+    /* Main Title */
+    .main-title h5.card-title {
+        font-family: nunito, sans-serif;
+        font-weight: bold;
+        font-size: 25px;
+        color: #f7f40f;
+        margin-bottom: 20px;
+    }
+
+    /* Sales Renew Buttons */
+    .sales_renew_btns ul.nav {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+        .sales_renew_btns ul.nav li.nav-item {
+            margin-left: 10px;
+        }
+
+            .sales_renew_btns ul.nav li.nav-item a.nav-link {
+                color: #212529;
+                font-weight: bold;
+                text-decoration: none;
+                padding: 5px 10px;
+                border-radius: 5px;
+                transition: background-color 0.3s, color 0.3s;
+            }
+
+                .sales_renew_btns ul.nav li.nav-item a.nav-link:hover {
+                    background-color: #a9ee74;
+                    color: #212529;
+                }
+
+                .sales_renew_btns ul.nav li.nav-item a.nav-link.active {
+                    background-color: #a9ee74;
+                    color: #212529;
+                }
+
+    /* Date Form */
+    #dateForm {
+        display: flex;
+        margin-left: 20px; /* Adjust as needed */
+        margin-top: 20px; /* Adjust as needed */
+    }
+
+        #dateForm > div {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-right: 10px;
+        }
+
+        #dateForm label {
+            font-weight: bold;
+        }
+
+    #applyDate {
+        font-weight: bold;
+        background-color: #e2b02e;
+        border: 2px solid white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+        #applyDate:hover {
+            background-color: #d39e00;
+        }
+
+    #applyMonth {
+        font-weight: bold;
+        background-color: #e2b02e;
+        border: 2px solid white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+        #applyMonth:hover {
+            background-color: #d39e00;
+        }
+
+    #applyYear {
+        font-weight: bold;
+        background-color: #e2b02e;
+        border: 2px solid white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+        #applyYear:hover {
+            background-color: #d39e00;
+        }
+
+    /* Month Form */
+    #monthForm {
+        display: none; /* Hide by default */
+        margin-top: 20px; /* Adjust as needed */
+    }
+
+    /* Year Form */
+    #yearForm {
+        display: none; /* Hide by default */
+        margin-top: 20px; /* Adjust as needed */
+    }
+</style>
+
+
+
+<main id="main" class="main">
+
+    <div style="display: flex;">
+        <div class="float-lg-right float-none sales_renew_btns justify-content-end">
+            <ul class="nav" style="margin-top: 30px;">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-tab="ngay">Theo ngày</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-tab="thang">Theo Tháng</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-tab="nam">Theo năm</a>
+                </li>
+            </ul>
+        </div>
+
+        <div id="dateForm" style="display: flex; align-items: center; margin-left: 150px; margin-bottom: 50px;">
+
+
+            <label style="font-weight: bold; color: black;" for="startDate">Từ ngày:</label>
+            <input style="background-color: #f4fbab;" type="date" id="startDate" name="startDate">
+
+
+
+            <label style="font-weight: bold; color: black;" for="endDate">Đến ngày:</label>
+            <input style="background-color: #f4fbab;" type="date" id="endDate" name="endDate">
+
+
+            <button id="applyDate" style="margin-top: 10px; margin-left: 30px;">Thống kê</button>
+        </div>
+
+
+        <div id="monthForm" style="display: flex; align-items: center; margin-left: 150px; margin-bottom: 50px;">
+
+            <label style="font-weight: bold; color: black;" for="startMonth">Từ tháng:</label>
+            <input style="background-color: #f4fbab;" type="month" id="startMonth" name="startMonth">
+
+
+            <label style="font-weight: bold; color: black;" for="endMonth">Đến tháng:</label>
+            <input style="background-color: #f4fbab;" type="month" id="endMonth" name="endMonth">
+
+
+            <button id="applyMonth" style="margin-top: 10px; margin-left: 30px;">Thống kê</button>
+        </div>
+
+
+        <div id="yearForm" style="display: flex; align-items: center; margin-left: 150px; margin-bottom: 50px;">
+
+            <label style="font-weight: bold; color: black;" for="startYear">Từ năm:</label>
+            <input style="background-color: #f4fbab;" type="text" id="startYear" name="startYear" placeholder="Nhập năm">
+
+
+
+            <label style="font-weight: bold; color: black;" for="endYear">Đến năm:</label>
+            <input style="background-color: #f4fbab;" type="text" id="endYear" name="endYear" placeholder="Nhập năm">
+
+
+            <button id="applyYear" style="margin-top: 10px; margin-left: 30px;">Thống kê</button>
+        </div>
+
+    </div>
+
+
+
+    <canvas id="revenueChart"></canvas>
+
+    <div class="white_card mb_20">
+        <div class="white_card_header">
+            <div class="box_header m-0">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function initializeChart() {
+            // Set default tab to "Theo ngày"
+            document.querySelector('[data-tab="ngay"]').click();
+
+            // Set startDay and endDay to today's date
+            var today = new Date().toISOString().split('T')[0];
+            document.getElementById("startDate").value = today;
+            document.getElementById("endDate").value = today;
+
+            // Trigger the click event for "Thống kê" button to load the default chart
+            document.getElementById("applyDate").click();
+        }
+
+        // Call the function when the page is loaded
+        document.addEventListener("DOMContentLoaded", function () {
+            initializeChart();
+        });
+
+        var revenueChartCanvas = document.getElementById("revenueChart").getContext("2d");
+        var myChart;
+        var dateForm = document.getElementById("dateForm");
+        var monthForm = document.getElementById("monthForm");
+        var yearForm = document.getElementById("yearForm");
+
+        function createChart(productNames, quantities) {
+            // Destroy the existing chart if it exists
+            if (myChart) {
+                myChart.destroy();
+            }
+
+            var backgroundColors = [
+                'rgba(0, 0, 255, 0.2)', // Blue
+                'rgba(255, 0, 0, 0.2)', // Red
+                'rgba(0, 128, 0, 0.2)', // Green
+                'rgba(255, 165, 0, 0.2)', // Orange
+                'rgba(128, 0, 128, 0.2)', // Purple
+                'rgba(255, 255, 0, 0.2)', // Yellow
+                'rgba(255, 105, 180, 0.2)', // Pink
+                'rgba(165, 42, 42, 0.2)', // Brown
+                'rgba(128, 128, 128, 0.2)', // Gray
+                'rgba(0, 255, 255, 0.2)'  // Cyan
+            ];
+
+            var borderColors = [
+                'rgba(0, 0, 255, 1)', // Blue
+                'rgba(255, 0, 0, 1)', // Red
+                'rgba(0, 128, 0, 1)', // Green
+                'rgba(255, 165, 0, 1)', // Orange
+                'rgba(128, 0, 128, 1)', // Purple
+                'rgba(255, 255, 0, 1)', // Yellow
+                'rgba(255, 105, 180, 1)', // Pink
+                'rgba(165, 42, 42, 1)', // Brown
+                'rgba(128, 128, 128, 1)', // Gray
+                'rgba(0, 255, 255, 1)'  // Cyan
+            ];
+
+            myChart = new Chart(revenueChartCanvas, {
+                type: 'bar',
+                data: {
+                    labels: productNames,
+                    datasets: [{
+                        label: 'Quantity Sold',
+                        data: quantities,
+                        backgroundColor: productNames.map((_, index) => backgroundColors[index % 10]),
+                        borderColor: productNames.map((_, index) => borderColors[index % 10]),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            min: 0
+                        }
+                    }
+                }
+            });
+        }
+
+        document.getElementById("applyDate").addEventListener("click", function () {
+            var startDate = document.getElementById("startDate").value;
+            var endDate = document.getElementById("endDate").value;
+
+            // Check if start date or end date is empty
+            if (!startDate || !endDate) {
+                alert("Vui lòng chọn cả ngày bắt đầu và ngày kết thúc.");
+                return;
+            }
+
+            if (startDate > endDate) {
+                alert("Ngày bắt đầu không được lớn hơn ngày kết thúc.");
+                return;
+            }
+
+            // Send HTTP GET request with start and end dates
+            fetch("/Admin/TKSP/ThongKeDH?startDate=" + startDate + "&endDate=" + endDate)
+                .then(response => response.json())
+                .then(data => {
+                    // Sắp xếp dữ liệu theo số lượng bán giảm dần
+                    data.sort((a, b) => b.quantitySold - a.quantitySold);
+                    var productNames = data.map(item => item.productName);
+                    var quantities = data.map(item => item.quantitySold);
+
+                    // Create the chart with the fetched data
+                    createChart(productNames, quantities);
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    alert("Đã xảy ra lỗi khi lấy dữ liệu. Vui lòng thử lại sau.");
+                });
+        });
+
+        // Similarly handle applyMonth and applyYear events
+        document.getElementById("applyMonth").addEventListener("click", function () {
+            var startMonth = document.getElementById("startMonth").value;
+            var endMonth = document.getElementById("endMonth").value;
+
+            // Check if start month or end month is empty
+            if (!startMonth || !endMonth) {
+                alert("Vui lòng chọn cả tháng bắt đầu và tháng kết thúc.");
+                return;
+            }
+
+            if (startMonth > endMonth) {
+                alert("Tháng bắt đầu không được lớn hơn tháng kết thúc.");
+                return;
+            }
+
+            // Send HTTP GET request with start and end months
+            fetch("/Admin/TKSP/ThongKeDHThang?startMonth=" + startMonth + "&endMonth=" + endMonth)
+                .then(response => response.json())
+                .then(data => {
+                    var productNames = []; // Array to hold product names
+                    var quantities = []; // Array to hold quantities sold
+
+                    // Iterate over the data returned from the server
+                    data.forEach(item => {
+                        productNames.push(item.productName);
+                        quantities.push(item.quantitySold);
+                    });
+
+                    // Create the chart with the fetched data
+                    createChart(productNames, quantities);
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    alert("Đã xảy ra lỗi khi lấy dữ liệu. Vui lòng thử lại sau.");
+                });
+        });
+
+        document.getElementById("applyYear").addEventListener("click", function () {
+            var startYear = document.getElementById("startYear").value;
+            var endYear = document.getElementById("endYear").value;
+
+            if (!startYear || !endYear) {
+                alert("Vui lòng chọn cả năm bắt đầu và năm kết thúc.");
+                return;
+            }
+            // Check if startYear and endYear are numbers and have exactly 4 digits
+            if (!/^\d{4}$/.test(startYear) || !/^\d{4}$/.test(endYear)) {
+                alert("Năm phải có 4 chữ số.");
+                return;
+            }
+
+            // Convert values to integers
+            startYear = parseInt(startYear, 10);
+            endYear = parseInt(endYear, 10);
+
+            // Check if year is greater than or equal to 2000 and startYear is less than endYear
+            if (startYear < 2000 || endYear < 2000 || startYear > endYear) {
+                alert("Năm phải lớn hơn 2000 và Năm bắt đầu không lớn hơn năm kết thúc.");
+                return;
+            }
+
+            // Send HTTP GET request with start and end years
+            fetch("/Admin/TKSP/ThongKeDHNam?startYear=" + startYear + "&endYear=" + endYear)
+                .then(response => response.json())
+                .then(data => {
+                    var productNames = []; // Array to hold product names
+                    var quantities = []; // Array to hold quantities sold
+
+                    // Iterate over the data returned from the server
+                    data.forEach(item => {
+                        productNames.push(item.productName);
+                        quantities.push(item.quantitySold);
+                    });
+
+                    // Create the chart with the fetched data
+                    createChart(productNames, quantities);
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    alert("Đã xảy ra lỗi khi lấy dữ liệu. Vui lòng thử lại sau.");
+                });
+        });
+
+        document.querySelectorAll(".nav-link").forEach(function (navLink) {
+            navLink.addEventListener("click", function (event) {
+                var selectedTab = event.target.getAttribute("data-tab");
+                var navLinks = document.querySelectorAll(".nav-link");
+
+                navLinks.forEach(function (navLink) {
+                    navLink.classList.remove("active");
+                });
+
+                if (selectedTab === "thang") {
+                    dateForm.style.display = "none";
+                    yearForm.style.display = "none";
+                    monthForm.style.display = "block";
+                    event.target.classList.add("active");
+                } else if (selectedTab === "ngay") {
+                    dateForm.style.display = "block";
+                    yearForm.style.display = "none";
+                    monthForm.style.display = "none";
+                    event.target.classList.add("active");
+                } else if (selectedTab === "nam") {
+                    dateForm.style.display = "none";
+                    yearForm.style.display = "block";
+                    monthForm.style.display = "none";
+                    event.target.classList.add("active");
+                }
+            });
+        });
+    </script>
+
+
+</main>

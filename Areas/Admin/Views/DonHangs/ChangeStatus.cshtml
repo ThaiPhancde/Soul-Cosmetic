@@ -1,0 +1,118 @@
+﻿@model MyPhamSoul.Models.DonHang
+
+<div class="modal-header">
+    <h5 class="modal-title">THÔNG TIN ĐƠN HÀNG</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">THÔNG TIN ĐƠN HÀNG #@Model.MaDonHang</h4>
+            <div class="table-responsive">
+                <table class="product-info-table m-t-20">
+                    <tbody>
+                        <tr>
+                            <td>ID: </td>
+                            <td class="text-dark font-weight-semibold">#@Model.MaDonHang</td>
+                        </tr>
+                        <tr>
+                            <td>Ngày mua hàng: </td>
+                            <td> @Model.NgayDatHang</td>
+                        </tr>
+                        <tr>
+                            <td>Khách hàng: </td>
+                            <td> @Model.MaKhachHangNavigation.TenKhachHang</td>
+                        </tr>
+                        <tr>
+                            <td>Số điện thoại: </td>
+                            <td> @Model.MaKhachHangNavigation.SoDienThoai</td>
+                        </tr>
+                        <tr>
+                            <td>Địa chỉ: </td>
+                            <td> @Model.MaKhachHangNavigation.DiaChi</td>
+                        </tr>
+                        <tr>
+                            
+                            <td>Tổng tiển: </td>
+                            <td> @Model.TongTien.Value.ToString("#,##0") VNĐ</td>
+                            
+                        </tr>
+                        <tr>
+                            <td>Trạng thái: </td>
+                           <td>
+                                @if (Model.TrangThaiDonHang == 1)
+                                {
+                                    <span class=" badge bg-success">Chờ xác nhận</span>
+                                }
+                                else if (Model.TrangThaiDonHang == 2)
+                                {
+                                    <span class="badge bg-warning">Đang vận chuyển</span>
+                                }
+                                else if (Model.TrangThaiDonHang == 3)
+                                {
+                                    <span class="badge bg-primary">Đã giao hàng</span>
+                                }
+                                else if (Model.TrangThaiDonHang == 4)
+                                {
+                                    <span class="badge bg" style="background-color: #c82333">Đã hủy</span>
+                                }
+                           </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <form asp-area="Admin" asp-controller="DonHangs" asp-action="ChangeStatus" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-id="@Model.MaDonHang" asp-route-page="@ViewBag.CurrentPage" asp-route-Search="@ViewBag.CurrentSearch" asp-route-MinPrice="@ViewBag.CurrentMinPrice" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <input type="hidden" asp-for="MaDonHang" />
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label class="font-weight-semibold" for="productName">Cập nhật trạng Thái</label>
+                        <select class="custom-select" id="txtMaDM" name="txtMaDM" asp-for="TrangThaiDonHang" style="min-width: 200px">
+                            <option selected disabled value="">Chọn trạng thái</option>
+                            @if (Model.TrangThaiDonHang == 1)
+                            {                 
+                                <option value="2" class="enabled-option">Đang vận chuyển</option>
+                                <option value="3" class="enabled-option">Đã giao hàng</option>
+                                <option value="4" class="enabled-option">Hủy đơn hàng</option>
+                            }
+                            else if (Model.TrangThaiDonHang == 2)
+                            {
+                                <option value="3" class="enabled-option">Đã giao hàng</option>
+                                <option value="4" class="enabled-option">Hủy đơn hàng</option>
+                            }
+                       
+                            else
+                            {
+                            }
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success">Lưu thay đổi</button>
+                <button class="btn btn-secondary">
+                    <a asp-area="Admin" asp-controller="DonHangs" asp-action="Index" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-id="@Model.MaDonHang" asp-route-page="@ViewBag.CurrentPage" asp-route-Search="@ViewBag.CurrentSearch" asp-route-MinPrice="@ViewBag.CurrentMinPrice" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice" style="color: white" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice">Trở lại</a>
+                </button>
+            </form>
+        </div>
+
+
+    </div>
+</div>
+
+@*<style>
+    .enabled-option {
+        font-weight: bold; /* Độ đậm của chữ cho các lựa chọn khác */
+        color: black; /* Màu chữ cho các lựa chọn khác */
+    }
+
+    .disabled-option {
+        opacity: 0.5; /* Độ mờ cho lựa chọn bị disable */
+        color: gray; /* Màu chữ cho lựa chọn bị disable */
+    }
+</style>*@

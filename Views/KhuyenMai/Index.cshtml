@@ -1,0 +1,178 @@
+﻿@model List<KhuyenMai>
+
+@{
+	ViewBag.Title = "Khuyến mãi";
+	Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+}
+
+<style>
+
+	.orange-background {
+		background-color: orange; /* Màu cam */
+	}
+
+	.voucher-body {
+		background-color: white; /* Màu trắng */
+		flex-grow: 1; /* Dãn toàn bộ phần còn lại của container */
+	}
+
+
+	.voucher {
+		border: 2px solid #D10024; /* Đổi màu viền */
+		border-radius: 10px;
+		margin-bottom: 20px;
+		padding: 20px;
+		background-color: #fff; /* Màu nền */
+		transition: transform 0.3s ease, box-shadow 0.3s ease; /* Hiệu ứng hover */
+		width: 500px;
+	}
+
+		.voucher:hover {
+			transform: translateY(-5px); /* Hiệu ứng hover */
+			box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Hiệu ứng hover */
+		}
+
+	.voucher-header {
+		display: flex;
+		align-items: center;
+	}
+
+	.voucher-icon {
+		width: 50px;
+		height: 50px;
+		margin-right: 15px;
+	}
+
+	.voucher-details {
+		flex-grow: 1;
+	}
+
+	.voucher-title {
+		font-size: 20px;
+		font-weight: bold;
+		color: #333; /* Màu chữ */
+	}
+
+	.voucher-code {
+		font-size: 18px;
+		color: #ff6600;
+	}
+
+	.voucher-body {
+		margin-top: 15px;
+	}
+
+	.voucher-info {
+		margin-bottom: 12px;
+	}
+
+	.voucher-label {
+		color: white;
+		font-weight: bold;
+		margin: 0 10px;
+		font-size: 17px;
+	}
+
+	.voucher-value {
+		color: black;
+		font-weight: bold;
+	}
+
+	.voucher-value1 {
+		color: red;
+		margin: 0 80px;
+	}
+</style>
+
+<div class="section">
+	<!-- container -->
+	<div class="container">
+		<!-- row -->
+		<div class="row">
+
+			
+			
+			
+				<div class="col-md-12" style="margin-top: 50px;">
+					<div class="section-title">
+						<h3 class="title">Voucher của bạn</h3>
+					</div>
+				</div>
+
+				<div class="row" style="margin: 50px; ">
+					<div class="col-sm-12">
+						<div class="order-history">
+							@for (int i = 0; i < Model.Count; i += 2)
+							{
+								<div class="row">
+									<div class="col-sm-6" data-makm="@Model[i].MaKM">
+
+										<div style="display: flex;" class="voucher">
+
+											<div class="voucher-header orange-background" style="background: #D10024;">
+												<i style="font-size: 40px; margin: 0 10px; color: white;" class="fa fa-gift" aria-hidden="true"></i>
+											</div>
+											<div class="voucher-body">
+												<input type="hidden" id="MaKM" value="@Model[i].MaKM" />
+												<div class="voucher-info">
+													<span style="padding: 2px; background: #D10024;" class="voucher-label">Giảm giá</span>
+													<span class="voucher-value">@Model[i].TenKM</span>
+												</div>
+												<div class="voucher-info">
+
+													<span class="voucher-value1"> Sử dụng @Model[i].NgayBD.Date.ToString("dd/MM/yyyy") - @Model[i].NgayKT.Date.ToString("dd/MM/yyyy")</span>
+												</div>
+											</div>
+										</div>
+
+									</div>
+									@if (i + 1 < Model.Count)
+									{
+										<div class="col-sm-6" data-makm="@Model[i + 1].MaKM">
+											<div style="display: flex;" class="voucher">
+												<div class="voucher-header orange-background" style="background: #D10024;">
+													<i style="font-size: 40px; margin: 0 10px; color: white;" class="fa fa-gift" aria-hidden="true"></i>
+												</div>
+												<div class="voucher-body">
+													<div class="voucher-info">
+														<input type="hidden" id="MaKM1" value="@Model[i+1].MaKM" />
+														<span style="padding: 2px; background: #D10024;" class="voucher-label">Giảm giá</span>
+														<span class="voucher-value">@Model[i + 1].TenKM</span>
+													</div>
+													<div class="voucher-info">
+
+														<span class="voucher-value1"> Sử dụng @Model[i + 1].NgayBD.Date.ToString("dd/MM/yyyy") - @Model[i + 1].NgayKT.Date.ToString("dd/MM/yyyy")</span>
+													</div>
+												</div>
+											</div>
+
+										</div>
+									}
+								</div>
+							}
+						</div>
+					</div>
+				</div>
+			
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<script>
+		// Lấy tham chiếu đến tất cả các phần tử có class 'voucher'
+		const vouchers = document.querySelectorAll('.voucher');
+
+		// Duyệt qua từng voucher và thêm sự kiện click
+		vouchers.forEach(function (voucher) {
+			voucher.addEventListener('click', function () {
+				// Lấy giá trị MaKM của voucher
+				const maKMInput = this.querySelector(".voucher-body input[type=hidden]"); // Tìm input trong phần tử cha
+				if (maKMInput) {
+					const maKM = maKMInput.value; // Lấy giá trị từ input
+					// Chuyển hướng về trang HoaDon với tham số MaKM
+					window.location.href = "/GioHang/CheckOut?MaKM=" + maKM;
+				}
+			});
+		});
+	</script>
+

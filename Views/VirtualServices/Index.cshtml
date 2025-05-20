@@ -1,0 +1,370 @@
+@{
+    ViewData["Title"] = "Virtual Services";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+}
+
+<style>
+    /* individual session */
+    #main-first-video-div-rk {
+        height: 100%;
+        width: 100vw;
+        background-color: black;
+    }
+
+    .first-video-div-rk {
+        height: 80%;
+        width: 100%;
+    }
+
+    .imageResize-rk {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .individual-session-main-div-rk {
+        height: 30%;
+        width: 100%;
+    }
+
+    .individual-session-main-div-rk h3 {
+        font-size: 45px;
+        font-family: "BBSans Regular",Helvetica,Arial,sans-serif;
+        line-height: 1;
+        margin: 40px 0px 0px 0px;
+        text-align: center;
+        color: white;
+        font-weight: 400;
+    }
+
+    .individual-session-main-div-rk p {
+        font-size: 16px;
+        margin: 10px 0px 0px 0px;
+        font-weight: 500;
+        color: white;
+        text-align: center;
+    }
+
+    .second-video-main-div-rk {
+        height: 800px;
+        width: 100%;
+        margin: 4% 0px 0px 0px;
+    }
+
+    .second-video-div-rk {
+        height: 80%;
+        width: 100%;
+    }
+
+    .imageResize-rk1 {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .second-video-div-text-rk {
+        height: 27%;
+        width: 100%;
+        margin: 20px 0px 0px 0px;
+        background-color: black;
+        text-align: center;
+    }
+
+    .second-video-div-text-rk h3 {
+        font-size: 45px;
+        font-family: "BBSans Regular",Helvetica,Arial,sans-serif;
+        line-height: 1;
+        margin: 40px 0px 0px 0px;
+        text-align: center;
+        color: white;
+        font-weight: 400;
+    }
+
+    .second-video-div-text-rk p {
+        font-size: 16px;
+        margin: 10px 0px 0px 0px;
+        font-weight: 500;
+        color: white;
+        text-align: center;
+    }
+
+    .second-video-div-text-rk button {
+        background-color: white;
+        margin: 10px 0px 0px 0px;
+        height: 40px;
+        width: 180px;
+        color: black;
+        border: none;
+        cursor: pointer;
+    }
+
+    /* ADVICE IN REAL  */
+    .advice-main-div-rk {
+        height: fit-content;
+        width: 100vw;
+        margin: 6% 0px 0px 0px;
+        background-color: rgb(244,244,244);
+    }
+
+    .advice-text-main-div {
+        height: fit-content;
+        padding: 20px;
+        width: 100vw;
+        margin: auto;
+    }
+
+    .advice-text-main-div h1 {
+        font-size: 60px;
+        font-family: "BBSans Regular",Helvetica,Arial,sans-serif;
+        line-height: 1;
+        margin: 20px 0px 0px 0px;
+        text-align: center;
+        color: black;
+        font-weight: 500;
+    }
+
+    .advice-text-main-div p {
+        font-size: 17px;
+        margin: 10px 0px 0px 0px;
+        font-weight: 500;
+        color: gray;
+        text-align: center;
+    }
+
+    .advice-main-videos-div-rk {
+        height: 80%;
+        width: 90vw;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        justify-content: center;
+        margin: auto;
+        gap: 40px;
+        padding-bottom: 50px;
+    }
+
+    .advice-videos-div-rk {
+        height: 100%;
+        width: 100%;
+        margin: 0px 0px 0px 10px;
+    }
+
+    .imageResize-rk3 {
+        height: 70%;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .advice-videos-div-rk h4 {
+        font-size: 30px;
+        font-family: "BBSans Regular",Helvetica,Arial,sans-serif;
+        line-height: 1;
+        margin: 20px 0px 0px 0px;
+        text-align: center;
+        color: black;
+        font-weight: 500;
+    }
+
+    .advice-videos-div-rk p {
+        font-size: 15px;
+        margin: 10px 0px 0px 0px;
+        font-weight: 400;
+        color: gray;
+        text-align: center;
+    }
+
+    .advice-videos-div-rk button {
+        background-color: black;
+        margin: 10px 0px 10px 0px;
+        height: 40px;
+        width: 180px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* CONTENT ANYTIME */
+    .content-main-div-rk {
+        height: 800px;
+        width: 100%;
+        margin: 30px 0px 0px 0px;
+    }
+
+    .text-div-rk {
+        height: 20%;
+        width: 100%;
+    }
+
+    .text-div-rk h1 {
+        font-size: 50px;
+        font-family: "BBSans Regular",Helvetica,Arial,sans-serif;
+        line-height: 1;
+        margin: 20px 0px 0px 0px;
+        text-align: center;
+        color: black;
+        font-weight: 500;
+    }
+
+    .text-div-rk p {
+        font-size: 15px;
+        margin: 10px 0px 0px 0px;
+        font-weight: 400;
+        color: gray;
+        text-align: center;
+    }
+
+    .content-video-main-div-rk {
+        height: 80%;
+        width: 100%;
+        display: flex;
+    }
+
+    .content-video-div-rk {
+        height: 100%;
+        width: 46%;
+        margin: 0px 0px 0px 40px;
+    }
+
+    .imageResize-rk5 {
+        height: 70%;
+        width: 90%;
+        object-fit: cover;
+    }
+
+    .imageResize-rk6 {
+        height: 74%;
+        width: 70%;
+        object-fit: cover;
+    }
+
+    .content-video-div-rk h4 {
+        font-size: 40px;
+        font-family: "BBSans Regular",Helvetica,Arial,sans-serif;
+        line-height: 1;
+        margin: 20px 0px 0px 0px;
+        text-align: center;
+        color: black;
+        font-weight: 400;
+    }
+
+    .content-video-div-rk p {
+        font-size: 15px;
+        margin: 10px 0px 0px 0px;
+        font-weight: 400;
+        color: gray;
+        text-align: center;
+    }
+
+    .content-video-div-rk button {
+        background-color: black;
+        margin: 10px 0px 10px 0px;
+        height: 40px;
+        width: 180px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    video {
+        background-color: #000;
+    }
+</style>
+
+<div>
+    <div id="main-first-video-div-rk">
+        <div class="first-video-div-rk">
+            <video class="imageResize-rk" autoplay loop muted playsinline>
+                <source src="https://www.bobbibrowncosmetics.com/media/export/cms/VirtualServices/FH21_VirtualServices_RealTime_Sizzle_pc.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="individual-session-main-div-rk">
+            <h3>DỊCH VỤ RIÊNG BIỆT THEO THỜI GIAN CỦA BẠN</h3>
+            <p>Gặp gỡ chuyên gia đẹp của chúng tôi qua buổi tư vấn một-một trực tuyến</p>
+        </div>
+        <div class="second-video-main-div-rk">
+            <div class="second-video-div-rk">
+                <video class="imageResize-rk1" autoplay loop muted playsinline>
+                    <source src="https://www.bobbibrowncosmetics.com/media/export/cms/VirtualServices/FH21_VirtualServices_hero.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="second-video-div-text-rk">
+                <h3>TƯ VẤN LÀM ĐẸP TRỰC TUYẾN</h3>
+                <p>Đặt lịch buổi tư vấn video miễn phí với một trong những<br />chuyên gia hàng đầu của chúng tôi để nhận lời khuyên và mẹo làm đẹp cá nhân.</p>
+                <button onclick="location.href='/VirtualServices/Consultation'">ĐẶT LỊCH NGAY</button>
+            </div>
+        </div>
+    </div>
+    <div class="advice-main-div-rk">
+        <div class="advice-text-main-div">
+            <h1>TƯ VẤN THỜI GIAN THỰC</h1>
+            <p>Kết nối với chuyên gia trực tiếp</p>
+        </div>
+        <div class="advice-main-videos-div-rk">
+            <div class="advice-videos-div-rk">
+                <video class="imageResize-rk3" autoplay loop muted playsinline>
+                    <source src="https://www.bobbibrowncosmetics.com/media/export/cms/VirtualServices/FH21_VirtualServices_RealTime_LiveChat_pc.mp4" type="video/mp4">
+                </video>
+                <h4>CHAT TRỰC TUYẾN</h4>
+                <p>Trao đổi về kỹ thuật, thông tin sản phẩm<br />hoặc nhận lời khuyên ngay lập tức.</p>
+                <p>Thứ Hai - Thứ Sáu: 10:00 - 22:00<br />Thứ Bảy & Chủ Nhật: 12:00 - 20:00</p>
+                <button>CHAT NGAY</button><br />
+                <a href="" style="text-decoration:none; font-size:10px; text-align:center; display:block;">XEM ĐÁNH GIÁ</a>
+            </div>
+            <div class="advice-videos-div-rk">
+                <video class="imageResize-rk3" autoplay loop muted playsinline>
+                    <source src="https://www.bobbibrowncosmetics.com/media/export/cms/VirtualServices/FH21_VirtualServices_RealTime_LiveChat_pc.mp4" type="video/mp4">
+                </video>
+                <h4>VIDEO CHAT</h4>
+                <p>Kết nối qua camera để nhận lời khuyên<br />về làm đẹp, gợi ý màu sắc hoặc<br />sản phẩm phù hợp.</p>
+                <p>Thứ Hai - Thứ Sáu: 10:00 - 22:00<br />Thứ Bảy & Chủ Nhật: 12:00 - 20:00</p>
+                <button>VIDEO CHAT NGAY</button><br />
+            </div>
+            <div class="advice-videos-div-rk">
+                <video class="imageResize-rk3" autoplay loop muted playsinline>
+                    <source src="https://www.bobbibrowncosmetics.com/media/export/cms/VirtualServices/FH21_VirtualServices_RealTime_Text_pc.mp4" type="video/mp4">
+                </video>
+                <h4>TIN NHẮN</h4>
+                <p>Gửi tin nhắn<br />đến số (0569-083-547).</p>
+                <p>Thứ Hai - Thứ Sáu: 10:00 - 22:00<br />Thứ Bảy & Chủ Nhật: 12:00 - 20:00</p>
+                <button>NHẮN TIN NGAY</button><br />
+            </div>
+            <div class="advice-videos-div-rk">
+                <video class="imageResize-rk3" autoplay loop muted playsinline>
+                    <source src="https://www.bobbibrowncosmetics.com/media/export/cms/VirtualServices/FH21_VirtualServices_RealTime_Livestream_pc.mp4" type="video/mp4">
+                </video>
+                <h4>PHÁT TRỰC TIẾP</h4>
+                <p>Xem các buổi phát trực tiếp về<br />làm đẹp từ chuyên gia của chúng tôi.</p>
+                <button>XEM LỊCH</button><br />
+            </div>
+        </div>
+    </div>
+    <div class="content-main-div-rk">
+        <div class="text-div-rk">
+            <h1>NỘI DUNG MỌI LÚC</h1>
+            <p>Khám phá bất cứ lúc nào trong ngày</p>
+        </div>
+        <div class="content-video-main-div-rk">
+            <div class="content-video-div-rk">
+                <video class="imageResize-rk5" autoplay loop muted playsinline>
+                    <source src="https://www.bobbibrowncosmetics.com/media/export/cms/VirtualServices/FH21_VirtualServices_Anytime_HowTo_pc.mp4" type="video/mp4">
+                </video>
+                <h4>HƯỚNG DẪN</h4>
+                <p>Học cách trang điểm chuyên nghiệp<br />từ các chuyên gia.</p>
+                <button>KHÁM PHÁ NGAY</button><br />
+            </div>
+            <div class="content-video-div-rk">
+                <img class="imageResize-rk5" src="https://www.bobbibrowncosmetics.com/media/export/cms/VirtualServices/BB_Email_Virtual_Services_Q4_Virtual_Try-On_LWCSS_Animation.gif" alt="Virtual Try-On" />
+                <div style="margin-left: 50px;">
+                    <h4>VIRTUAL TRY-ON</h4>
+                    <p>Dùng thử các màu son, phấn mắt và sản phẩm khác trước khi mua</p>
+                    <button onclick="location.href='/VirtualServices/VirtualTryOn'">THỬ NGAY</button><br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

@@ -1,0 +1,156 @@
+﻿@model MyPhamSoul.Models.Hang
+
+@{
+
+    ViewData["Title"] = "Thêm mới hãng sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section Styles{
+    <link href="~/Adminassets/summernote/summernote-bs4.css" rel="stylesheet" />
+    <link href="~/Adminassets/summernote/summernote.css" rel="stylesheet" />
+}
+<form asp-controller="Hangs" asp-action="Create" asp-route-page="@ViewBag.CurrentPage" method="post" enctype="multipart/form-data">
+
+    <section>
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="~/Home">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Hangs" asp-action="Index" asp-route-page="@ViewBag.CurrentPage">Danh sách hãng sản phẩm</a></li>
+                        <li class="breadcrumb-item active">Tạo mới hãng sản phẩm</li>
+                    </ol>
+                </div>
+                <div class="col-md-6 text-right">
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+    <div class="page-header no-gutters has-tab">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#product-edit-basic">Thông tin</a>
+            </li>
+        </ul>
+    </div>
+    <div class="tab-content m-t-15">
+        <div class="tab-pane fade show active" id="product-edit-basic">
+            <div class="card">
+                <div class="card-body">
+                    
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productName">Mã hãng sản phẩm</label>
+                        <input type="text" class="form-control" asp-for="MaHang" id="maHangInput" />
+                        <span id="maHangError" class="text-danger" style="display: none;"></span>
+                        @Html.ValidationMessageFor(model => model.MaHang, "", new { @class = "text-danger" })
+                    </div>
+
+
+                    <script>
+                        document.getElementById("maHangInput").addEventListener("blur", function () {
+                            var maHangInput = document.getElementById("maHangInput").value;
+                            var maHangError = document.getElementById("maHangError");
+
+                            if (!maHangInput.trim()) {
+                                maHangError.textContent = "Mã hãng là trường bắt buộc.";
+                                maHangError.style.display = "inline";
+                            } else if (!/^H\d+$/.test(maHangInput)) {
+                                maHangError.textContent = "Mã hãng phải có dạng 'H' + 1 số tự nhiên bất kỳ.";
+                                maHangError.style.display = "inline";
+                            } else {
+                                maHangError.style.display = "none";
+                            }
+                        });
+                    </script>
+
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productName">Tên hãng sản phẩm</label>
+                        <input type="text" class="form-control" asp-for="TenHang" id="tenHangInput" />
+                        <span id="tenHangError" class="text-danger" style="display: none;"></span>
+                        @Html.ValidationMessageFor(model => model.TenHang, "", new { @class = "text-danger" })
+                    </div>
+
+                    <script>
+                        document.getElementById("tenHangInput").addEventListener("blur", function () {
+                            var tenHangInput = document.getElementById("tenHangInput").value;
+                            var tenHangError = document.getElementById("tenHangError");
+
+                            if (!tenHangInput.trim()) {
+                                tenHangError.textContent = "Tên hãng là trường bắt buộc.";
+                                tenHangError.style.display = "inline";
+                            } else if (tenHangInput.length > 50) {
+                                tenHangError.textContent = "Tên hãng không được vượt quá 50 kí tự.";
+                                tenHangError.style.display = "inline";
+                            } else {
+                                tenHangError.style.display = "none";
+                            }
+                        });
+                    </script>
+
+                    <td class="row">
+                        <button id="addProductButton4" class="btn btn-primary">
+                            <i class="anticon anticon-save"></i>
+                            <span>Lưu thay đổi</span>
+                        </button>
+                        <script>
+                            // Lắng nghe sự kiện click trên nút thêm sản phẩm
+                            document.getElementById("addProductButton4").addEventListener("click", function (event) {
+                                // Kiểm tra xem có thông báo lỗi nào hiển thị không
+                                var errorMessages = document.querySelectorAll('.text-danger');
+                                var isError = false;
+
+                                // Lặp qua mỗi thông báo lỗi để kiểm tra
+                                errorMessages.forEach(function (errorMessage) {
+                                    if (errorMessage.style.display === "block") {
+                                        // Nếu có ít nhất một thông báo lỗi hiển thị, đặt cờ lỗi thành true
+                                        isError = true;
+                                    }
+                                });
+
+                                // Nếu có thông báo lỗi hiển thị, ngăn chặn sự kiện thêm sản phẩm xảy ra
+                                if (isError) {
+                                    event.preventDefault();
+                                    alert("Vui lòng kiểm tra lại thông tin sản phẩm trước khi thêm!");
+                                }
+                            });
+                        </script>
+                        <button class="btn btn-secondary">
+                            <a asp-area="Admin" asp-controller="Hangs" asp-action="Index" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-page="@ViewBag.CurrentPage" asp-route-MaDM="@ViewBag.CurrentMaDM" asp-route-Search="@ViewBag.CurrentSearch" asp-route-MinPrice="@ViewBag.CurrentMinPrice" style="color: white" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice">Trở lại</a>
+                        </button>
+                    </td>
+                   
+                </div>
+            </div>
+        </div>
+     
+    </div>
+</form>
+
+
+@section Scripts {
+    <script>
+        // Đảm bảo rằng trang đã tải hoàn toàn trước khi thực thi mã JavaScript
+        $(document).ready(function () {
+            // Gán giá trị mặc định cho cột Mã sản phẩm
+            $("#maSanPhamInput").val("H");
+
+            // Sử dụng sự kiện 'input' để theo dõi thay đổi trong cột Mã sản phẩm
+            $("#maSanPhamInput").on('input', function () {
+                var inputValue = $(this).val();
+                // Kiểm tra nếu độ dài của giá trị nhập vào là 0 (trống) hoặc lớn hơn 6 ký tự, thì không thay đổi giá trị
+                if (inputValue.length === 0) {
+                    $(this).val("H");
+                } else if (inputValue.length > 6) {
+                    // Giới hạn độ dài tối đa là 6 ký tự
+                    $(this).val(inputValue.slice(0, 6));
+                }
+            });
+            CKEDITOR.replace('txtDetail', {
+                customConfig: '/Content/ckeditor/config.js',
+                extraAllowedContent: 'span',
+            });
+        });
+
+    </script>
+}

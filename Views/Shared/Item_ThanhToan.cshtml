@@ -1,0 +1,78 @@
+﻿@model GioHang
+
+<form action="#">
+    <h3>Your order</h3>
+    <div class="order_table table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Sản phẩm</th>
+                    <th>Tổng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var line in Model.Lines)
+                {
+                    if (line != null) // Kiểm tra line không phải là null
+                    {
+                        <tr>
+                            <td> @line.SanPham.TenSanPham <strong> × line.SoLuong</strong></td>
+                            <td> @(line.SoLuong * line.SanPham.Gia )</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Tổng giỏ hàng</th>
+                    <td>$@Model.ComputeTotalValues()</td>
+                </tr>
+                <tr>
+                    <th>Shipping</th>
+                    <td><strong>$10000</strong></td>
+                </tr>
+                <tr class="order_total">
+                    <th>Thanh toán</th>
+                    <td><strong>$@(Model.ComputeTotalValues() + 10000)</strong></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="payment_method">
+        <div class="panel-default">
+            <label class="checkbox-default" for="currencyCod" data-bs-toggle="collapse" data-bs-target="#methodCod">
+                <input type="checkbox" id="currencyCod">
+                <span>Cash on Delivery</span>
+            </label>
+
+            <div id="methodCod" class="collapse" data-parent="#methodCod">
+                <div class="card-body1">
+                    <p>
+                        Please send a check to Store Name, Store Street, Store Town, Store State
+                        / County, Store Postcode.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="panel-default">
+            <label class="checkbox-default" for="currencyPaypal" data-bs-toggle="collapse" data-bs-target="#methodPaypal">
+                <input type="checkbox" id="currencyPaypal">
+                <span>PayPal</span>
+            </label>
+            <div id="methodPaypal" class="collapse " data-parent="#methodPaypal">
+                <div class="card-body1">
+                    <p>
+                        Pay via PayPal; you can pay with your credit card if you don’t have a
+                        PayPal account.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="order_button pt-3">
+            <button class="btn btn-md btn-black-default-hover" type="submit">
+                Proceed to
+                PayPal
+            </button>
+        </div>
+    </div>
+</form>

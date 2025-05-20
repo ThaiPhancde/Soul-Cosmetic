@@ -1,0 +1,90 @@
+﻿@model MyPhamSoul.Models.DanhMucSanPham
+
+@{
+    string CurrentMaDM = ViewBag.CurrentMaDM;
+    string CurrentSearch = ViewBag.CurrentSearch;
+    int CurrentPage = ViewBag.CurrentPage;
+    double? CurrentMinPrice = ViewBag.CurrentMinPrice;
+    double? CurrentMaxPrice = ViewBag.CurrentMaxPrice;
+    ViewData["Title"] = "Xóa danh mục";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="~/Home">Trang chủ</a></li>
+                <a class="breadcrumb-item" asp-area="Admin" asp-controller="DanhMucSanPhams" asp-action="Index">Danh sách danh mục sản phẩm</a>
+                <li class="breadcrumb-item active">Xóa sản phẩm</li>
+            </ol>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<div class="card-body">
+    <h3>Bạn có chắc muốn xóa danh mục sản phẩm này?</h3>
+    <div class="card">
+        <div class="table">
+            <table class="">
+                <tbody>
+                    <tr>
+                        <td>Mã danh mục sản phẩm:</td>
+                        <td class="text-dark font-weight-semibold">@Model.MaDanhMuc</td>
+                    </tr>
+                    <tr>
+                        <td>Tên danh mục sản phẩm:</td>
+                        <td class="text-dark font-weight-semibold">@Model.TenDanhMuc</td>
+                    </tr>
+  
+                    <tr>
+                        <td>Giá:</td>
+                        <td>@Model.Gia.Value.ToString("#,##0") VNĐ</td>
+                    </tr>
+                    <tr>
+                        <td>Loại sản phẩm:</td>
+                        <td>@Model.MaCtloaiNavigation.TenCtloai</td>
+                    </tr>
+                    <tr>
+                        <td>Hãng sản phẩm:</td>
+                        <td>@Model.MaHangNavigation.TenHang</td>
+                    </tr>
+
+
+                    <tr>
+                        <td>Ảnh:</td>
+                        <td>  <img src="@Url.Content("~/images/DanhMucSanPham/" + Model.HinhAnh)" alt="Ảnh sản phẩm" class="img-thumbnail" style="max-width: 200px; max-height: 100px;" /></td>
+                    </tr>
+                    <tr>
+                        <td>Mô tả:</td>
+                        <td><textarea id="txtDetail" class="form-control" asp-for="MoTa" rows="4" style="height: 119px;"></textarea></td>
+                    </tr>
+ 
+                        <td class="row">
+                    <form asp-action="Delete" asp-for="MaDanhMuc" asp-route-page="@ViewBag.CurrentPage" asp-route-MaID="@ViewBag.CurrentMaID"  asp-route-MaDM="@ViewBag.CurrentMaDM" asp-route-Search="@ViewBag.CurrentSearch" asp-route-MinPrice="@ViewBag.CurrentMinPrice" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice">
+
+                                <input type="submit" value="Xóa" class="btn btn-danger" /> |
+                            </form>
+                            <div>
+                        <form asp-action="Details" asp-for="MaDanhMuc" asp-route-page="@ViewBag.CurrentPage" asp-route-MaID="@ViewBag.CurrentMaID"  asp-route-MaDM="@ViewBag.CurrentMaDM" asp-route-Search="@ViewBag.CurrentSearch" asp-route-MinPrice="@ViewBag.CurrentMinPrice" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice">
+                                    <input type="submit" class="btn btn-secondary" value="Trở lại" />
+                                </form>
+                            </div>
+                           
+                        </td>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        // Đảm bảo rằng trang đã tải hoàn toàn trước khi thực thi mã JavaScript
+        $(document).ready(function () {
+            CKEDITOR.replace('txtDetail', {
+                customConfig: '/Content/ckeditor/config.js',
+                extraAllowedContent: 'span',
+            });
+        });
+
+    </script>
+}

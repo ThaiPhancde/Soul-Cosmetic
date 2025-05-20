@@ -1,0 +1,97 @@
+﻿@model MyPhamSoul.Models.NhaPhanPhoi
+
+@{
+
+
+    ViewData["Title"] = "Chỉnh sửa thông tin nhà phân phối: " + Model.TenNhaPp;
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<form asp-controller="NhaPhanPhois" asp-action="Edit" asp-route-id="@Model.MaNhaPp" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-page="@ViewBag.CurrentPage" asp-route-MaDM="@ViewBag.CurrentMaDM" asp-route-Search="@ViewBag.CurrentSearch" asp-route-MinPrice="@ViewBag.CurrentMinPrice" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input type="hidden" asp-for="MaNhaPp" />
+
+    <section>
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="~/Home">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="NhaPhanPhois" asp-action="Index">Danh sách nhà phân phối</a></li>
+                        <li class="breadcrumb-item active">Sửa thông tin nhà phân phối</li>
+                    </ol>
+                </div>
+                <div class="col-md-6 text-right">
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <div class="page-header no-gutters has-tab">
+
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#product-edit-basic">Thông tin</a>
+            </li>
+            @*            <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#product-edit-option">Thông tin tùy chọn</a>
+            </li>*@
+            @*<li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#product-edit-description">Mô tả</a>
+            </li>*@
+        </ul>
+    </div>
+    <div class="tab-content m-t-15">
+        <div class="tab-pane fade show active" id="product-edit-basic">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productName">Mã nhà phân phối</label>
+                        <input type="text" class="form-control" asp-for="MaNhaPp" id="maSanPhamInput" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productName">Tên nhà phân phối</label>
+                        <input type="text" class="form-control" asp-for="TenNhaPp" id="maSanPhamInput" />
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productName">Địa chỉ</label>
+                        <input type="text" class="form-control" asp-for="DiaChi" />
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-semibold" for="productName">Email</label>
+                            <input type="text" class="form-control" asp-for="Email" step="1">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class="font-weight-semibold" for="productPrice">Số điện thoại</label>
+                            <input type="number" class="form-control" asp-for="Sdt" step="0.01">
+                        </div>
+
+                    </div>
+
+                        <td class="row">
+                            <button class="btn btn-primary">
+                                <i class="anticon anticon-save"></i>
+                                <span>Lưu thay đổi</span>
+                            </button>
+                            <button class="btn btn-secondary">
+                                <a asp-area="Admin" asp-controller="NhaPhanPhois" asp-action="Index" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-page="@ViewBag.CurrentPage" asp-route-MaDM="@ViewBag.CurrentMaDM" asp-route-Search="@ViewBag.CurrentSearch" asp-route-MinPrice="@ViewBag.CurrentMinPrice" style="color: white" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice">Trở lại</a>
+                            </button>
+                        </td>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+</form>
+@section Scripts {
+    <script>
+        // Đảm bảo rằng trang đã tải hoàn toàn trước khi thực thi mã JavaScript
+        $(document).ready(function () {
+            CKEDITOR.replace('txtDetail', {
+                customConfig: '/Content/ckeditor/config.js',
+                extraAllowedContent: 'span',
+            });
+        });
+
+    </script>
+}

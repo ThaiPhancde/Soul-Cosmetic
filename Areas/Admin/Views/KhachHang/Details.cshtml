@@ -1,0 +1,91 @@
+﻿@model MyPhamSoul.Models.Account
+
+@{
+    string CurrentMaDM = ViewBag.CurrentMaDM;
+    string CurrentSearch = ViewBag.CurrentSearch;
+    int CurrentPage = ViewBag.CurrentPage;
+    double? CurrentMinPrice = ViewBag.CurrentMinPrice;
+    double? CurrentMaxPrice = ViewBag.CurrentMaxPrice;
+    ViewData["Title"] = "Chi tiết khách hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="~/Home">Trang chủ</a></li>
+                <a class="breadcrumb-item" asp-area="Admin" asp-controller="Accounts" asp-action="Index">Danh sách khách hàng</a>
+                <li class="breadcrumb-item active">Chi tiết khách hàng</li>
+            </ol>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<div class="card-body">
+    <h3>Thông tin chi tiết của khách hàng:</h3>
+    <div class="card">
+        <div class="table">
+            <table class="">
+                <tbody>
+                    <tr>
+                        <td>Mã khách hàng:</td>
+                        <td class="text-dark font-weight-semibold">@Model.AccountId</td>
+                    </tr>
+                    <tr>
+                        <td>Họ và tên:</td>
+                        <td>@Model.FullName</td>
+                    </tr>
+                    <tr>
+                        <td>Địa chỉ Email:</td>
+                        <td class="text-dark font-weight-semibold">@Model.AccountEmail</td>
+                    </tr>
+                    <tr>
+                        <td>Ngày sinh:</td>
+                        <td>@Model.NgaySinh.Value.ToString("dd/MM/yyyy")</td>
+                    </tr>
+
+                    <tr>
+                        <td>Giới tính:</td>
+                        <td>
+                            @if (Model.GioiTinh.HasValue)
+                            {
+                                <span>@(Model.GioiTinh.Value ? "Nam" : "Nữ")</span>
+                            }
+                            else
+                            {
+                                <span>Không xác định</span>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Ngày tạo:</td>
+                        <td>@Model.CreateDate</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="row">
+
+                            <div>
+                                <form asp-action="Details" asp-for="KhachHang" asp-route-Page="@ViewBag.CurrentPage" asp-route-Ten="@ViewBag.CurrentTen" asp-route-Email="@ViewBag.CurrentEmail" asp-route-SDT="@ViewBag.CurrentSDT" asp-route-Quyen="@ViewBag.CurrentRole" asp-route-TrangThai="@ViewBag.CurrentStatus">
+                                    <input type="submit" class="btn btn-secondary" value="Trở lại" />
+                                </form>
+                            </div>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        // Đảm bảo rằng trang đã tải hoàn toàn trước khi thực thi mã JavaScript
+        $(document).ready(function () {
+            CKEDITOR.replace('txtDetail', {
+                customConfig: '/Content/ckeditor/config.js',
+                extraAllowedContent: 'span',
+            });
+        });
+
+    </script>
+}

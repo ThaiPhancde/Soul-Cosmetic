@@ -1,0 +1,169 @@
+﻿@model MyPhamSoul.Models.Loai
+
+@{
+
+    ViewData["Title"] = "Thêm mới loại sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section Styles{
+    <link href="~/Adminassets/summernote/summernote-bs4.css" rel="stylesheet" />
+    <link href="~/Adminassets/summernote/summernote.css" rel="stylesheet" />
+}
+<form asp-controller="Loais" asp-action="Create" asp-route-page="@ViewBag.CurrentPage" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <section>
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="~/Home">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Loais" asp-action="Index" asp-route-page="@ViewBag.CurrentPage">Danh sách loại sản phẩm</a></li>
+                        <li class="breadcrumb-item active">Tạo mới loại sản phẩm</li>
+                    </ol>
+                </div>
+                <div class="col-md-6 text-right">
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+    <div class="page-header no-gutters has-tab">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#product-edit-basic">Thông tin</a>
+            </li>
+            @*            <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#product-edit-option">Thông tin tùy chọn</a>
+            </li>*@
+            @* <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#product-edit-description">Mô tả</a>
+            </li>*@
+        </ul>
+    </div>
+    <div class="tab-content m-t-15">
+        <div class="tab-pane fade show active" id="product-edit-basic">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productName">Mã loại sản phẩm</label>
+                        <input type="text" class="form-control" asp-for="MaLoai" id="maSanPhamInput" />
+                        <div class="text-danger" id="maSanPhamError" style="display: none; color: red;">Mã loại sản phẩm phải có định dạng L + 1 số tự nhiên bất kỳ</div>
+                    </div>
+
+                    <script>
+                        // Lắng nghe sự kiện khi người dùng rời khỏi ô input
+                        document.getElementById("maSanPhamInput").addEventListener("blur", function () {
+                            // Lấy giá trị của ô "Mã danh mục sản phẩm"
+                            var maDanhMuc = document.getElementById("maSanPhamInput").value;
+
+                            // Định nghĩa biểu thức chính quy để kiểm tra định dạng mã danh mục (DM + 3 số tự nhiên)
+                            var regex = /^L\d{1}$/;
+
+                            // Kiểm tra xem giá trị nhập vào có phù hợp với biểu thức chính quy không
+                            if (!regex.test(maDanhMuc)) {
+                                // Nếu không phù hợp, hiển thị thông báo lỗi
+                                document.getElementById("maSanPhamError").style.display = "block";
+                            } else {
+                                // Nếu phù hợp, ẩn thông báo lỗi (nếu có)
+                                document.getElementById("maSanPhamError").style.display = "none";
+                            }
+                        });
+                    </script>
+
+
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productName">Tên loại sản phẩm</label>
+                        <input type="text" class="form-control" asp-for="TenLoai" id="tenDanhMucInput" />
+                        <div class="text-danger" id="emptyTenDanhMucError" style="display: none; color: red;">Tên loại sản phẩm không được trống</div>
+                        <div class="text-danger" id="maxLengthTenDanhMucError" style="display: none; color: red;">Tên loại sản phẩm không được quá 50 kí tự</div>
+                    </div>
+
+                    <script>
+                        // Lắng nghe sự kiện khi người dùng rời khỏi ô input
+                        document.getElementById("tenDanhMucInput").addEventListener("blur", function () {
+                            // Lấy giá trị của ô "Tên danh mục sản phẩm"
+                            var tenDanhMuc = document.getElementById("tenDanhMucInput").value;
+
+                            // Kiểm tra xem tên danh mục có rỗng không
+                            if (tenDanhMuc.trim() === '') {
+                                // Nếu rỗng, hiển thị thông báo lỗi cho trường hợp rỗng
+                                document.getElementById("emptyTenDanhMucError").style.display = "block";
+                                document.getElementById("maxLengthTenDanhMucError").style.display = "none";
+                            } else if (tenDanhMuc.length > 50) {
+                                // Nếu quá 50 kí tự, hiển thị thông báo lỗi cho trường hợp quá 50 kí tự
+                                document.getElementById("emptyTenDanhMucError").style.display = "none";
+                                document.getElementById("maxLengthTenDanhMucError").style.display = "block";
+                            } else {
+                                // Nếu hợp lệ, ẩn thông báo lỗi (nếu có)
+                                document.getElementById("emptyTenDanhMucError").style.display = "none";
+                                document.getElementById("maxLengthTenDanhMucError").style.display = "none";
+                            }
+                        });
+                    </script>
+                    <td class="row">
+                        <button id="addProductButton2" class="btn btn-primary">
+                            <i class="anticon anticon-save"></i>
+                            <span>Thêm loại sản phẩm</span>
+                        </button>
+
+                        <script>
+                            // Lắng nghe sự kiện click trên nút thêm sản phẩm
+                            document.getElementById("addProductButton2").addEventListener("click", function (event) {
+                                // Kiểm tra xem có thông báo lỗi nào hiển thị không
+                                var errorMessages = document.querySelectorAll('.text-danger');
+                                var isError = false;
+
+                                // Lặp qua mỗi thông báo lỗi để kiểm tra
+                                errorMessages.forEach(function (errorMessage) {
+                                    if (errorMessage.style.display === "block") {
+                                        // Nếu có ít nhất một thông báo lỗi hiển thị, đặt cờ lỗi thành true
+                                        isError = true;
+                                    }
+                                });
+
+                                // Nếu có thông báo lỗi hiển thị, ngăn chặn sự kiện thêm sản phẩm xảy ra
+                                if (isError) {
+                                    event.preventDefault();
+                                    alert("Vui lòng kiểm tra lại thông tin loại sản phẩm trước khi thêm!");
+                                }
+                            });
+                        </script>
+                        <button class="btn btn-secondary">
+                            <a asp-area="Admin" asp-controller="Loais" asp-action="Index" asp-route-page="@ViewBag.CurrentPage" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-MaDM="@ViewBag.CurrentMaDM" asp-route-Search="@ViewBag.CurrentSearch" asp-route-MinPrice="@ViewBag.CurrentMinPrice" style="color: white" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice">Trở lại</a>
+                        </button>
+                    </td>
+                    
+                </div>
+            </div>
+        </div>
+      
+    </div>
+</form>
+
+
+@section Scripts {
+    <script>
+        // Đảm bảo rằng trang đã tải hoàn toàn trước khi thực thi mã JavaScript
+        $(document).ready(function () {
+            // Gán giá trị mặc định cho cột Mã sản phẩm
+            $("#maSanPhamInput").val("L");
+
+            // Sử dụng sự kiện 'input' để theo dõi thay đổi trong cột Mã sản phẩm
+            $("#maSanPhamInput").on('input', function () {
+                var inputValue = $(this).val();
+                // Kiểm tra nếu độ dài của giá trị nhập vào là 0 (trống) hoặc lớn hơn 6 ký tự, thì không thay đổi giá trị
+                if (inputValue.length === 0) {
+                    $(this).val("L");
+                } else if (inputValue.length > 6) {
+                    // Giới hạn độ dài tối đa là 6 ký tự
+                    $(this).val(inputValue.slice(0, 6));
+                }
+            });
+            CKEDITOR.replace('txtDetail', {
+                customConfig: '/Content/ckeditor/config.js',
+                extraAllowedContent: 'span',
+            });
+        });
+
+    </script>
+}

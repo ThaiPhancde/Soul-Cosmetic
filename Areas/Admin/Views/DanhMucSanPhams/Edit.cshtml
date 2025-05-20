@@ -1,0 +1,293 @@
+﻿@model MyPhamSoul.Models.DanhMucSanPham
+
+@{
+
+    ViewData["Title"] = "Sủa thông tin danh mục sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section Styles{
+    <link href="~/Adminassets/summernote/summernote-bs4.css" rel="stylesheet" />
+    <link href="~/Adminassets/summernote/summernote.css" rel="stylesheet" />
+}
+<form asp-controller="DanhMucSanPhams" asp-action="Edit" asp-route-id="@Model.MaDanhMuc"  asp-route-page="@ViewBag.CurrentPage" asp-route-MaID="@ViewBag.CurrentMaID" asp-route-MaDM="@ViewBag.CurrentMaDM" asp-route-Search="@ViewBag.CurrentSearch" asp-route-MinPrice="@ViewBag.CurrentMinPrice" asp-route-MaxPrice="@ViewBag.CurrentMaxPrice" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input type="hidden" asp-for="MaDanhMuc" />
+    <input type="hidden" asp-for="HinhAnh" />
+    <section>
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="~/Home">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="DanhMucSanPhams" asp-action="Index" asp-route-page="@ViewBag.CurrentPage">Danh sách danh mục sản phẩm</a></li>
+                        <li class="breadcrumb-item active">Sửa thông tin danh mục sản phẩm</li>
+                    </ol>
+                </div>
+                <div class="col-md-6 text-right">
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+    <div class="page-header no-gutters has-tab">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#product-edit-basic">Thông tin</a>
+            </li>
+            @*            <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#product-edit-option">Thông tin tùy chọn</a>
+            </li>*@
+            
+        </ul>
+    </div>
+    <div class="tab-content m-t-15">
+        <div class="tab-pane fade show active" id="product-edit-basic">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productName">Mã danh mục sản phẩm</label>
+                        <input type="text" class="form-control" asp-for="MaDanhMuc" id="maSanPhamInput" readonly />
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productName">Tên danh mục sản phẩm</label>
+                        <input type="text" class="form-control" asp-for="TenDanhMuc" id="tenDanhMucInput" />
+                        <span id="tenDanhMucEmptyError" class="text-danger" style="display: none;">Tên danh mục không được để trống!</span>
+                        <span id="tenDanhMucLengthError" class="text-danger" style="display: none;">Tên danh mục không được quá 50 kí tự!</span>
+                    </div>
+
+                    <script>
+                        // Lấy thẻ input và thông báo lỗi
+                        var tenDanhMucInput = document.getElementById("tenDanhMucInput");
+                        var tenDanhMucEmptyError = document.getElementById("tenDanhMucEmptyError");
+                        var tenDanhMucLengthError = document.getElementById("tenDanhMucLengthError");
+
+                        // Thêm sự kiện blur (rời khỏi trường nhập liệu)
+                        tenDanhMucInput.addEventListener("blur", function () {
+                            // Kiểm tra độ dài của tên danh mục
+                            var tenDanhMucValue = tenDanhMucInput.value.trim();
+                            if (tenDanhMucValue.length === 0) {
+                                // Nếu tên danh mục để trống, hiển thị thông báo lỗi và ẩn thông báo lỗi về độ dài
+                                tenDanhMucEmptyError.style.display = "block";
+                                tenDanhMucLengthError.style.display = "none";
+                            } else if (tenDanhMucValue.length > 50) {
+                                // Nếu tên danh mục quá 50 kí tự, hiển thị thông báo lỗi và ẩn thông báo lỗi về trống
+                                tenDanhMucEmptyError.style.display = "none";
+                                tenDanhMucLengthError.style.display = "block";
+                            } else {
+                                // Nếu tên danh mục hợp lệ, ẩn cả hai thông báo lỗi
+                                tenDanhMucEmptyError.style.display = "none";
+                                tenDanhMucLengthError.style.display = "none";
+                            }
+                        });
+                    </script>
+
+                    @*  <div class="form-group">
+                    <label class="font-weight-semibold" for="productName">Mô tả ngắn</label>
+                    <input type="text" class="form-control" asp-for="MoTa" />
+                    </div>*@
+                    <div class="form-group">
+                        <label for="inputDescription">Mô tả danh mục sản phẩm</label>
+                        <textarea id="txtDetail" class="form-control" asp-for="MoTa" rows="4" style="height: 119px;"></textarea>
+                        <span id="moTaEmptyError" class="text-danger" style="display: none;">Mô tả không được để trống!</span>
+                    </div>
+
+                    <script>
+                        // Lấy thẻ textarea và thông báo lỗi
+                        var txtDetail = document.getElementById("txtDetail");
+                        var moTaEmptyError = document.getElementById("moTaEmptyError");
+
+                        // Thêm sự kiện blur (rời khỏi trường nhập liệu)
+                        txtDetail.addEventListener("blur", function () {
+                            // Kiểm tra nếu mô tả trống
+                            if (txtDetail.value.trim() === "") {
+                                // Hiển thị thông báo lỗi
+                                moTaEmptyError.style.display = "block";
+                            } else {
+                                // Ẩn thông báo lỗi
+                                moTaEmptyError.style.display = "none";
+                            }
+                        });
+                    </script>
+
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-semibold" for="productAnh">Ảnh đại diện</label>
+                            <input type="file" name="fAnh" class="form-control-file" asp-for="HinhAnh" id="anhDaiDienInput">
+                            <span id="anhDaiDienError" class="text-danger" style="display: none;">Vui lòng chọn một ảnh!</span>
+                            <span asp-validation-for="HinhAnh" class="text-danger"></span>
+                        </div>
+
+                        <script>
+                            // Lấy thẻ input chứa hình ảnh và thông báo lỗi
+                            var anhDaiDienInput = document.getElementById("anhDaiDienInput");
+                            var anhDaiDienError = document.getElementById("anhDaiDienError");
+
+                            // Thêm sự kiện change (khi giá trị của trường thay đổi)
+                            anhDaiDienInput.addEventListener("change", function () {
+                                // Kiểm tra nếu không có file được chọn
+                                if (!anhDaiDienInput.value) {
+                                    // Hiển thị thông báo lỗi
+                                    anhDaiDienError.style.display = "block";
+                                } else {
+                                    // Ẩn thông báo lỗi
+                                    anhDaiDienError.style.display = "none";
+                                }
+                            });
+                        </script>
+
+                        <div class="form-group col-md-4">
+                            <label class="font-weight-semibold" for="productPrice">Giá bán</label>
+                            <input type="number" class="form-control" asp-for="Gia" step="0.01" id="giaBanInput">
+                            <span id="emptyGiaBanError" class="text-danger" style="display: none;">Vui lòng nhập giá!</span>
+                            <span id="invalidGiaBanError" class="text-danger" style="display: none;">Giá phải lớn hơn 0!</span>
+                        </div>
+
+                        <script>
+                            // Lấy thẻ input chứa giá và thông báo lỗi
+                            var giaBanInput = document.getElementById("giaBanInput");
+                            var emptyGiaBanError = document.getElementById("emptyGiaBanError");
+                            var invalidGiaBanError = document.getElementById("invalidGiaBanError");
+
+                            // Thêm sự kiện blur (khi trường mất focus)
+                            giaBanInput.addEventListener("blur", function () {
+                                // Kiểm tra nếu giá trống
+                                if (!giaBanInput.value) {
+                                    // Hiển thị thông báo lỗi cho trường rỗng và ẩn thông báo lỗi cho giá không hợp lệ
+                                    emptyGiaBanError.style.display = "block";
+                                    invalidGiaBanError.style.display = "none";
+                                } else if (giaBanInput.value <= 0) {
+                                    // Hiển thị thông báo lỗi cho giá không hợp lệ và ẩn thông báo lỗi cho trường rỗng
+                                    emptyGiaBanError.style.display = "none";
+                                    invalidGiaBanError.style.display = "block";
+                                } else {
+                                    // Ẩn cả hai thông báo lỗi
+                                    emptyGiaBanError.style.display = "none";
+                                    invalidGiaBanError.style.display = "none";
+                                }
+                            });
+                        </script>
+
+
+
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-semibold" for="productCategory">Loại</label>
+                            <select class="custom-select" asp-for="MaCtloai" style="min-width: 200px" asp-items="ViewBag.Loai">
+                                <option value="" disabled selected>Chọn loại</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-semibold" for="productCategory">Hãng</label>
+                            <select class="custom-select" asp-for="MaHang" style="min-width: 200px" asp-items="ViewBag.Hang">
+                                <option value="" disabled selected>Chọn hãng</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+
+                    <td class="row">
+                        <button id="editButton" class="btn btn-primary">
+                            <i class="anticon anticon-save"></i>
+                            <span>Sửa</span>
+                        </button>
+
+                        <script>
+                            // Lắng nghe sự kiện click trên nút thêm sản phẩm
+                            document.getElementById("editButton").addEventListener("click", function (event) {
+                                // Kiểm tra xem có thông báo lỗi nào hiển thị không
+                                var errorMessages = document.querySelectorAll('.text-danger');
+                                var isError = false;
+
+                                // Lặp qua mỗi thông báo lỗi để kiểm tra
+                                errorMessages.forEach(function (errorMessage) {
+                                    if (errorMessage.style.display === "block") {
+                                        // Nếu có ít nhất một thông báo lỗi hiển thị, đặt cờ lỗi thành true
+                                        isError = true;
+                                    }
+                                });
+
+                                // Nếu có thông báo lỗi hiển thị, ngăn chặn sự kiện thêm sản phẩm xảy ra
+                                if (isError) {
+                                    event.preventDefault();
+                                    alert("Vui lòng kiểm tra lại thông tin sản phẩm trước khi sửa!");
+                                }
+                            });
+                        </script>
+
+                        <button type="button" class="btn btn-secondary" onclick="goBack()">
+                            Trở lại
+                        </button>
+                    </td>
+                    @*<div class="row">
+                    <div class="m-t-25">
+                    <div class="form-group d-flex align-items-center">
+                    <div class="switch m-r-10">
+                    <input type="checkbox" asp-for="Active" checked="">
+                    <label for="Active"></label>
+                    </div>
+                    <label>Trạng thái</label>
+                    </div>
+                    <div class="form-group d-flex align-items-center">
+                    <div class="switch m-r-10">
+                    <input type="checkbox" asp-for="HomeFlag">
+                    <label for="HomeFlag"></label>
+                    </div>
+                    <label>HomeFlag</label>
+                    </div>
+                    <div class="form-group d-flex align-items-center">
+                    <div class="switch m-r-10">
+                    <input type="checkbox" asp-for="BestSellers" disabled="">
+                    <label for="BestSellers"></label>
+                    </div>
+                    <label>Yêu thích</label>
+                    </div>
+                    </div>
+                    </div>*@
+                </div>
+            </div>
+        </div>
+        @*<div class="tab-pane fade" id="product-edit-option">
+        <div class="card">
+        <div class="card-body">
+        <div class="form-group">
+        <label class="font-weight-semibold" for="productSize">Size</label>
+        <input type="text" class="form-control" asp-for="Slkho" />
+        </div>
+        <div class="form-group">
+        <label class="font-weight-semibold" for="productColors">Colors</label>
+        <select class="select2" id="productColors" multiple="multiple">
+        @foreach (var color in ViewBag.Colors)
+        {
+        <option value="@color.Value">@color.Text</option>
+        }
+        </select>
+        </div>
+
+        </div>
+        </div>
+        </div>*@
+        @*<div class="tab-pane fade" id="product-edit-description">
+        <div class="card">
+        <div class="card-body">
+        <div class="form-group">
+        <label for="inputDescription"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Mô tả sản phẩm</font></font></label>
+        <textarea id="inputDescription" class="form-control" rows="4" style="height: 119px;"></textarea>
+        </div>
+        </div>
+        </div>
+        </div>*@
+    </div>
+</form>
+
+
+@section Scripts {
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+}

@@ -1,0 +1,171 @@
+@model dynamic
+@{
+    ViewData["Title"] = "Chi tiết bài viết";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+    var relatedPosts = Model.RelatedPosts as List<object>;
+    var tags = Model.Tags as List<string>;
+}
+
+<!-- Start Breadcrumb Area -->
+<div class="breadcrumb-area breadcrumb-bg-1 pt-50 pb-70 mb-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="breadcrumb-title">@Model.Title</h1>
+                <ul class="breadcrumb-list">
+                    <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a href="/Blog">Blog</a></li>
+                    <li class="breadcrumb-item active">@Model.Title</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Breadcrumb Area -->
+
+<!-- Start Blog Single Content Area -->
+<div class="blog-single-content-area section-space-y-bottom-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+                <!-- Start Blog Single Content -->
+                <div class="blog-single-content">
+                    <div class="blog-single-img">
+                        <img class="img-fluid" src="@Model.ImageUrl" alt="@Model.Title">
+                    </div>
+                    <div class="blog-single-meta">
+                        <span class="blog-single-meta-author">Bởi <a href="#">@Model.Author</a></span>
+                        <span class="blog-single-meta-date">@Model.Date</span>
+                        <span class="blog-single-meta-category">Trong <a href="/Blog/Category/@Model.Category">@Model.Category</a></span>
+                    </div>
+                    <div class="blog-single-post-content">
+                        @Html.Raw(Model.Content)
+                    </div>
+
+                    <!-- Start Blog Single Tags -->
+                    <div class="blog-single-tags">
+                        <span>Tags:</span>
+                        @foreach (var tag in tags)
+                        {
+                            <a href="/Blog/Tag/@tag">@tag</a>
+                        }
+                    </div>
+                    <!-- End Blog Single Tags -->
+
+                    <!-- Start Blog Single Share -->
+                    <div class="blog-single-share">
+                        <span>Chia sẻ:</span>
+                        <a href="#"><i class="fa fa-facebook"></i></a>
+                        <a href="#"><i class="fa fa-twitter"></i></a>
+                        <a href="#"><i class="fa fa-pinterest"></i></a>
+                        <a href="#"><i class="fa fa-google-plus"></i></a>
+                    </div>
+                    <!-- End Blog Single Share -->
+
+                    <!-- Start Blog Single Comment -->
+                    <div class="blog-single-comment">
+                        <h3 class="blog-single-comment-title">Bình luận (3)</h3>
+                        <div class="blog-single-comment-wrap">
+                            <!-- Start Single Comment -->
+                            <div class="blog-single-comment-item">
+                                <div class="blog-single-comment-img">
+                                    <img src="/images/user/user-1.jpg" alt="">
+                                </div>
+                                <div class="blog-single-comment-content">
+                                    <h4 class="blog-single-comment-name">Linh Trần</h4>
+                                    <span class="blog-single-comment-date">30/05/2023</span>
+                                    <p>Bài viết rất hay và hữu ích! Tôi sẽ áp dụng các xu hướng này cho mùa hè.</p>
+                                    <a href="#" class="blog-single-comment-reply">Trả lời</a>
+                                </div>
+                            </div>
+                            <!-- End Single Comment -->
+                            <!-- Start Single Comment Reply -->
+                            <div class="blog-single-comment-item blog-single-comment-reply">
+                                <div class="blog-single-comment-img">
+                                    <img src="/images/user/user-2.jpg" alt="">
+                                </div>
+                                <div class="blog-single-comment-content">
+                                    <h4 class="blog-single-comment-name">Admin</h4>
+                                    <span class="blog-single-comment-date">31/05/2023</span>
+                                    <p>Cảm ơn bạn đã đọc và chia sẻ! Chúc bạn có một mùa hè xinh đẹp.</p>
+                                    <a href="#" class="blog-single-comment-reply">Trả lời</a>
+                                </div>
+                            </div>
+                            <!-- End Single Comment Reply -->
+                            <!-- Start Single Comment -->
+                            <div class="blog-single-comment-item">
+                                <div class="blog-single-comment-img">
+                                    <img src="/images/user/user-3.jpg" alt="">
+                                </div>
+                                <div class="blog-single-comment-content">
+                                    <h4 class="blog-single-comment-name">Hương Nguyễn</h4>
+                                    <span class="blog-single-comment-date">02/06/2023</span>
+                                    <p>Tôi đặc biệt thích phần về má hồng dạng kem. Trước giờ toàn dùng phấn, chắc phải thử kem xem sao.</p>
+                                    <a href="#" class="blog-single-comment-reply">Trả lời</a>
+                                </div>
+                            </div>
+                            <!-- End Single Comment -->
+                        </div>
+                    </div>
+                    <!-- End Blog Single Comment -->
+
+                    <!-- Start Blog Single Comment Form -->
+                    <div class="blog-single-comment-form">
+                        <h3 class="blog-single-comment-form-title">Để lại bình luận</h3>
+                        <form action="#" method="post">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="comment-form-input">
+                                        <input type="text" placeholder="Tên *" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="comment-form-input">
+                                        <input type="email" placeholder="Email *" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="comment-form-input">
+                                        <textarea placeholder="Nội dung *" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="comment-form-submit">
+                                        <button class="btn btn-md btn-black-default-hover">Gửi</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- End Blog Single Comment Form -->
+                </div>
+                <!-- End Blog Single Content -->
+            </div>
+        </div>
+
+        <!-- Start Blog Single Related Post -->
+        <div class="blog-single-related-post mt-5">
+            <h3 class="blog-single-related-post-title text-center mb-30">Bài viết liên quan</h3>
+            <div class="row">
+                @foreach (var post in relatedPosts)
+                {
+                    <div class="col-lg-4 col-md-6">
+                        <!-- Start Blog List Single Item -->
+                        <div class="blog-list-single-item mb-30">
+                            <a href="/Blog/Detail/@post.GetType().GetProperty("Id").GetValue(post, null)" class="blog-list-img-link">
+                                <img class="img-fluid" src="@post.GetType().GetProperty("ImageUrl").GetValue(post, null)" alt="">
+                            </a>
+                            <div class="blog-list-content">
+                                <h3 class="blog-list-title"><a href="/Blog/Detail/@post.GetType().GetProperty("Id").GetValue(post, null)">@post.GetType().GetProperty("Title").GetValue(post, null)</a></h3>
+                                <a href="/Blog/Detail/@post.GetType().GetProperty("Id").GetValue(post, null)" class="blog-list-read-more">Xem thêm</a>
+                            </div>
+                        </div>
+                        <!-- End Blog List Single Item -->
+                    </div>
+                }
+            </div>
+        </div>
+        <!-- End Blog Single Related Post -->
+    </div>
+</div>
+<!-- End Blog Single Content Area --> 

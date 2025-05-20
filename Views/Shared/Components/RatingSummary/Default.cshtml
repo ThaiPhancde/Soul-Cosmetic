@@ -1,0 +1,126 @@
+﻿@model int[]
+
+
+@if (ViewBag.AverageRating > 0)
+{
+    <div class="rating-avg">
+        <span>@ViewBag.AverageRating.ToString("0.0")/5</span>
+
+    </div>
+}
+else
+{
+    <div class="rating-avg">
+        <span>Chưa có đánh giá</span>
+
+    </div>
+}
+
+<ul class="rating">
+    <li style="display: flex;">
+        <div class="rating-stars" style="color: #FFD700;">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+        </div>
+        <div class="rating-progress" style="color: #FFD700;">
+            <div style="width: @(Model.Length > 4 ? Math.Min(Model[4], 50) * 2 : 0)%;"></div>
+        </div>
+        <span class="sum" style="margin-left: 10px; display: flex;">
+            <span>
+                @if (Model.Length > 4)
+                {
+                    @Math.Min(Model[4], 50)
+                }
+            </span>
+            <span style="margin-left: 10px;">đánh giá</span>
+        </span>
+    </li>
+    <li style ="display: flex;">
+        <div class="rating-stars" style="color: #FFD700;">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-o"></i>
+        </div>
+        <div class="rating-progress" style="color: #FFD700;">
+            <div style="width: @(Model.Length > 3 ? Math.Min(Model[3], 50) * 2 : 0)%;"></div>
+        </div>
+        <span class="sum" style="margin-left: 10px; display: flex;">
+            <span>
+            @if (Model.Length > 3)
+            {
+                @Math.Min(Model[3], 50) 
+            }
+            </span>
+            <span style="margin-left: 10px;">đánh giá</span>
+        </span>
+    </li>
+    <li style="display: flex;">
+        <div class="rating-stars" style="color: #FFD700;">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-o"></i>
+            <i class="fa fa-star-o"></i>
+        </div>
+        <div class="rating-progress" style="color: #FFD700;">
+            <div style="width: @(Model.Length > 2 ? Math.Min(Model[2], 50) * 2 : 0)%;"></div>
+        </div>
+        <span class="sum" style="margin-left: 10px; display: flex;">
+            <span>
+                @if (Model.Length > 2)
+                {
+                    @Math.Min(Model[2], 50)
+                }
+            </span>
+            <span style="margin-left: 10px;">đánh giá</span>
+        </span>
+    </li>
+    <li style="display: flex;">
+        <div class="rating-stars" style="color: #FFD700;">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-o"></i>
+            <i class="fa fa-star-o"></i>
+            <i class="fa fa-star-o"></i>
+        </div>
+        <div class="rating-progress" style="color: #FFD700;">
+            <div style="width: @(Model.Length > 1 ? Math.Min(Model[1], 50) * 2 : 0)%; background-color: #FFD700;"></div>
+
+        </div>
+        <span class="sum" style="margin-left: 10px; display: flex;">
+            <span>
+                @if (Model.Length > 1)
+                {
+                    @Math.Min(Model[1], 50)
+                }
+            </span>
+            <span style="margin-left: 10px;">đánh giá</span>
+        </span>
+    </li>
+    <li style="display: flex;">
+        <div class="rating-stars" style="color: #FFD700;">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-o"></i>
+            <i class="fa fa-star-o"></i>
+            <i class="fa fa-star-o"></i>
+            <i class="fa fa-star-o"></i>
+        </div>
+        <div class="rating-progress" style="color: #FFD700;">
+            <div style="width: @(Model.Length > 0 ? Math.Min(Model[0], 50) * 2 : 0)%;"></div>
+        </div>
+        <span class="sum" style="margin-left: 10px; display: flex;">
+            <span>
+                @if (Model.Length > 0)
+                {
+                    @Math.Min(Model[0], 50)
+                }
+            </span>
+            <span style="margin-left: 10px;">đánh giá</span>
+        </span>
+    </li>
+</ul>
