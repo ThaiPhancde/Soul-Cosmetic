@@ -64,9 +64,16 @@ namespace MyPhamSoul.Services
 
         public async Task<string> CreateShipmentAsync(ShipmentRequest req)
         {
+            // Validate input
+            if (string.IsNullOrEmpty(_shopId) || !int.TryParse(_shopId, out var shopId))
+            {
+                _logger.LogError("Shop ID không hợp lệ: {ShopId}", _shopId);
+                return string.Empty;
+            }
+
             var payload = new
             {
-                shop_id = int.TryParse(_shopId, out var sid) ? sid : 0,
+                shop_id = shopId,
                 from_district_id = req.FromDistrictId,
                 to_district_id = req.ToDistrictId,
                 to_ward_code = req.ToWardCode,
@@ -74,33 +81,73 @@ namespace MyPhamSoul.Services
                 to_phone = req.ToPhone,
                 to_address = req.ToAddress,
                 weight = req.Weight,
-                insurance_value = req.OrderValue,
+                insurance_value = (int)req.OrderValue,
                 service_type_id = 2, // express
                 payment_type_id = 1, // Người gửi trả phí ship (1) / người nhận (2)
                 required_note = "CHOTHUHANG",
-                cod_amount = req.OrderValue,
-                client_order_code = req.OrderCode
+                cod_amount = (int)req.OrderValue,
+                client_order_code = req.OrderCode,
+                items = new[]
+                {
+                    new
+                    {
+                        name = "Mỹ phẩm",
+                        quantity = 1,
+                        weight = req.Weight
+                    }
+                }
             };
 
             try
             {
+                _logger.LogInformation("Đang tạo đơn GHN với payload: {Payload}", JsonSerializer.Serialize(payload));
+                
                 using var response = await _client.PostAsJsonAsync("v2/shipping-order/create", payload);
-                response.EnsureSuccessStatusCode();
                 var json = await response.Content.ReadAsStringAsync();
+                _logger.LogInformation("GHN Response: {Response}", json);
+                
+                if (!response.IsSuccessStatusCode)
+                {
+                    _logger.LogError("GHN API trả về lỗi HTTP {StatusCode}: {Content}", response.StatusCode, json);
+                    return string.Empty;
+                }
+                
                 using var doc = JsonDocument.Parse(json);
                 var root = doc.RootElement;
-                var code = root.GetProperty("code").GetInt32();
-                if (code == 200)
+                
+                if (root.TryGetProperty("code", out var codeElement))
                 {
-                    var orderCode = root.GetProperty("data").GetProperty("order_code").GetString();
-                    return orderCode ?? string.Empty;
+                    var code = codeElement.GetInt32();
+                    if (code == 200)
+                    {
+                        if (root.TryGetProperty("data", out var dataElement) && 
+                            dataElement.TryGetProperty("order_code", out var orderCodeElement))
+                        {
+                            var orderCode = orderCodeElement.GetString();
+                            _logger.LogInformation("Tạo đơn GHN thành công: {OrderCode}", orderCode);
+                            return orderCode ?? string.Empty;
+                        }
+                    }
+                    else
+                    {
+                        var message = root.TryGetProperty("message", out var msgElement) ? msgElement.GetString() : "Unknown error";
+                        _logger.LogWarning("GHN API trả về mã lỗi {Code}: {Message}", code, message);
+                    }
                 }
-                _logger.LogWarning("GHN create order response code {code}, content: {content}", code, json);
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError(ex, "Lỗi kết nối đến GHN API");
+            }
+            catch (TaskCanceledException ex)
+            {
+                _logger.LogError(ex, "Timeout khi gọi GHN API");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "GHN create order error");
+                _logger.LogError(ex, "Lỗi không xác định khi tạo đơn GHN");
             }
+            
             return string.Empty;
         }
 

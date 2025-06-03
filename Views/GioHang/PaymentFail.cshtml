@@ -1,5 +1,48 @@
 ﻿@{
-    ViewData["Title"] = "Fail";
+    ViewData["Title"] = "Thanh toán thất bại";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
 }
-<h1>Fail</h1>
-<h3 class="text-danger">Thanh toán thất bại!</h3>
+
+<div class="breadcrumb-section breadcrumb-bg-color--golden">
+    <div class="breadcrumb-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="breadcrumb-title">Thanh toán thất bại</h3>
+                    <div class="breadcrumb-nav breadcrumb-nav-color--black breadcrumb-nav-hover-color--golden">
+                        <nav aria-label="breadcrumb">
+                            <ul>
+                                <li><a href="/Home">Trang chủ</a></li>
+                                <li class="active" aria-current="page">Thanh toán thất bại</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-12 text-center">
+            <div class="error-icon mb-4">
+                <i class="fa fa-times-circle" style="font-size: 80px; color: #dc3545;"></i>
+            </div>
+            <h2 class="mb-3">Thanh toán không thành công</h2>
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-danger mt-3">
+                    @TempData["Message"]
+                </div>
+            }
+            <p class="lead mb-4">Đã xảy ra lỗi trong quá trình thanh toán.</p>
+            <p>Vui lòng kiểm tra lại thông tin thanh toán của bạn hoặc thử phương thức thanh toán khác.</p>
+            
+            <div class="mt-5">
+                <a href="/GioHang/CheckOut" class="btn btn-md btn-danger">Thử lại</a>
+                <a href="/Home" class="btn btn-md btn-golden ml-3">Tiếp tục mua sắm</a>
+            </div>
+        </div>
+    </div>
+</div>

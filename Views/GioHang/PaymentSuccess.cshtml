@@ -1,5 +1,48 @@
 ﻿@{
-    ViewData["Title"] = "Success";
+    ViewData["Title"] = "Thanh toán thành công";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
 }
-<h1>Success</h1>
-<h3 class="text-danger">@TempData["Message"]</h3>
+
+<div class="breadcrumb-section breadcrumb-bg-color--golden">
+    <div class="breadcrumb-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="breadcrumb-title">Thanh toán thành công</h3>
+                    <div class="breadcrumb-nav breadcrumb-nav-color--black breadcrumb-nav-hover-color--golden">
+                        <nav aria-label="breadcrumb">
+                            <ul>
+                                <li><a href="/Home">Trang chủ</a></li>
+                                <li class="active" aria-current="page">Thanh toán thành công</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-12 text-center">
+            <div class="success-icon mb-4">
+                <i class="fa fa-check-circle" style="font-size: 80px; color: #28a745;"></i>
+            </div>
+            <h2 class="mb-3">Đặt hàng thành công!</h2>
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-success mt-3">
+                    @TempData["Message"]
+                </div>
+            }
+            <p class="lead mb-4">Cảm ơn bạn đã mua hàng tại cửa hàng chúng tôi.</p>
+            <p>Chúng tôi sẽ xử lý đơn hàng của bạn và giao hàng trong thời gian sớm nhất.</p>
+            <p>Bạn sẽ nhận được email xác nhận đơn hàng ngay sau đây.</p>
+            
+            <div class="mt-5">
+                <a href="/Home" class="btn btn-md btn-golden">Tiếp tục mua sắm</a>
+            </div>
+        </div>
+    </div>
+</div>

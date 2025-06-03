@@ -334,28 +334,67 @@
                         </div>*@
                         <div class="order_button pt-3">
                             <input type="submit" name="payment" class="btn btn-md btn-black-default-hover" type="submit" value="Thanh toán tiền mặt">
-                            <div id="paypal-button-container" style="max-width:1000px; margin-top:15px;"></div>
+                            <button type="button" id="vnpay-button" class="btn btn-md" style="background-color: #0071bb; color: white; margin-top: 10px; width: 100%;">
+                                Thanh toán qua VNPAY
+                            </button>
                         </div>
 
                         <script>
                                 document.addEventListener('DOMContentLoaded', function () {
                                 var paymentButtons = document.querySelectorAll('.btn.btn-md.btn-black-default-hover[name="payment"]');
                                 var addressRadios = document.querySelectorAll('input[name="selectedKhachHang"]');
+                                var vnpayButton = document.getElementById('vnpay-button');
+
+                                // Hàm kiểm tra xem đã chọn địa chỉ hay chưa
+                                function hasSelectedAddress() {
+                                    var checkedAddress = false;
+                                    addressRadios.forEach(function (radio) {
+                                        if (radio.checked) {
+                                            checkedAddress = true;
+                                        }
+                                    });
+                                    return checkedAddress;
+                                }
 
                                 paymentButtons.forEach(function (button) {
-                                button.addEventListener('click', function (event) {
-                                var checkedAddress = false;
-                                addressRadios.forEach(function (radio) {
-                                if (radio.checked) {
-                                checkedAddress = true;
-                                }
+                                    button.addEventListener('click', function (event) {
+                                        if (!hasSelectedAddress()) {
+                                            event.preventDefault();
+                                            alert('Vui lòng chọn địa chỉ giao hàng trước khi thanh toán.');
+                                        }
+                                    });
                                 });
 
-                                if (!checkedAddress) {
-                                event.preventDefault();
-                                alert('Vui lòng chọn địa chỉ giao hàng trước khi thanh toán.');
-                                }
-                                });
+                                // Xử lý sự kiện cho nút VNPAY
+                                vnpayButton.addEventListener('click', function () {
+                                    if (!hasSelectedAddress()) {
+                                        alert('Vui lòng chọn địa chỉ giao hàng trước khi thanh toán.');
+                                        return;
+                                    }
+
+                                    // Lấy giá trị của địa chỉ được chọn
+                                    var selectedValue = null;
+                                    addressRadios.forEach(function (radio) {
+                                        if (radio.checked) {
+                                            selectedValue = radio.value;
+                                        }
+                                    });
+
+                                    if (selectedValue) {
+                                        // Tạo form động để submit
+                                        var form = document.createElement('form');
+                                        form.method = 'POST';
+                                        form.action = '/GioHang/CreateVnPayPayment';
+                                        
+                                        var input = document.createElement('input');
+                                        input.type = 'hidden';
+                                        input.name = 'selectedKhachHang';
+                                        input.value = selectedValue;
+                                        
+                                        form.appendChild(input);
+                                        document.body.appendChild(form);
+                                        form.submit();
+                                    }
                                 });
                                 });
 
@@ -408,213 +447,5 @@
 </div>
 
 @section Scripts {
-    <script src="https://www.paypal.com/sdk/js?client-id=@ViewBag.PaypalClientdId&currency=USD&intent=capture"></script>
-    <script>
-        // Kiểm tra chọn địa chỉ trước khi khởi tạo PayPal
-        let addressSelected = false;
-        const addressRadios = document.querySelectorAll('input[name="selectedKhachHang"]');
-        
-        // Theo dõi trạng thái chọn địa chỉ
-        addressRadios.forEach(function(radio) {
-            if (radio.checked) {
-                addressSelected = true;
-                document.getElementById('paypal-button-container').style.display = 'block';
-            }
-            
-            radio.addEventListener('change', function() {
-                if (this.checked) {
-                    addressSelected = true;
-                    // Hiển thị nút PayPal khi đã chọn địa chỉ
-                    document.getElementById('paypal-button-container').style.display = 'block';
-                }
-            });
-        });
-        
-        // Ẩn nút PayPal ban đầu nếu chưa chọn địa chỉ
-        document.getElementById('paypal-button-container').style.display = addressSelected ? 'block' : 'none';
-
-        // Thêm biến để theo dõi quá trình thanh toán
-        let isProcessingPayment = false;
-
-        paypal.Buttons({
-            style: {
-                layout: 'vertical',
-                color: 'gold',
-                shape: 'rect',
-                label: 'paypal'
-            },
-            createOrder: function(data, actions) {
-                // Ngăn chặn xử lý thanh toán nhiều lần
-                if (isProcessingPayment) {
-                    console.log("Đang xử lý thanh toán, vui lòng đợi...");
-                    return null;
-                }
-                
-                // Kiểm tra xem đã chọn địa chỉ chưa
-                if (!addressSelected) {
-                    alert('Vui lòng chọn địa chỉ giao hàng trước khi thanh toán.');
-                    return null;
-                }
-                
-                // Hiển thị thông báo đang xử lý
-                const paypalButtonContainer = document.getElementById('paypal-button-container');
-                if (!document.getElementById('processing-start-message')) {
-                    const processingStartMessage = document.createElement('div');
-                    processingStartMessage.id = 'processing-start-message';
-                    processingStartMessage.style.textAlign = 'center';
-                    processingStartMessage.style.marginTop = '10px';
-                    processingStartMessage.style.padding = '10px';
-                    processingStartMessage.style.backgroundColor = '#fff3cd';
-                    processingStartMessage.style.borderRadius = '5px';
-                    processingStartMessage.innerHTML = '<span style="color:#856404;font-weight:bold;">Đang khởi tạo đơn hàng PayPal...</span>';
-                    paypalButtonContainer.parentNode.insertBefore(processingStartMessage, paypalButtonContainer.nextSibling);
-                }
-                
-                isProcessingPayment = true;
-                
-                return fetch("/GioHang/create-paypal-order", {
-                    method: "post",
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(function(response) {
-                    // Xóa thông báo khởi tạo
-                    const processingStartMsg = document.getElementById('processing-start-message');
-                    if (processingStartMsg) processingStartMsg.remove();
-                    
-                    if (!response.ok) {
-                        isProcessingPayment = false;
-                        return response.json().then(function(error) { 
-                            console.error("Error response:", error);
-                            throw error; 
-                        });
-                    }
-                    return response.json();
-                })
-                .then(function(order) {
-                    console.log("Order created:", order);
-                    return order.id;
-                })
-                .catch(function(error) {
-                    isProcessingPayment = false;
-                    console.error("Create order error:", error);
-                    alert("Có lỗi xảy ra khi tạo đơn hàng: " + (error.message || "Vui lòng thử lại sau"));
-                    return null;
-                });
-            },
-            onApprove: function(data, actions) {
-                console.log("Payment approved, capturing payment...");
-                // Hiển thị trạng thái đang xử lý
-                const paypalButtonContainer = document.getElementById('paypal-button-container');
-                const processingMessage = document.createElement('div');
-                processingMessage.id = 'processing-message';
-                processingMessage.style.textAlign = 'center';
-                processingMessage.style.marginTop = '10px';
-                processingMessage.style.padding = '10px';
-                processingMessage.style.backgroundColor = '#fff3cd';
-                processingMessage.style.borderRadius = '5px';
-                processingMessage.innerHTML = '<span style="color:#856404;font-weight:bold;">Đang xử lý thanh toán, vui lòng đợi...</span>';
-                
-                paypalButtonContainer.parentNode.insertBefore(processingMessage, paypalButtonContainer.nextSibling);
-                
-                return fetch('/GioHang/capture-paypal-order', {
-                    method: "post",
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        orderID: data.orderID
-                    })
-                })
-                .then(function(response) {
-                    if (!response.ok) {
-                        return response.json().then(function(error) { 
-                            console.error("Capture error response:", error);
-                            throw error; 
-                        });
-                    }
-                    return response.json();
-                })
-                .then(function(captureData) {
-                    console.log("Payment captured:", captureData);
-                    // Hiển thị thông báo thành công
-                    const processingMsg = document.getElementById('processing-message');
-                    if (processingMsg) {
-                        processingMsg.style.backgroundColor = '#d4edda';
-                        processingMsg.innerHTML = '<span style="color:#155724;font-weight:bold;">Thanh toán thành công! Đang chuyển hướng...</span>';
-                    }
-                    
-                    // Đổi địa chỉ tới action thông báo thành công sau 2 giây
-                    setTimeout(function() {
-                        window.location.href = "/GioHang/PaymentSuccess";
-                    }, 2000);
-                })
-                .catch(function(error) {
-                    isProcessingPayment = false;
-                    console.error("Capture error:", error);
-                    // Xóa thông báo đang xử lý
-                    const processingMsg = document.getElementById('processing-message');
-                    if (processingMsg) {
-                        processingMsg.style.backgroundColor = '#f8d7da';
-                        processingMsg.innerHTML = '<span style="color:#721c24;font-weight:bold;">Lỗi: ' + (error.message || "Không thể xử lý thanh toán") + '</span>';
-                    }
-                    
-                    alert("Có lỗi xảy ra khi xử lý thanh toán: " + (error.message || "Vui lòng thử lại sau"));
-                });
-            },
-            onCancel: function(data) {
-                console.log("Payment cancelled:", data);
-                isProcessingPayment = false;
-                const processingMsg = document.getElementById('processing-message');
-                if (processingMsg) processingMsg.remove();
-                
-                const startMsg = document.getElementById('processing-start-message');
-                if (startMsg) startMsg.remove();
-                
-                // Hiển thị thông báo hủy
-                const paypalButtonContainer = document.getElementById('paypal-button-container');
-                const cancelMessage = document.createElement('div');
-                cancelMessage.id = 'cancel-message';
-                cancelMessage.style.textAlign = 'center';
-                cancelMessage.style.marginTop = '10px';
-                cancelMessage.style.padding = '10px';
-                cancelMessage.style.backgroundColor = '#fff3cd';
-                cancelMessage.style.borderRadius = '5px';
-                cancelMessage.innerHTML = '<span style="color:#856404;">Bạn đã hủy thanh toán qua PayPal</span>';
-                
-                paypalButtonContainer.parentNode.insertBefore(cancelMessage, paypalButtonContainer.nextSibling);
-                
-                // Xóa thông báo sau 5 giây
-                setTimeout(function() {
-                    const cancelMsg = document.getElementById('cancel-message');
-                    if (cancelMsg) cancelMsg.remove();
-                }, 5000);
-            },
-            onError: function(err) {
-                console.error("PayPal error:", err);
-                isProcessingPayment = false;
-                const processingMsg = document.getElementById('processing-message');
-                if (processingMsg) processingMsg.remove();
-                
-                const startMsg = document.getElementById('processing-start-message');
-                if (startMsg) startMsg.remove();
-                
-                // Hiển thị thông báo lỗi
-                const paypalButtonContainer = document.getElementById('paypal-button-container');
-                const errorMessage = document.createElement('div');
-                errorMessage.id = 'error-message';
-                errorMessage.style.textAlign = 'center';
-                errorMessage.style.marginTop = '10px';
-                errorMessage.style.padding = '10px';
-                errorMessage.style.backgroundColor = '#f8d7da';
-                errorMessage.style.borderRadius = '5px';
-                errorMessage.innerHTML = '<span style="color:#721c24;font-weight:bold;">Lỗi PayPal: ' + err + '</span>';
-                
-                paypalButtonContainer.parentNode.insertBefore(errorMessage, paypalButtonContainer.nextSibling);
-                
-                alert("Có lỗi xảy ra với PayPal: " + err);
-            }
-        }).render('#paypal-button-container');
-    </script>
+    
 }

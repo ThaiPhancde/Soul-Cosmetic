@@ -25,46 +25,42 @@ namespace MyPhamSoul.Services
         {
             try
             {
-                var timeNow = DateTime.Now;
-                var tick = timeNow.Ticks.ToString();
+                var timeZoneById = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
+                var timeNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZoneById);
                 var vnpay = new VnPayLibrary();
                 
                 vnpay.AddRequestData("vnp_Version", _config["VnPay:Version"]);
                 vnpay.AddRequestData("vnp_Command", _config["VnPay:Command"]);
                 vnpay.AddRequestData("vnp_TmnCode", _config["VnPay:TmnCode"]);
                 
-                // Đảm bảo format số tiền chính xác (số nguyên, không có thập phân)
-                long amountInVnd = Convert.ToInt64(Math.Floor(model.Amount * 100));
+                // Số tiền * 100 để loại bỏ phần thập phân
+                long amountInVnd = Convert.ToInt64(Math.Round(model.Amount) * 100);
                 vnpay.AddRequestData("vnp_Amount", amountInVnd.ToString());
                 
-                // Định dạng ngày giờ chính xác theo yêu cầu của VNPAY
-                string createDate = timeNow.ToString("yyyyMMddHHmmss");
-                vnpay.AddRequestData("vnp_CreateDate", createDate);
+                vnpay.AddRequestData("vnp_CreateDate", timeNow.ToString("yyyyMMddHHmmss"));
                 vnpay.AddRequestData("vnp_CurrCode", _config["VnPay:CurrCode"]);
                 
-                // Lấy IP chính xác của khách hàng
+                // Lấy IP người dùng
                 string ipAddress = Utils.GetIpAddress(context);
-                if (string.IsNullOrEmpty(ipAddress))
+                if (string.IsNullOrEmpty(ipAddress) || ipAddress.Contains("Invalid"))
                 {
-                    ipAddress = "127.0.0.1"; // IP mặc định nếu không lấy được
+                    ipAddress = "192.168.10.205"; // IP mặc định nếu không lấy được
                 }
                 vnpay.AddRequestData("vnp_IpAddr", ipAddress);
                 
                 vnpay.AddRequestData("vnp_Locale", _config["VnPay:Locale"]);
-                
-                // Loại bỏ dấu tiếng Việt và ký tự đặc biệt trong OrderInfo
-                string orderInfo = "Thanh toan don hang " + model.OrderId;
-                vnpay.AddRequestData("vnp_OrderInfo", orderInfo);
-                
-                vnpay.AddRequestData("vnp_OrderType", "other");
+                vnpay.AddRequestData("vnp_OrderInfo", model.Description);
+                vnpay.AddRequestData("vnp_OrderType", "other"); // Mã danh mục hàng hóa
                 vnpay.AddRequestData("vnp_ReturnUrl", _config["VnPay:PaymentBackReturnUrl"]);
                 
-                // Sử dụng mã giao dịch duy nhất, đảm bảo không có ký tự đặc biệt
-                string txnRef = model.OrderId;
-                // Đảm bảo txnRef không có ký tự đặc biệt và khoảng trắng
-                txnRef = System.Text.RegularExpressions.Regex.Replace(txnRef, @"[^a-zA-Z0-9]", string.Empty);
-                vnpay.AddRequestData("vnp_TxnRef", txnRef);
+                // Thêm mã đơn hàng - phải là duy nhất trong ngày
+                vnpay.AddRequestData("vnp_TxnRef", model.OrderId);
                 
+                // Thêm thời gian hết hạn thanh toán
+                var expireDate = timeNow.AddMinutes(15);
+                vnpay.AddRequestData("vnp_ExpireDate", expireDate.ToString("yyyyMMddHHmmss"));
+                
+                // Thêm thông tin khách hàng nếu có
                 if (!string.IsNullOrEmpty(model.CustomerId))
                 {
                     vnpay.AddRequestData("vnp_CustomerId", model.CustomerId);
@@ -78,7 +74,6 @@ namespace MyPhamSoul.Services
             }
             catch (Exception ex)
             {
-                // Log lỗi
                 _logger.LogError("VNPay Error: " + ex.Message);
                 throw;
             }

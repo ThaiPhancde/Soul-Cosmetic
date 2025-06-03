@@ -45,20 +45,12 @@ builder.Services.AddSession(options =>
 });
 builder.Services.AddScoped<ICTLoaiRepository, CTLoaiRepository>();
 
+// Đăng ký VNPay service
 builder.Services.AddSingleton<IVnPayService, VnPayService>();
 
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 
 builder.Services.AddTransient<IMailService, MailService>();
-
-builder.Services.AddSingleton(x =>
-    new PaypalClient(
-        builder.Configuration["PayPalOptions:AppId"],
-        builder.Configuration["PayPalOptions:AppSecret"],
-        builder.Configuration["PayPalOptions:Mode"]
-
-    )
-);
 
 builder.Services.AddAuthentication(options =>
 {
@@ -90,16 +82,36 @@ builder.Services.AddRazorPages().AddViewOptions(options =>
     options.HtmlHelperOptions.ClientValidationEnabled = true;
 });
 
+// Cấu hình HTTP Client cho GHN
 builder.Services.AddHttpClient<MyPhamSoul.Services.GhnShippingService>(c =>
 {
     c.BaseAddress = new Uri(builder.Configuration["Ghn:ApiBaseUrl"]);
     c.DefaultRequestHeaders.Add("Token", builder.Configuration["Ghn:ApiKey"]);
 });
 
-builder.Services.AddScoped<MyPhamSoul.Services.IShippingService, MyPhamSoul.Services.GhnShippingService>();
+// Cấu hình HTTP Client cho GHTK
+builder.Services.AddHttpClient<MyPhamSoul.Services.GhtkShippingService>(c =>
+{
+    c.BaseAddress = new Uri(builder.Configuration["Ghtk:ApiBaseUrl"]);
+    c.DefaultRequestHeaders.Add("Token", builder.Configuration["Ghtk:ApiKey"]);
+});
 
+// Đăng ký cả hai service
+builder.Services.AddScoped<MyPhamSoul.Services.GhnShippingService>();
+builder.Services.AddScoped<MyPhamSoul.Services.GhtkShippingService>();
 
-
+// Chọn service dựa trên cấu hình
+builder.Services.AddScoped<MyPhamSoul.Services.IShippingService>(provider =>
+{
+    var configuration = provider.GetRequiredService<IConfiguration>();
+    var shippingProvider = configuration["ShippingProvider"] ?? "GHN";
+    
+    return shippingProvider.ToUpper() switch
+    {
+        "GHTK" => provider.GetRequiredService<MyPhamSoul.Services.GhtkShippingService>(),
+        _ => provider.GetRequiredService<MyPhamSoul.Services.GhnShippingService>()
+    };
+});
 
 var app = builder.Build();
 

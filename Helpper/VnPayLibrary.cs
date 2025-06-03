@@ -3,6 +3,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.AspNetCore.Http;
+using System.Linq;
 
 namespace MyPhamSoul.Helpper
 {
@@ -35,25 +37,29 @@ namespace MyPhamSoul.Helpper
         #region Request
         public string CreateRequestUrl(string baseUrl, string vnpHashSecret)
         {
-            var data = new StringBuilder();
-
-            foreach (var (key, value) in _requestData.Where(kv => !string.IsNullOrEmpty(kv.Value)))
+            StringBuilder data = new StringBuilder();
+            
+            foreach (KeyValuePair<string, string> kv in _requestData)
             {
-                data.Append(WebUtility.UrlEncode(key) + "=" + WebUtility.UrlEncode(value) + "&");
+                if (!String.IsNullOrEmpty(kv.Value))
+                {
+                    data.Append(WebUtility.UrlEncode(kv.Key) + "=" + WebUtility.UrlEncode(kv.Value) + "&");
+                }
             }
-
-            var querystring = data.ToString();
-
-            baseUrl += "?" + querystring;
-            var signData = querystring;
+            
+            string queryString = data.ToString();
+            
+            baseUrl += "?" + queryString;
+            
+            String signData = queryString;
             if (signData.Length > 0)
             {
-                signData = signData.Remove(data.Length - 1, 1);
+                signData = signData.Remove(signData.Length - 1, 1);
             }
-
-            var vnpSecureHash = Utils.HmacSHA512(vnpHashSecret, signData);
-            baseUrl += "vnp_SecureHash=" + vnpSecureHash;
-
+            
+            string vnp_SecureHash = Utils.HmacSHA512(vnpHashSecret, signData);
+            baseUrl += "vnp_SecureHash=" + vnp_SecureHash;
+            
             return baseUrl;
         }
         #endregion
@@ -61,35 +67,39 @@ namespace MyPhamSoul.Helpper
         #region Response process
         public bool ValidateSignature(string inputHash, string secretKey)
         {
-            var rspRaw = GetResponseData();
-            var myChecksum = Utils.HmacSHA512(secretKey, rspRaw);
+            string rspRaw = GetResponseData();
+            string myChecksum = Utils.HmacSHA512(secretKey, rspRaw);
             return myChecksum.Equals(inputHash, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private string GetResponseData()
         {
-            var data = new StringBuilder();
+            StringBuilder data = new StringBuilder();
+            
             if (_responseData.ContainsKey("vnp_SecureHashType"))
             {
                 _responseData.Remove("vnp_SecureHashType");
             }
-
+            
             if (_responseData.ContainsKey("vnp_SecureHash"))
             {
                 _responseData.Remove("vnp_SecureHash");
             }
-
-            foreach (var (key, value) in _responseData.Where(kv => !string.IsNullOrEmpty(kv.Value)))
+            
+            foreach (KeyValuePair<string, string> kv in _responseData)
             {
-                data.Append(WebUtility.UrlEncode(key) + "=" + WebUtility.UrlEncode(value) + "&");
+                if (!String.IsNullOrEmpty(kv.Value))
+                {
+                    data.Append(WebUtility.UrlEncode(kv.Key) + "=" + WebUtility.UrlEncode(kv.Value) + "&");
+                }
             }
-
-            //remove last '&'
+            
+            // Remove last '&'
             if (data.Length > 0)
             {
                 data.Remove(data.Length - 1, 1);
             }
-
+            
             return data.ToString();
         }
 
@@ -101,19 +111,18 @@ namespace MyPhamSoul.Helpper
             }
         }
         #endregion
-
     }
 
     public class Utils
     {
-        public static string HmacSHA512(string key, string inputData)
+        public static String HmacSHA512(string key, String inputData)
         {
-            var hash = new StringBuilder();
-            var keyBytes = Encoding.UTF8.GetBytes(key);
-            var inputBytes = Encoding.UTF8.GetBytes(inputData);
+            var hash = new StringBuilder(); 
+            byte[] keyBytes = Encoding.UTF8.GetBytes(key);
+            byte[] inputBytes = Encoding.UTF8.GetBytes(inputData);
             using (var hmac = new HMACSHA512(keyBytes))
             {
-                var hashValue = hmac.ComputeHash(inputBytes);
+                byte[] hashValue = hmac.ComputeHash(inputBytes);
                 foreach (var theByte in hashValue)
                 {
                     hash.Append(theByte.ToString("x2"));
@@ -123,34 +132,45 @@ namespace MyPhamSoul.Helpper
             return hash.ToString();
         }
 
-
-        // có chế biến cho .NET Core MVC
         public static string GetIpAddress(HttpContext context)
         {
-            var ipAddress = string.Empty;
+            string ipAddress;
             try
             {
-                var remoteIpAddress = context.Connection.RemoteIpAddress;
-
-                if (remoteIpAddress != null)
+                // Thử lấy IP từ header X-Forwarded-For trước (cho trường hợp qua proxy)
+                ipAddress = context.Request.Headers["X-Forwarded-For"].FirstOrDefault();
+                
+                if (!string.IsNullOrEmpty(ipAddress))
                 {
-                    if (remoteIpAddress.AddressFamily == AddressFamily.InterNetworkV6)
-                    {
-                        remoteIpAddress = Dns.GetHostEntry(remoteIpAddress).AddressList
-                            .FirstOrDefault(x => x.AddressFamily == AddressFamily.InterNetwork);
-                    }
+                    // Lấy IP đầu tiên nếu có nhiều IP
+                    ipAddress = ipAddress.Split(',')[0].Trim();
+                }
+                else
+                {
+                    // Nếu không có X-Forwarded-For, lấy từ RemoteIpAddress
+                    ipAddress = context.Connection.RemoteIpAddress?.ToString();
+                }
 
-                    if (remoteIpAddress != null) ipAddress = remoteIpAddress.ToString();
-
-                    return ipAddress;
+                // Xử lý các trường hợp đặc biệt
+                if (string.IsNullOrEmpty(ipAddress) || ipAddress == "::1" || ipAddress == "127.0.0.1")
+                {
+                    // Trả về IP mặc định cho môi trường development/local
+                    ipAddress = "192.168.10.205";
+                }
+                
+                // Kiểm tra định dạng IP hợp lệ
+                if (ipAddress.Contains(":") && !ipAddress.StartsWith("192.168"))
+                {
+                    // Có thể là IPv6, chuyển sang IP mặc định
+                    ipAddress = "192.168.10.205";
                 }
             }
             catch (Exception ex)
             {
-                return "Invalid IP:" + ex.Message;
+                ipAddress = "192.168.10.205"; // IP mặc định khi có lỗi
             }
 
-            return "127.0.0.1";
+            return ipAddress;
         }
     }
 
@@ -165,5 +185,4 @@ namespace MyPhamSoul.Helpper
             return vnpCompare.Compare(x, y, CompareOptions.Ordinal);
         }
     }
-
 }
